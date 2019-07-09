@@ -5,15 +5,25 @@
       <div id="currentWeather" class="card p-1 m-1">
         <div class="grid-3">
           <div class="all-center">
-            <img src="${searchResult.currentWeather.icon}" style="width: 100px"/>
+            <div class="grid-2">
+              <div class="all-center">
+                <img src="${searchResult.currentWeather.icon}" style="width: 100px"/>
 
-            <p>${searchResult.currentWeather.condition}</p>
+                <p>${searchResult.currentWeather.condition}</p>
+              </div>
 
-            <p>${searchResult.currentWeather.temperature}</p>
+              <div class="all-center">
 
-            <p>${searchResult.currentWeather.humidity}%</p>
+                <p>${searchResult.currentWeather.temperature.round()}&deg;</p>
 
-            <p>${searchResult.currentWeather.windSpeed} mph ${searchResult.currentWeather.windDirection}</p>
+                <p>${searchResult.currentWeather.humidity}%</p>
+
+                <p>${searchResult.currentWeather.windSpeed.round()} mph ${searchResult.currentWeather.windDirection} wind</p>
+
+              </div>
+
+            </div>
+
           </div>
 
           <div>
@@ -32,13 +42,13 @@
     </div>
 
     <div id="forecast">
-      <h3 class="text-center">5 Day Forecast</h3>
+      <h2 class="text-center text-light">5 Day Forecast</h2>
 
       <div class="grid-5">
         <g:each in="${searchResult.dayForecasts}" var="dayForecast">
           <div class="card m-1 p-1">
             <div class="all-center">
-              <g:formatDate date="${dayForecast.date}" type="datetime" format="Day in week"/>
+              <g:formatDate date="${dayForecast.date}" format="E" />
             </div>
             <hr/>
 
@@ -53,14 +63,14 @@
             </div>
             <hr/>
 
-            <p class="text-center p">${dayForecast.windSpeed.round()} mph</p>
+            <p class="text-center p">${dayForecast.windSpeed.round()} mph winds</p>
 
             <div class="grid-3 all-center">
-              <div style="color: blue;">${dayForecast.minTemp.round()}</div>
+              <div style="color: blue;">${dayForecast.minTemp.round()}&deg;</div>
 
-              <div>${(dayForecast.precipitation * 100).round()} %</div>
+              <div>${(dayForecast.precipitation * 100).round()}% rain</div>
 
-              <div style="color: red;">${dayForecast.maxTemp.round()}</div>
+              <div style="color: red;">${dayForecast.maxTemp.round()}&deg;</div>
             </div>
           </div>
         </g:each>

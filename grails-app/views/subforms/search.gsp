@@ -1,11 +1,11 @@
-<form action="weather/result" method="get">
+<form action="/weather/result" method="get">
   <table>
     <tr>
       <td>
-        <g:textField name="location" placeholder="City, [State/Province], Country" style="width: 400px;" required=""/>
+        <g:textField name="location" placeholder="City, [State/Province], [Country]" style="width: 400px;" value="${params.location ?: ""}" required=""/>
       </td>
       <td>
-        <select placeholder="units">
+        <select name="units">
           <option value="" disabled hidden >Units</option>
           <option value="C">C&deg;</option>
           <option value="F" selected>F&deg;</option>

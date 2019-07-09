@@ -4,7 +4,7 @@
   <ul>
     <li><a href="/">Home</a></li>
     <sec:ifLoggedIn>
-      <li><a href="/dashboard/index">Dashboard</a></li>
+      <li><a href="/account/index">Dashboard</a></li>
       <li>
         <g:link controller="logout">Logout</g:link>
       </li>

@@ -91,6 +91,10 @@ table {
   color: var(--dark-color);
 }
 
+.text-light {
+  color: var(--light-color);
+}
+
 .text-success {
   color: var(--success-color);
 }
