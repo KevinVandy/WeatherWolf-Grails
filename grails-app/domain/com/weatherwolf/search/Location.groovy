@@ -16,4 +16,13 @@ class Location {
 
     static constraints = {
     }
+
+    String toString() {
+        if (stateProvince) {
+            "${city}, ${stateProvince}, ${country}"
+        } else {
+            "${city}, ${country}"
+        }
+
+    }
 }

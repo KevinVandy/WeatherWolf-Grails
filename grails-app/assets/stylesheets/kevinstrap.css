@@ -18,15 +18,16 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  /*border: 1px black solid;*/
 }
 
 body {
-  background-color: #fff;
   color: #333;
   font-family: 'Roboto', sans-serif;
   font-size: 1rem;
   line-height: 1.6;
 }
+
 
 a {
   color: var(--primary-color);
@@ -103,7 +104,16 @@ table {
   color: var(--danger-color);
 }
 
-.text-center {
+.text-center, text-center-inline {
+  text-align: center;
+}
+
+.text-center-inline {
+  display: inline;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
   text-align: center;
 }
 
@@ -124,6 +134,26 @@ table {
   justify-content: center;
   margin: auto;
   text-align: center;
+  width: 100%;
+}
+
+.all-left {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  margin: auto;
+  text-align: left;
+  width: 100%;
+}
+
+.all-right {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  justify-content: right;
+  margin: auto;
+  text-align: right;
   width: 100%;
 }
 
@@ -155,7 +185,7 @@ table {
   transition: border-radius var(--fast-transition);
 }
 
-.card-img-effect:hover img{
+.card-img-effect:hover img {
   border-radius: 10%;
   transition: border-radius var(--fast-transition);
 }
@@ -402,10 +432,12 @@ input {
 
 input[type='text'], input[type='email'], input[type='password'], input[type='date'], select, textarea {
   border: 1px solid var(--medium-color);
+  border-radius: 4px;
   display: block;
   font-size: 1.2rem;
   padding: 0.4rem;
   width: 100%;
+  max-width: 500px;
 }
 
 input[type='submit'], button {
@@ -443,7 +475,7 @@ table th {
   display: flex;
   justify-content: space-between;
   height: 50px;
-  opacity: 0.8;
+  opacity: 0.9;
   padding: 0.7rem 2rem;
   transition: opacity var(--medium-transition);
   width: 100%;
@@ -476,90 +508,17 @@ table th {
 .footer {
   background-color: var(--medium-color);
   color: #fff;
-  margin-top: 100px;
+  margin-top: 300px;
   min-height: 200px;
   padding: 0.7rem 2rem;
+  position: absolute;
   width: 100%;
   z-index: 1;
 }
 
-#login {
-  margin: 15px 0px;
-  padding: 0px;
-  text-align: center;
-}
 
-#login .inner {
-  width: 340px;
-  padding-bottom: 6px;
-  margin: 60px auto;
-  text-align: left;
-  border: 1px solid #aab;
-  background-color: #f0f0fa;
-  -moz-box-shadow: 2px 2px 2px #eee;
-  -webkit-box-shadow: 2px 2px 2px #eee;
-  -khtml-box-shadow: 2px 2px 2px #eee;
-  box-shadow: 2px 2px 2px #eee;
-}
-
-#login .inner .fheader {
-  padding: 18px 26px 14px 26px;
-  background-color: #f7f7ff;
-  margin: 0px 0 14px 0;
-  color: #2e3741;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-#login .inner .cssform p {
-  clear: left;
-  margin: 0;
-  padding: 4px 0 3px 0;
-  padding-left: 105px;
-  margin-bottom: 20px;
-  height: 1%;
-}
-
-#login .inner .cssform input[type="text"] {
-  width: 120px;
-}
-
-#login .inner .cssform label {
-  font-weight: bold;
-  float: left;
-  text-align: right;
-  margin-left: -105px;
-  width: 110px;
-  padding-top: 3px;
-  padding-right: 10px;
-}
-
-#login #remember_me_holder {
-  padding-left: 120px;
-}
-
-#login #submit {
-  margin-left: 15px;
-}
-
-#login #remember_me_holder label {
-  float: none;
-  margin-left: 0;
-  text-align: left;
-  width: 200px
-}
-
-#login .inner .login_message {
-  padding: 6px 25px 20px 25px;
-  color: #c33;
-}
-
-#login .inner .text_ {
-  width: 120px;
-}
-
-#login .inner .chk {
-  height: 12px;
+#searchboxform {
+  margin-top: 100px;
 }
 
 /* Mobile Styles */
@@ -568,24 +527,30 @@ table th {
   .hide-sm {
     display: none;
   }
+
   .grid-2, .grid-3, .grid-4 {
     grid-template-columns: 1fr;
   }
+
   /* Text Styles */
   .x-large {
     font-size: 3rem;
   }
+
   .large {
     font-size: 2rem;
   }
+
   .lead {
     font-size: 1rem;
   }
+
   /* Navbar */
   .navbar {
     display: block;
     text-align: center;
   }
+
   .navbar ul {
     text-align: center;
     justify-content: center;

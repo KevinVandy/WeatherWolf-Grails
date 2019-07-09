@@ -40,6 +40,10 @@ class WeatherService {
 
         //fill in weather data for the search result
         try {
+            sr.location.city = root.location.name
+            sr.location.stateProvince = root.location.region
+            sr.location.country = root.location.country
+
             //fill current weather
             sr.currentWeather.condition = root.current.condition.text
             sr.currentWeather.icon = root.current.condition.icon
