@@ -21,10 +21,9 @@ class WeatherController {
         } else {
             println("no location to search")
         }
+        searchResult.save() //log to db
         render(view: '/weather/result', model: [searchResult: searchResult])
     }
-
-
 
     private def assignCityStateProvinceCountry(String searchString, Location location) {
         String[] searchStringArray = searchString.split(",")
@@ -35,6 +34,8 @@ class WeatherController {
             location.city = searchStringArray[0].trim()
             location.stateProvince = searchStringArray[1].trim()
             location.country = searchStringArray[2].trim()
+        } else {
+            location.city = searchString
         }
         println(location.toString())
         location

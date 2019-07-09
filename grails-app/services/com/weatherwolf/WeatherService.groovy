@@ -40,6 +40,7 @@ class WeatherService {
 
         //fill in weather data for the search result
         try {
+            //fill in full location name
             sr.location.city = root.location.name
             sr.location.stateProvince = root.location.region
             sr.location.country = root.location.country
@@ -56,8 +57,8 @@ class WeatherService {
             (0..<numDays).each {
                 def df = new DayForecast()
                 df.date = Date.parse('yyyy-mm-dd', (String) root.forecast.forecastday[it].date)
-                df.condition = root.forecast.forecastday[it].condition.text
-                df.iconURL = root.forecast.forecastday[it].condition.icon
+                df.condition = root.forecast.forecastday[it].day.condition.text
+                df.iconURL = root.forecast.forecastday[it].day.condition.icon
                 df.minTemp = root.forecast.forecastday[it].day.mintemp_c.toFloat()
                 df.maxTemp = root.forecast.forecastday[it].day.maxtemp_c.toFloat()
                 df.precipitation = root.forecast.forecastday[it].day.totalprecip_in.toFloat()

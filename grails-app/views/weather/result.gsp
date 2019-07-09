@@ -10,9 +10,17 @@
 <head>
   <meta name="layout" content="main"/>
   <title></title>
+  <style type="text/css" media="screen">
+  body {
+    background-image: url("${resource(dir: "images", file: "background.jpg")}");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  </style>
 </head>
 
 <body>
-  <g:include view="subforms/searchresults.gsp" />
+  <g:include view="subforms/search.gsp"/>
+  <g:include view="subforms/searchresults.gsp"/>
 </body>
 </html>

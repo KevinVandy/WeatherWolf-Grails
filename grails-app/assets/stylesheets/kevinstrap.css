@@ -269,6 +269,11 @@ table {
 }
 
 /* Grid */
+.grid-1 {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(1, 1fr);
+}
 
 .grid-2 {
   display: grid;
@@ -286,6 +291,12 @@ table {
   display: grid;
   grid-gap: 1rem;
   grid-template-columns: repeat(4, 1fr);
+}
+
+.grid-5 {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(5, 1fr);
 }
 
 input[type="submit"], button {
@@ -438,6 +449,7 @@ input[type='text'], input[type='email'], input[type='password'], input[type='dat
   padding: 0.4rem;
   width: 100%;
   max-width: 500px;
+  min-width: 60px;
 }
 
 input[type='submit'], button {
@@ -523,12 +535,12 @@ table th {
 
 /* Mobile Styles */
 
-@media (max-width: 700px) {
+@media (max-width: 1000px) {
   .hide-sm {
     display: none;
   }
 
-  .grid-2, .grid-3, .grid-4 {
+  .grid-2, .grid-3, .grid-4, .grid-5 {
     grid-template-columns: 1fr;
   }
 
