@@ -1,5 +1,6 @@
-package com.weatherwolf
+package com.weatherwolf.service
 
+import com.weatherwolf.GeocodeService
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 

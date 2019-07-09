@@ -1,5 +1,6 @@
-package com.weatherwolf
+package com.weatherwolf.service
 
+import com.weatherwolf.WeatherService
 import com.weatherwolf.search.Location
 import com.weatherwolf.search.SearchResult
 import grails.testing.gorm.DataTest

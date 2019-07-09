@@ -1,5 +1,6 @@
-package com.weatherwolf
+package com.weatherwolf.controller
 
+import com.weatherwolf.DashboardController
 import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 

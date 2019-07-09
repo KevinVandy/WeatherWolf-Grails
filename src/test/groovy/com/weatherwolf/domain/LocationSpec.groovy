@@ -1,9 +1,10 @@
-package com.weatherwolf.weather
+package com.weatherwolf.domain
 
+import com.weatherwolf.search.Location
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class DayForecastSpec extends Specification implements DomainUnitTest<DayForecast> {
+class LocationSpec extends Specification implements DomainUnitTest<Location> {
 
     def setup() {
     }
