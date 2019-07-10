@@ -8,6 +8,7 @@
     background-image: url("${resource(dir: "images", file: "background.jpg")}");
     background-repeat: no-repeat;
     background-size: cover;
+    background-attachment: fixed;
   }
   </style>
 </head>

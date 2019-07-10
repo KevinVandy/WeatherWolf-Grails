@@ -5,6 +5,7 @@ import com.weatherwolf.weather.CurrentWeather
 import com.weatherwolf.weather.DayForecast
 import grails.gorm.transactions.Transactional
 
+
 @Transactional
 class WeatherService {
 
@@ -15,14 +16,16 @@ class WeatherService {
 
     def fillWeather(SearchResult sr) {
 
-        //if location lat and long have not been filled in yet
-        if (sr.location.latitude > -0.1 && sr.location.latitude < 0.1 && sr.location.longitude > -0.1 && sr.location.longitude < 0.1) {
+        String qs
+
+        //if location cannot be determined from string, try to fill in with geocode service
+        if (!sr.location.toString().contains(',')) {
             def geocodeService = new GeocodeService()
             geocodeService.fillLatLng(sr.location)
+            qs = "q=${sr.location.latitude},${sr.location.longitude}"
+        } else {
+        qs = "q=${URLEncoder.encode(sr.location.toString(), 'UTF-8')}"
         }
-
-        //main query part of URL
-        String qs = "q=${sr.location.latitude},${sr.location.longitude}"
 
         //optional parameters of the URL
         String op = "days=${numDays}"
@@ -70,6 +73,5 @@ class WeatherService {
         }
         return sr
     }
-
 
 }

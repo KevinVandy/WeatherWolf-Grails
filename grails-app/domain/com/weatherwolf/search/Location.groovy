@@ -18,11 +18,14 @@ class Location {
     }
 
     String toString() {
-        if (stateProvince) {
+        if (stateProvince && country) {
             "${city}, ${stateProvince}, ${country}"
-        } else {
+        } else if(stateProvince && !country)
+            "${city}, ${stateProvince}"
+        else if(!stateProvince && country){
             "${city}, ${country}"
+        } else {
+            "${city}"
         }
-
     }
 }

@@ -562,8 +562,8 @@ table th {
   }
 
   /* Navbar */
-  .navbar {
-    display: block;
+  .navbar, navbar-fixed {
+    display: flex;
     text-align: center;
   }
 

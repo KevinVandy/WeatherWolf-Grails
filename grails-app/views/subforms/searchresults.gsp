@@ -1,6 +1,5 @@
-<g:if test="searchResult">
+<g:if test="${searchResult}">
   <div id="searchresults">
-
     <div class="grid-1">
       <div id="currentWeather" class="card p-1 m-1">
         <div class="grid-3">
@@ -40,14 +39,12 @@
         </div>
       </div>
     </div>
-
     <div id="forecast">
       <h2 class="text-center text-light">5 Day Forecast</h2>
-
       <div class="grid-5">
         <g:each in="${searchResult.dayForecasts}" var="dayForecast">
           <div class="card m-1 p-1">
-            <div class="all-center">
+            <div class="all-center" style="font-size: 2em;">
               <g:formatDate date="${dayForecast.date}" format="E" />
             </div>
             <hr/>
@@ -66,11 +63,11 @@
             <p class="text-center p">${dayForecast.windSpeed.round()} mph winds</p>
 
             <div class="grid-3 all-center">
-              <div style="color: blue;">${dayForecast.minTemp.round()}&deg;</div>
+              <div style="color: blue; font-size: 2em;">${dayForecast.minTemp.round()}&deg;</div>
 
               <div>${(dayForecast.precipitation * 100).round()}% rain</div>
 
-              <div style="color: red;">${dayForecast.maxTemp.round()}&deg;</div>
+              <div style="color: red; font-size: 2em;">${dayForecast.maxTemp.round()}&deg;</div>
             </div>
           </div>
         </g:each>

@@ -2,32 +2,26 @@ package com.weatherwolf
 
 import com.weatherwolf.search.Location
 import com.weatherwolf.search.SearchResult
-import grails.plugin.springsecurity.annotation.Secured
 
 
 class WeatherController {
 
     def index() {
-
-    }
-
-    def result() {
         def weatherService = new WeatherService()
         def searchResult = new SearchResult()
         searchResult.location = new Location()
         if (params.location) {
             searchResult.location = assignCityStateProvinceCountry((params.location).toString().trim(), searchResult.location)
             weatherService.fillWeather(searchResult)
+            if (params.units && params.units == 'F') {
+                searchResult = convertTempsToF(searchResult)
+            }
         } else {
             println("no location to search")
+            searchResult = null
         }
 
-        if (params.units && params.units == 'F') {
-            searchResult = convertTempsToF(searchResult)
-        }
-
-        searchResult.save() //log to db
-        render(view: '/weather/result', model: [searchResult: searchResult])
+        render(view: '/weather/index', model: [searchResult: searchResult])
     }
 
     private def assignCityStateProvinceCountry(String searchString, Location location) {
@@ -42,7 +36,6 @@ class WeatherController {
         } else {
             location.city = searchString
         }
-        println(location.toString())
         location
     }
 

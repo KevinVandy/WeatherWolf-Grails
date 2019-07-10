@@ -1,4 +1,4 @@
-<form action="/weather/result" method="get">
+<form action="/weather/index" method="get">
   <table>
     <tr>
       <td>

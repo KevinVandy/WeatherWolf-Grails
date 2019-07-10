@@ -13,6 +13,10 @@
 </head>
 
 <body>
-  Your Account
+  <h2>Your Account</h2>
+
+  <h2>Settings</h2>
+
+  <h2>Search History</h2>
 </body>
 </html>

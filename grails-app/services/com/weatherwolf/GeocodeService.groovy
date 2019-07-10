@@ -30,10 +30,13 @@ class GeocodeService {
         def root = new XmlSlurper().parse(fullURL)
         def loc = root.results[0].result[0].geometry
 
-        //fill in data into the location object
-        location.latitude = loc.lat.toFloat()
-        location.longitude = loc.lng.toFloat()
-
+        try {
+            //fill in data into the location object
+            location.latitude = loc.lat.toFloat()
+            location.longitude = loc.lng.toFloat()
+        } catch(Exception e){
+            println("could not find location\n" + e.toString())
+        }
         location
     }
 }
