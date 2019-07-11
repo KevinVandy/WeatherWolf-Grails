@@ -14,36 +14,18 @@
 </head>
 
 <body>
-  <content tag="nav">
-
-  </content>
-
-  <div class="svg" role="presentation">
-  </div>
-
   <div id="content" role="main">
-
+    <g:include view="subforms/searchbar.gsp"/>
     <sec:ifLoggedIn>
-      <h3 class="text-center">Hello <sec:username/></h3>
 
-      <div>
-        <g:include view="subforms/search.gsp"/>
-      </div>
+      <h3 class="text-center"><sec:username/>'s personal weather</h3>
+      <g:include view="subforms/searchresults.gsp" />
     </sec:ifLoggedIn>
     <sec:ifNotLoggedIn>
-      <div class="grid-2">
-        <div>
-          <g:include view="subforms/search.gsp"/>
-        </div>
-
-        <div>
-          <g:include view="subforms/loginform.gsp"/>
-        </div>
+      <div>
+        <g:include view="subforms/loginform.gsp"/>
       </div>
     </sec:ifNotLoggedIn>
-
-
   </div>
-
 </body>
 </html>

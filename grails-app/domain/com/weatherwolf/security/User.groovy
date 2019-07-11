@@ -19,6 +19,7 @@ class User implements Serializable {
     boolean accountExpired
     boolean accountLocked
     boolean passwordExpired
+    String lang = 'en'
     String favoriteLocation = ''
 
     Set<Role> getAuthorities() {

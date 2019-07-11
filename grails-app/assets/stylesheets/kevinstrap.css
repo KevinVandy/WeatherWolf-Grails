@@ -521,7 +521,15 @@ table th {
   margin-right: 0.6rem;
 }
 
-.footer {
+aside, .aside {
+  float: right;
+  max-width: 500px;
+  min-width: 400px;
+  width: 20%;
+  clear: both;
+}
+
+footer, .footer {
   background-color: var(--medium-color);
   color: #fff;
   margin-top: 300px;
@@ -535,6 +543,13 @@ table th {
 
 #searchboxform {
   margin-top: 100px;
+  font-size: 2em;
+}
+
+.weather-search {
+  min-width: 300px;
+  max-width: 600px;
+  width: 500px;
 }
 
 /* Mobile Styles */

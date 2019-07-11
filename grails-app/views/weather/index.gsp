@@ -21,7 +21,7 @@
 </head>
 
 <body>
-  <g:include view="subforms/search.gsp"/>
+  <g:include view="subforms/searchbar.gsp"/>
   <g:include view="subforms/searchresults.gsp"/>
 </body>
 </html>

@@ -1,8 +1,14 @@
-<nav class="navbar nav-fixed bg-primary" role="navigation">
-  <h1 style="display: inline">Weather Wolf</h1>
+<nav class="navbar nav-fixed bg-primary" role="navigation" style="font-size: 15pt; !important;">
+  <a href="/"><h1 style="display: inline">Weather Wolf</h1></a>
   <asset:image src="logo.png" class="logo"/>
   <ul>
-    <li><a href="/">Home</a></li>
+    <li>
+      <select onChange="window.location.href = this.value">
+        <option value="" disabled selected><g:message code="language" default="Language" /></option>
+        <navbar:localeDropdownListItems uri="${request.forwardURI}" params="${params}" />
+      </select>
+    </li>
+    <li><a href="/"><g:message code="msg.home" default="Home" /></a></li>
     <sec:ifLoggedIn>
       <li>
         <a href="/account/index">Account</a>

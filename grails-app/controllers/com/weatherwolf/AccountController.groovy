@@ -12,17 +12,19 @@ class AccountController {
     String msg = ''
 
     @Secured(['ROLE_CLIENT'])
-    def index() {}
-
-    def login() {
+    def index() { //show user's account settings page
 
     }
 
-    def signup() {
+    def login() { //show login page
 
     }
 
-    def register() {
+    def signup() { //show signup page
+
+    }
+
+    def register() { //the action of signing up for account
         String username = params.username
         String email = params.email
         String password = params.password
