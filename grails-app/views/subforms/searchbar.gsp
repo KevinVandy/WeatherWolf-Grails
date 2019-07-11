@@ -7,7 +7,7 @@
       </td>
       <td>
         <select name="units">
-          <option value="" disabled>Units</option>
+          <option value="" disabled><g:message code="msg.units" default="Units"/></option>
           <option value="C">C&deg;</option>
           <option value="F" selected>F&deg;</option>
         </select>

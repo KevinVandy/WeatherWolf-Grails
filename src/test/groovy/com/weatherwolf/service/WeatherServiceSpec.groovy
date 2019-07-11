@@ -22,4 +22,17 @@ class WeatherServiceSpec extends Specification implements DataTest, ServiceUnitT
         searchResult.currentWeather.condition != ''
     }
 
+    void "verify null search result for bad query"() {
+        given:
+        def searchResult = new SearchResult()
+        searchResult.location = new Location(city: 'a')
+
+        when:
+        service.fillWeather(searchResult)
+
+        then:
+        searchResult.currentWeather == null
+        searchResult.dayForecasts == null
+    }
+
 }

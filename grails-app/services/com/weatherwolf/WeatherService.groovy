@@ -24,7 +24,7 @@ class WeatherService {
             geocodeService.fillLatLng(sr.location)
             qs = "q=${sr.location.latitude},${sr.location.longitude}"
         } else {
-        qs = "q=${URLEncoder.encode(sr.location.toString(), 'UTF-8')}"
+            qs = "q=${URLEncoder.encode(sr.location.toString(), 'UTF-8')}"
         }
 
         //optional parameters of the URL
@@ -34,15 +34,15 @@ class WeatherService {
         String fullURL = "${BASE}?${qs}&${op}&key=${KEY}"
         println(fullURL) //debug log
 
-        //Parse the XML response
-        def root = new XmlSlurper().parse(fullURL)
-
-        //instantiate
-        sr.currentWeather = new CurrentWeather()
-        sr.dayForecasts = []
-
         //fill in weather data for the search result
         try {
+            //Parse the XML response
+            def root = new XmlSlurper().parse(fullURL)
+
+            //instantiate
+            sr.currentWeather = new CurrentWeather()
+            sr.dayForecasts = []
+
             //fill in full location name
             sr.location.city = root.location.name
             sr.location.stateProvince = root.location.region
@@ -66,9 +66,10 @@ class WeatherService {
                 df.maxTemp = root.forecast.forecastday[it].day.maxtemp_c.toFloat()
                 df.precipitation = root.forecast.forecastday[it].day.totalprecip_in.toFloat()
                 df.windSpeed = root.forecast.forecastday[it].day.maxwind_mph.toFloat()
-                sr.dayForecasts.push(df)
+                sr.dayForecasts << df
             }
         } catch (Exception ex) {
+            sr = null //indicates failed search
             println("exception\n${ex}")
         }
         return sr

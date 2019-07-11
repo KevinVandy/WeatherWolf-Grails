@@ -1,51 +1,52 @@
-<g:if test="${searchResult}">
+<g:if test="${searchResult.currentWeather && searchResult.dayForecasts}">
   <div id="searchresults">
-    <div class="grid-1">
-      <div id="currentWeather" class="card p-1 m-1">
-        <div class="grid-3">
-          <div class="all-center">
-            <div class="grid-2">
-              <div class="all-center">
-                <img src="${searchResult.currentWeather.icon}" style="width: 100px"/>
 
-                <p>${searchResult.currentWeather.condition}</p>
-              </div>
+    <div id="currentWeather" class="card p-1 m-1">
+      <div class="grid-2">
+        <div class="all-center">
+          <img src="${searchResult.currentWeather.icon}" style="width: 100px"/>
 
-              <div class="all-center">
+          <p>${searchResult.currentWeather.condition}</p>
 
-                <p>${searchResult.currentWeather.temperature.round()}&deg;</p>
-
-                <p>${searchResult.currentWeather.humidity}%</p>
-
-                <p>${searchResult.currentWeather.windSpeed.round()} mph ${searchResult.currentWeather.windDirection} wind</p>
-
-              </div>
-
+          <div class="grid-2">
+            <div class="m-1">
+              <p>${searchResult.currentWeather.temperature.round()}&deg;</p>
             </div>
 
+            <div class="m-1">
+              <p>${searchResult.currentWeather.humidity}%</p>
+            </div>
           </div>
 
-          <div>
-            <h1 class="text-center">Current Weather</h1>
-          </div>
+          <p>${searchResult.currentWeather.windSpeed.round()} mph ${searchResult.currentWeather.windDirection} wind</p>
 
-          <div class="all-center">
-            <h2>
-              ${searchResult.location.city}
-              <g:if test="${searchResult.location.stateProvince}">, ${searchResult.location.stateProvince}</g:if>
-              <br/>${searchResult.location.country}
-            </h2>
-          </div>
+        </div>
+
+        <div class="all-center">
+          <h1 class="text-center"><g:message code="msg.currentweather" default="Current Weather"/></h1>
+
+          <h2>
+            ${searchResult.location.city}
+            <g:if test="${searchResult.location.stateProvince}">, ${searchResult.location.stateProvince}</g:if>
+            <br/>${searchResult.location.country}
+          </h2>
+        </div>
+
+        <div class="all-center">
+
         </div>
       </div>
     </div>
+
     <div id="forecast">
-      <h2 class="text-center text-light">5 Day Forecast</h2>
-      <div class="grid-5">
+      <h2 class="text-center text-light"><g:message code="msg.fivedayforecast" default="5 Day Forecast"/>&nbsp;<span
+          class="toggle-5day m-1 p-1">-</span></h2>
+
+      <div class="grid-5" id="fiveday">
         <g:each in="${searchResult.dayForecasts}" var="dayForecast">
-          <div class="card m-1 p-1">
+          <div class="card m p-1">
             <div class="all-center" style="font-size: 2em;">
-              <g:formatDate date="${dayForecast.date}" format="E" />
+              <g:formatDate date="${dayForecast.date}" format="E"/>
             </div>
             <hr/>
 
@@ -65,7 +66,7 @@
             <div class="grid-3 all-center">
               <div style="color: blue; font-size: 2em;">${dayForecast.minTemp.round()}&deg;</div>
 
-              <div>${(dayForecast.precipitation * 100).round()}% rain</div>
+              <div>${(dayForecast.precipitation * 100).round()}%</div>
 
               <div style="color: red; font-size: 2em;">${dayForecast.maxTemp.round()}&deg;</div>
             </div>
@@ -76,5 +77,17 @@
   </div>
 </g:if>
 <g:else>
-  Invalid Search
+  <div class="card all-center" >
+    <p class="text-danger">Invalid Search</p>
+  </div>
 </g:else>
+<script>
+    $(".toggle-5day").click(function () {
+        $("#fiveday").slideToggle(500);
+        if ($(".toggle-5day").html() === "-") {
+            $(".toggle-5day").html("+");
+        } else {
+            $(".toggle-5day").html("-");
+        }
+    });
+</script>

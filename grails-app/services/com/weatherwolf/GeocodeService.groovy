@@ -26,15 +26,16 @@ class GeocodeService {
         String fullURL = "${BASE}?key=${KEY}&${qs}&${op}"
         println(fullURL) //debug
 
-        //Parse the XML response
-        def root = new XmlSlurper().parse(fullURL)
-        def loc = root.results[0].result[0].geometry
-
         try {
+            //Parse the XML response
+            def root = new XmlSlurper().parse(fullURL)
+            def loc = root.results[0].result[0].geometry
+
             //fill in data into the location object
             location.latitude = loc.lat.toFloat()
             location.longitude = loc.lng.toFloat()
         } catch(Exception e){
+            location = null
             println("could not find location\n" + e.toString())
         }
         location

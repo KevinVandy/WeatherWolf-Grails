@@ -4,7 +4,7 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import grails.compiler.GrailsCompileStatic
 
-@GrailsCompileStatic
+//@GrailsCompileStatic
 @EqualsAndHashCode(includes='authority')
 @ToString(includes='authority', includeNames=true, includePackage=false)
 class Role implements Serializable {
@@ -18,6 +18,6 @@ class Role implements Serializable {
 	}
 
 	static mapping = {
-		//cache true
+		cache true
 	}
 }

@@ -530,12 +530,14 @@ aside, .aside {
 }
 
 footer, .footer {
-  background-color: var(--medium-color);
+  background-color: var(--dark-color);
   color: #fff;
   margin-top: 300px;
-  min-height: 200px;
+  min-height: 100px;
+  max-height: 200px;
   padding: 0.7rem 2rem;
-  position: absolute;
+  position: fixed;
+  bottom: 0;
   width: 100%;
   z-index: 1;
 }
@@ -546,10 +548,26 @@ footer, .footer {
   font-size: 2em;
 }
 
+#currentWeather {
+  width: 60%;
+  min-width: 480px;
+  max-width: 700px;
+  margin: auto;
+}
+
+#currentWeather p {
+  font-size: 1.5em;
+}
+
 .weather-search {
   min-width: 300px;
   max-width: 600px;
   width: 500px;
+}
+
+.toggle-5day {
+  font-size: 2em;
+  cursor: pointer;
 }
 
 /* Mobile Styles */
