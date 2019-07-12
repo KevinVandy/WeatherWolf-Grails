@@ -1,8 +1,5 @@
 package com.weatherwolf.weather
 
-import com.weatherwolf.search.SearchResult
-
-
 class DayForecast {
 
     Integer id
@@ -14,7 +11,7 @@ class DayForecast {
     Float precipitation
     Float windSpeed
 
-    static belongsTo = [searchResult: SearchResult]
+    //static belongsTo = [searchResult: SearchResult]
 
     static mapping = {
         version false

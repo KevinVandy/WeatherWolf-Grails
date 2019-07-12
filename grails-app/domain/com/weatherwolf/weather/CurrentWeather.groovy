@@ -1,8 +1,5 @@
 package com.weatherwolf.weather
 
-import com.weatherwolf.search.SearchResult
-
-
 class CurrentWeather {
 
     Integer id
@@ -13,7 +10,7 @@ class CurrentWeather {
     Float windSpeed
     String windDirection
 
-    static belongsTo = [searchResult: SearchResult]
+    //static belongsTo = [searchResult: SearchResult]
 
     static mapping = {
         version false

@@ -1,4 +1,4 @@
-package com.weatherwolf.search
+package com.weatherwolf.weather
 
 class Location {
 
@@ -9,7 +9,7 @@ class Location {
     Float latitude = 0.0F
     Float longitude = 0.0F
 
-    static belongsTo = [searchResult: SearchResult]
+    //static belongsTo = [searchResult: SearchResult]
 
     static mapping = {
         version false

@@ -1,9 +1,7 @@
 package com.weatherwolf.security
 
-import com.weatherwolf.search.SearchResult
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
-import grails.compiler.GrailsCompileStatic
 
 //@GrailsCompileStatic
 @EqualsAndHashCode(includes='username')

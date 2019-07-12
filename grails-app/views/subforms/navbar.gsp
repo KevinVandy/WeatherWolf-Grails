@@ -14,7 +14,7 @@
         <a href="/account/index"><g:message code="msg.account" default="Account"/></a>
       </li>
       <li>
-        <g:link controller="logout"><g:message code="msg.logout" default="Logout"/></g:link>
+        <g:link controller="logout" action="index"><g:message code="msg.logout" default="Logout"/></g:link>
       </li>
     </sec:ifLoggedIn>
     <sec:ifNotLoggedIn>

@@ -1,10 +1,14 @@
 package com.weatherwolf
 
-import com.weatherwolf.search.Location
-import com.weatherwolf.search.SearchResult
+import com.weatherwolf.weather.Location
+import com.weatherwolf.weather.SearchResult
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 
 class WeatherController {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass())
 
     def index() {
         def weatherService = new WeatherService()
@@ -13,14 +17,17 @@ class WeatherController {
         if (params.location) {
             searchResult.location = assignCityStateProvinceCountry((params.location).toString().trim(), searchResult.location)
             weatherService.fillWeather(searchResult)
-            if (searchResult.currentWeather && searchResult.dayForecasts && params.units && params.units == 'F') {
-                searchResult = convertTempsToF(searchResult)
+            if (searchResult.currentWeather && searchResult.dayForecasts && params.units) {
+                if(params.units == 'F') {
+                    logger.debug("converting temps to F")
+                    searchResult = convertTempsToF(searchResult)
+                }
             } else {
-                println("invalid location")
+                logger.warn("Not a valid search")
             }
         } else {
-            println("no location to search")
-            searchResult = null
+            logger.warn("no location to search")
+            searchResult = new SearchResult()
         }
 
         render(view: '/weather/index', model: [searchResult: searchResult])

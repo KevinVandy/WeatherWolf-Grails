@@ -1,6 +1,6 @@
 package com.weatherwolf
 
-import com.weatherwolf.search.Location
+import com.weatherwolf.weather.Location
 import grails.gorm.transactions.Transactional
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -46,7 +46,8 @@ class GeocodeService {
             location.longitude = loc.lng.toFloat()
         } catch (Exception e) {
             location = new Location()
-            println("could not find location\n" + e.toString())
+            logger.warn("could not find location")
+            logger.warn(e.toString())
         }
         location
     }

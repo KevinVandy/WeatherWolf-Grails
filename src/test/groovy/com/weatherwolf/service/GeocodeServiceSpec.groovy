@@ -1,7 +1,7 @@
 package com.weatherwolf.service
 
 import com.weatherwolf.GeocodeService
-import com.weatherwolf.search.Location
+import com.weatherwolf.weather.Location
 import grails.testing.gorm.DataTest
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification

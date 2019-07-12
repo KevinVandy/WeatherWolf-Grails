@@ -29,25 +29,46 @@ class AccountController {
         logger.info("User visited account/signup")
     }
 
-    def register() { //the action of signing up for account
+    def register(String username, String email, String password) { //the action of signing up for account
+
+        def u, ur
 
         logger.info("New user, ${params.username} attempting to register")
 
-        String username = params.username
-        String email = params.email
-        String password = params.password
-
         if (validateSignup(username, email, password)) {
-            def u = new User(username: username, email: email, password: password)
-            u.save()
-            def ur = new UserRole(user: u, role: Role.findByAuthority('ROLE_CLIENT'))
-            ur.save()
+            try {
+                logger.info("Creating user: ${username}")
+                u = new User(username: username, email: email, password: password)
+                logger.info("saving user")
+                u.save(flush: true, failOnError: true)
+                logger.info("user saved")
+            } catch (Exception e) {
+                logger.warn("Could not create user: ${username}")
+                logger.error(e.toString())
+            }
+            if (u) {
+                try {
+                    logger.info("Assigning ${username} to role")
+                    ur = new UserRole(user: u, role: Role.findByAuthority('ROLE_CLIENT'))
+                    logger.info("Saving user role")
+                    ur.save(flush: true, failOnError: true)
+                    logger.info("User Role saved")
+                } catch (Exception e) {
+                    logger.warn("Could not assign ${username} to role")
+                    logger.error(e.toString())
+                }
+            }
             msg = "${username}, your account has been created.<br /> Now just Login."
-            render(view: '/account/login', model: [msg: msg])
+            login()
+            //render(view: '/account/login', model: [msg: msg])
         } else {
             msg = 'Sign up error'
             render(view: '/account/signup', model: [msg: msg])
         }
+    }
+
+    def updatePassword() {
+
     }
 
     private boolean validateSignup(String username, String email, String password) {

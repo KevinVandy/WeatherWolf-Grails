@@ -1,6 +1,6 @@
 package com.weatherwolf
 
-import com.weatherwolf.search.SearchResult
+import com.weatherwolf.weather.SearchResult
 import com.weatherwolf.weather.CurrentWeather
 import com.weatherwolf.weather.DayForecast
 import grails.gorm.transactions.Transactional
