@@ -77,8 +77,12 @@
   </div>
 </g:if>
 <g:else>
-  <div class="card all-center" >
-    <p class="text-danger">Invalid Search</p>
+  <div class="all-center grid-3">
+    <div></div>
+
+    <p class="card text-danger"><g:message code="msg.invalidsearch" default="Invalid Search"/></p>
+
+    <div></div>
   </div>
 </g:else>
 <script>

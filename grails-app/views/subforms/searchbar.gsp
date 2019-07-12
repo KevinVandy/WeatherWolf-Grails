@@ -12,8 +12,10 @@
           <option value="F" selected>F&deg;</option>
         </select>
       </td>
-      <td>
-        <input type="submit" value="<g:message code="msg.seeforecast"/>" class="btn-block btn-dark p"/>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <input type="submit" value="<g:message code="msg.seeforecast"/>" class="btn-block btn-dark p m-0"/>
       </td>
     </tr>
   </table>

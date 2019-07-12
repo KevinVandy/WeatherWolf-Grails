@@ -14,6 +14,22 @@
 
 <body>
   <h2>Your Account</h2>
+  <table>
+    <tr>
+      <td>
+        <h2><sec:username/></h2>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label>Email</label>
+      </td>
+      <td>
+        <input type="text">
+      </td>
+    </tr>
+  </table>
+
 
   <h2>Settings</h2>
 

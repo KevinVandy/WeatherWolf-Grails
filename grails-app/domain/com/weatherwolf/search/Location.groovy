@@ -2,6 +2,7 @@ package com.weatherwolf.search
 
 class Location {
 
+    Integer id
     String city
     String stateProvince
     String country
@@ -15,6 +16,11 @@ class Location {
     }
 
     static constraints = {
+        city blank: false
+        stateProvince()
+        country()
+        latitude min: -90F, max: 90F
+        longitude min: 0F, max: 360F
     }
 
     String toString() {

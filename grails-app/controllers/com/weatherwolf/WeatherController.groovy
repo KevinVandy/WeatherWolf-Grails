@@ -13,8 +13,10 @@ class WeatherController {
         if (params.location) {
             searchResult.location = assignCityStateProvinceCountry((params.location).toString().trim(), searchResult.location)
             weatherService.fillWeather(searchResult)
-            if (params.units && params.units == 'F') {
+            if (searchResult.currentWeather && searchResult.dayForecasts && params.units && params.units == 'F') {
                 searchResult = convertTempsToF(searchResult)
+            } else {
+                println("invalid location")
             }
         } else {
             println("no location to search")

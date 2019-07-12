@@ -21,5 +21,6 @@ class SearchResult {
     }
 
     static constraints = {
+        
     }
 }

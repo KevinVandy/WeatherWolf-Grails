@@ -33,4 +33,29 @@ class GeocodeServiceSpec extends Specification implements DataTest, ServiceUnitT
         (berlin.latitude - 52.52).abs() < 0.1
         (berlin.longitude - 13.41).abs() < 0.1
     }
+
+    //city only - null stateProvince, country
+    void "verify lat/lng from Topeka"() {
+        given:
+        Location topeka = new Location(city: 'Topeka')
+
+        when:
+        service.fillLatLng(topeka)
+
+        then:
+        (topeka.latitude - 39.04).abs() < 0.1
+        (topeka.longitude - -95.68).abs() < 0.1
+    }
+
+    void "verify lat/lng is 0 when bad search string"() {
+        given:
+        Location l = new Location(city: 'a')
+
+        when:
+        service.fillLatLng(l)
+
+        then:
+        l.latitude.round().toInteger() == 0
+        l.longitude.round().toInteger() == 0
+    }
 }
