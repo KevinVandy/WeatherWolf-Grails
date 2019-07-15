@@ -13,12 +13,23 @@
   <asset:javascript src="application.js" defer=""/>
 
   <g:layoutHead/>
+  <style type="text/css" media="screen">
+  body {
+    background-image: url("${resource(dir: "images", file: "background.jpg")}");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+  }
+  </style>
 </head>
 
 <body>
 
   <g:include view="subforms/navbar.gsp"/>
-  <g:layoutBody/>
+  <div id="wrapper">
+    <g:layoutBody/>
+  </div>
+
   <g:include view="subforms/footer.gsp"/>
 
 </body>

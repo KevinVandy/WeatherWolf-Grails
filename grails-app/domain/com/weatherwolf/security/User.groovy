@@ -10,15 +10,17 @@ class User implements Serializable {
 
     private static final long serialVersionUID = 1
 
+    Integer id
     String username
     String email
     String password
     boolean enabled = true
-    boolean accountExpired
-    boolean accountLocked
-    boolean passwordExpired
+    boolean accountExpired = false
+    boolean accountLocked = false
+    boolean passwordExpired = false
     String lang = 'en'
-    String favoriteLocation = ''
+    String units = 'F'
+    String favoriteLocation = 'Lincoln, Nebraska'
 
     Set<Role> getAuthorities() {
         (UserRole.findAllByUser(this) as List<UserRole>)*.role as Set<Role>

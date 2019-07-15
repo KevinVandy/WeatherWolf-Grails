@@ -6,5 +6,15 @@ import spock.lang.Specification
 
 class AccountControllerSpec extends Specification implements ControllerUnitTest<AccountController> {
 
+    void "send test email"() {
+        given:
+        def email = "kvancott@talentplus.com"
+
+        when:
+        controller.sendpasswordresetemail(email)
+
+        then:
+        true
+    }
 
 }

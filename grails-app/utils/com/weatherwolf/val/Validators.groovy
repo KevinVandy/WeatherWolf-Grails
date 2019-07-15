@@ -20,4 +20,8 @@ class Validators {
     static boolean valPassword(String password) {
         password.length() in (6..100)
     }
+
+    static boolean validateSignup(String username, String email, String password) {
+        valUsername(username) && valEmail(email) && valPassword(password)
+    }
 }

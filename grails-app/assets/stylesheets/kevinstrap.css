@@ -6,7 +6,7 @@
   --dark-color: #333333;
   --light-color: #f4f4f4;
   --medium-color: #a0a0a0;
-  --primary-color: #2f3cec;
+  --primary-color: #2a6e8d;
   --primary-color-light: #959beb;
   --success-color: #28a745;
   --slow-transition: 1s;
@@ -26,6 +26,10 @@ body {
   font-family: 'Roboto', sans-serif;
   font-size: 1rem;
   line-height: 1.6;
+}
+
+#wrapper {
+  min-height: 1200px;
 }
 
 
@@ -163,6 +167,21 @@ table {
 
 /* Cards */
 
+.backcard {
+  background-color: #fff;
+  border-radius: 4px;
+  width: 80%;
+  min-width: 400px;
+  max-width: 1200px;
+  padding: 3em;
+  margin: 3em auto;
+}
+
+.backcard table{
+  margin: auto;
+  width: 80%;
+}
+
 .card {
   background-color: #fff;
   border: #ccc 1px solid;
@@ -283,6 +302,12 @@ table {
   display: grid;
   grid-gap: 1rem;
   grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-2-bl {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: 66% 1fr;
 }
 
 .grid-3 {
@@ -522,11 +547,12 @@ table th {
 }
 
 aside, .aside {
-  float: right;
-  max-width: 500px;
-  min-width: 400px;
-  width: 20%;
-  clear: both;
+  position: absolute;
+  top: 70px;
+  right: 10px;
+  width: 30%;
+  min-width: 100px;
+  max-width: 200px;
 }
 
 footer, .footer {
@@ -536,7 +562,7 @@ footer, .footer {
   min-height: 100px;
   max-height: 200px;
   padding: 0.7rem 2rem;
-  position: fixed;
+  position: relative;
   bottom: 0;
   width: 100%;
   z-index: 1;

@@ -4,7 +4,7 @@
 
     <form action="/login/authenticate" method="POST" id="loginForm" autocomplete="off">
       <if test="${binding.hasVariable('msg') && msg != null}">
-        <p class="alert-info">${errMsg}</p>
+        <p class="alert-info">${msg}</p>
       </if>
       <table>
         <tr>
