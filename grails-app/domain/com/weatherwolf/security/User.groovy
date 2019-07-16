@@ -1,6 +1,5 @@
 package com.weatherwolf.security
 
-import com.weatherwolf.weather.SearchLog
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 

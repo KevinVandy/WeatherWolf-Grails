@@ -9,7 +9,7 @@
   <div id="content" role="main">
     <g:include view="subforms/searchbar.gsp"/>
     <sec:ifLoggedIn>
-        <div class="card m-3">
+        <div class="backcard">
           <h2>Hello, <sec:username/></h2>
           <div class="grid-2-bl">
             <div>

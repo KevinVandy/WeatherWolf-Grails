@@ -83,6 +83,10 @@ table {
   margin-bottom: 1rem;
 }
 
+.alert-info {
+  color: red;
+}
+
 .text-center {
   text-align: center;
 }

@@ -36,8 +36,8 @@ grails {
 	mail {
 		host = "smtp.gmail.com"
 		port = 465
-		username = "youracount@gmail.com"
-		password = "yourpassword"
+		username = "weatherwolfgrails@gmail.com"
+		password = "" //fill in password
 		props = ["mail.smtp.auth":"true",
 				 "mail.smtp.socketFactory.port":"465",
 				 "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
@@ -46,6 +46,4 @@ grails {
 }
 
 grails.mail.disabled = false
-grails.mail.default.from = "vancottkevin@gmail.com"
-grails.mail.default.to = "kvancott@talentplus.com"
-
+grails.mail.default.from = "weatherwolfgrails@gmail.com"

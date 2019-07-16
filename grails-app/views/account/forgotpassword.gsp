@@ -16,7 +16,18 @@
   <div class="backcard">
     <g:form controller="account" action="sendpasswordresetemail" method="post">
       <p><g:message code="msg.forgotpassword" default="Forgot your password? Don't worry! You can reset it through your email."/></p>
+      <if test="${msg != null}">
+        <p class="alert-info">${msg}</p>
+      </if>
       <table>
+        <tr>
+          <td>
+            <label for="username"><g:message code="msg.username" default="Username"/>:</label>
+          </td>
+          <td>
+            <input type="text" name="username" id="username" minlength="5" maxlength="100" required>
+          </td>
+        </tr>
         <tr>
           <td>
             <label for="email"><g:message code="msg.email" default="Email"/>:</label>

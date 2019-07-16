@@ -13,7 +13,7 @@
 </head>
 
 <body>
-<div class="card m-5 p-5">
+<div class="backcard">
   <p>An email for a password reset has been sent to ${email}</p>
 </div>
 </body>

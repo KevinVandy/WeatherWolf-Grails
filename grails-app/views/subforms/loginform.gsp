@@ -3,7 +3,7 @@
     <div class="fheader"><g:message code="msg.login.why" default="Login to see Personalized Weather"/></div>
 
     <form action="/login/authenticate" method="POST" id="loginForm" autocomplete="off">
-      <if test="${binding.hasVariable('msg') && msg != null}">
+      <if test="${msg != null}">
         <p class="alert-info">${msg}</p>
       </if>
       <table>

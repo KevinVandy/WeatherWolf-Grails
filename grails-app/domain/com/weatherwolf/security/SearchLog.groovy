@@ -1,4 +1,4 @@
-package com.weatherwolf.weather
+package com.weatherwolf.security
 
 import com.weatherwolf.security.User
 
