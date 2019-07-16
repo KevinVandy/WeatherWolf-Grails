@@ -32,6 +32,20 @@ grails.plugin.springsecurity.successHandler.defaultTargetUrl = '/home/index'
 grails.plugin.springsecurity.password.algorithm = 'bcrypt'
 grails.plugin.springsecurity.password.bcrypt.logrounds = 15
 
+grails {
+	mail {
+		host = "smtp.gmail.com"
+		port = 465
+		username = "youracount@gmail.com"
+		password = "yourpassword"
+		props = ["mail.smtp.auth":"true",
+				 "mail.smtp.socketFactory.port":"465",
+				 "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
+				 "mail.smtp.socketFactory.fallback":"false"]
+	}
+}
+
 grails.mail.disabled = false
 grails.mail.default.from = "vancottkevin@gmail.com"
 grails.mail.default.to = "kvancott@talentplus.com"
+

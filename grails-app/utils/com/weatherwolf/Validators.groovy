@@ -1,4 +1,4 @@
-package com.weatherwolf.val
+package com.weatherwolf
 
 import com.weatherwolf.security.User
 
@@ -17,11 +17,11 @@ class Validators {
                 !User.findByEmail(email: email)
     }
 
-    static boolean valPassword(String password) {
-        password.length() in (6..100)
+    static boolean valPassword(String password, String passwordConfirm) {
+        password == passwordConfirm && password.length() in (6..100)
     }
 
-    static boolean validateSignup(String username, String email, String password) {
-        valUsername(username) && valEmail(email) && valPassword(password)
+    static boolean validateSignup(String username, String email, String password, String passwordconfirm) {
+        valUsername(username) && valEmail(email) && valPassword(password, passwordconfirm)
     }
 }

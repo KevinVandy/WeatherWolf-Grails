@@ -1,19 +1,16 @@
 package com.weatherwolf
 
 import com.weatherwolf.security.User
-import com.weatherwolf.val.WeatherUtils
 import com.weatherwolf.weather.Location
 import com.weatherwolf.weather.SearchResult
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 
 
 class HomeController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass())
-    Authentication authentication
     String currentUsername
     User user
 
@@ -23,8 +20,7 @@ class HomeController {
         searchResult.location = new Location()
 
         if (isLoggedIn()) {
-            authentication = SecurityContextHolder.getContext().getAuthentication()
-            currentUsername = authentication.getName()
+            currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()
             user = User.findByUsername(currentUsername)
 
             searchResult.location = new Location()

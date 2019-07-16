@@ -6,16 +6,21 @@ class CurrentWeather {
     String condition
     String icon
     Float temperature
-    Short humidity
+    Integer humidity
     Float windSpeed
     String windDirection
 
-    //static belongsTo = [searchResult: SearchResult]
-
     static mapping = {
         version false
+        condition column: 'weather_condition'
     }
 
     static constraints = {
+        condition blank: false
+        icon blank: false
+        temperature min: -100F, max: 200F
+        humidity min: 0, max: 100
+        windSpeed min: 0F, max: 500F
+        windDirection blank: false
     }
 }

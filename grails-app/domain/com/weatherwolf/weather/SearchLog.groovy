@@ -14,5 +14,9 @@ class SearchLog {
     static belongsTo = [user: User]
 
     static constraints = {
+        searchString blank: false
+        locationString()
+        weatherAPIURL()
+        date max: new Date()
     }
 }

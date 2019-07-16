@@ -8,10 +8,13 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
+  <meta name="layout" content="main"/>
   <title></title>
 </head>
 
 <body>
-
+<div class="card m-5 p-5">
+  <p>An email for a password reset has been sent to ${email}</p>
+</div>
 </body>
 </html>

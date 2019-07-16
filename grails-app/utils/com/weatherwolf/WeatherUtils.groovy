@@ -1,4 +1,4 @@
-package com.weatherwolf.val
+package com.weatherwolf
 
 import com.weatherwolf.weather.Location
 import com.weatherwolf.weather.SearchResult

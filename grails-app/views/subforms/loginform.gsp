@@ -21,6 +21,7 @@
           </td>
           <td>
             <input type="password" name="password" id="password"/>
+            <a href="/account/forgotpassword">Forgot your password?</a>
           </td>
         </tr>
         <tr>
