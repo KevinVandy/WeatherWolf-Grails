@@ -12,7 +12,7 @@
             <label for="username"><g:message code="msg.username" default="Username"/>:</label>
           </td>
           <td>
-            <input type="text" name="username" id="username"/>
+            <input type="text" name="username" id="username" <g:if test="${username}">value="${username}" </g:if> />
           </td>
         </tr>
         <tr>

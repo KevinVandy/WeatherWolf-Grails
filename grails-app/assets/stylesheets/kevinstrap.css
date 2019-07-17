@@ -181,7 +181,7 @@ table {
   margin: 3em auto;
 }
 
-.backcard table{
+.backcard table {
   margin: auto;
   width: 80%;
 }
@@ -517,10 +517,11 @@ table th {
 
 .navbar {
   align-items: center;
+  background-image: linear-gradient( #004d61, var(--primary-color));
   display: flex;
   justify-content: space-between;
   height: 50px;
-  opacity: 0.9;
+  opacity: 0.8;
   padding: 0.7rem 2rem;
   transition: opacity var(--medium-transition);
   width: 100%;

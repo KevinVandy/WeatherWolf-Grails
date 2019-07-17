@@ -8,7 +8,7 @@ import com.weatherwolf.security.UserRole
 class BootStrap {
 
     def init = { servletContext ->
-        def authorities = ['ROLE_CLIENT', 'ROLE_ADMIN']
+        def authorities = ['ROLE_CLIENT']
         authorities.each {
             if (!Role.findByAuthority(it)) {
                 new Role(authority: it).save()

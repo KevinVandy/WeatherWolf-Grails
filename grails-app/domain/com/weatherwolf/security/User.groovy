@@ -31,7 +31,8 @@ class User implements Serializable {
         password nullable: false, blank: false, password: true, size: 6..100
         username nullable: false, blank: false, unique: true, size: 3..50
         email nullable: false, blank: false, unique: true, size: 5..100, email: true
-        lang blank: false, size: 2..2
+//        lang inList: ['en', 'es', 'fr'] //only English, Spanish, and French are supported
+//        units inList: ['C', 'F']
         favoriteLocation blank: false
         forgotPasswordToken nullable: true, blank: true
     }

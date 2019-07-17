@@ -9,18 +9,15 @@ import org.apache.commons.lang.RandomStringUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.context.MessageSource
 
 
 class AccountController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass())
-    MessageSource messageSource
+    def mailService
     String msg = ''
     String currentUsername
     def user = new User()
-    def springSecurityService
-    def mailService
 
     @Secured(['ROLE_CLIENT'])
     def index() { //show user's account settings page
@@ -49,16 +46,15 @@ class AccountController {
     @Secured("permitAll")
     def resetpassword() { //show reset password page
         logger.info("User ${params.username} visited account/resetpassword")
-        if (params.username && params.forgotPasswordToken) {
-            user = User.findByUsername(params.username)
-            if (user.forgotPasswordToken.equalsIgnoreCase(params.forgotPasswordToken)) {
-                msg = 'valid token'
-            } else {
-                msg = 'invalid token'
-            }
+        if (!(params.username && params.forgotPasswordToken)) {
+            msg = message(code: 'msg.invalidlink', default: 'Invalid Link') //user error
         } else {
-            msg = 'invalid link'
-            msg = message(code: "msg.invalidlink")
+            user = User.findByUsername(params.username)
+            if (!(user && user.forgotPasswordToken && user.forgotPasswordToken.equalsIgnoreCase(params.forgotPasswordToken))) {
+                msg = message(code: 'msg.invalidtoken', default: 'Invalid Token') //user error
+            } else {
+                msg = 'valid token' //success
+            }
         }
         render(view: '/account/resetpassword', model: [msg: msg])
     }
@@ -71,150 +67,146 @@ class AccountController {
     @Secured("permitAll")
     def sendpasswordresetemail(String username, String email) {
         logger.info("username: ${username} and email: ${email} attempting to reset password")
-        if (User.findByUsername(username)) {
-            if (User.findByEmail(email) && User.findByEmail(email).username == username) {
-                try {
-                    logger.info("attempting to send password reset to ${email}")
-                    user = User.findByUsername(username)
-                    user.forgotPasswordToken = RandomStringUtils.random(50, (('A'..'Z') + ('0'..'9')).join().toCharArray())
-                    user.save(flush: true, failOnError: true)
-                    def e = new EmailLog(toAddress: email, subject: 'Weather Wolf Password Reset', body: "Click <a href='http://localhost:8080/account/resetpassword?username=${user.username}&forgotPasswordToken=${user.forgotPasswordToken}'>here</a> to reset your password")
-                    mailService.sendMail {
-                        to e.toAddress
-                        subject e.subject
-                        html e.body
-                    }
-                    e.timeSent = new Date()
-                    e.save(flush: true, failOnError: true)
-                    logger.info("Email sent to ${email}")
-                } catch (Exception ex) {
-                    logger.warn("Could not send email")
-                    logger.error(ex.toString())
-                    msg = 'Email failed to send for unknown reason. Try again later'
-                    render(view: '/account/forgotpassword', model: [msg: msg])
-                    return
-                }
-            } else {
-                msg = 'Email and Username do not match'
-                render(view: '/account/forgotpassword', model: [msg: msg])
-                return
-            }
-        } else {
-            msg = 'Could not find Username'
-            render(view: '/account/forgotpassword', model: [msg: msg])
-            return
-        }
-        render(view: '/account/waitforemail', model: [email: email])
-    }
-
-    @Secured(['ROLE_CLIENT'])
-    def changepassword(String oldpassword, String newpassword, String passwordconfirm) {
-        currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()
-        user = User.findByUsername(currentUsername)
-        if (oldpassword && Validators.valPassword(newpassword, passwordconfirm)) {
-            user.password = newpassword
-            user.passwordExpired = false
+        if (!User.findByUsernameAndEmail(username, email)) {
+            msg = message(code: 'msg.couldnotfindusernameemail', default: 'Could not find Username, or username and email do not match')
+            render(view: '/account/forgotpassword', model: [msg: msg]) //user error
+        } else { //should be valid
             try {
+                logger.info("attempting to send password reset to ${email}")
+                user = User.findByUsername(username)
+                user.forgotPasswordToken = RandomStringUtils.random(50, (('A'..'Z') + ('0'..'9')).join().toCharArray())
                 user.save(flush: true, failOnError: true)
-                msg = 'Password was changed'
-            } catch (Exception e) {
-                msg = 'Error saving new password'
-                logger.error(e.toString())
+                def e = new EmailLog(toAddress: email, subject: 'Weather Wolf Password Reset', body: "Click <a href='http://localhost:8080/account/resetpassword?username=${user.username}&forgotPasswordToken=${user.forgotPasswordToken}'>here</a> to reset your password")
+                mailService.sendMail {
+                    to e.toAddress
+                    subject e.subject
+                    html e.body
+                }
+                e.timeSent = new Date()
+                e.save(flush: true, failOnError: true)
+                logger.info("Email sent to ${email}")
+                render(view: '/account/waitforemail', model: [email: email]) //success
+            } catch (Exception ex) {
+                logger.warn("Could not send email")
+                logger.error(ex.toString())
+                msg = message(code: 'msg.emailfail', default: 'Email failed to send for unknown reason. Try again later')
+                render(view: '/account/forgotpassword', model: [msg: msg]) //unknown failure
             }
-        } else {
-            msg = 'Failed password requirements'
         }
-        render(view: '/account/index', model: [user: user, msg: msg])
     }
 
     //not secured because this is for users who forgot their password
     @Secured("permitAll")
+    //for not logged in users with forgotPasswordToken
     def updatepassword(String newpassword, String newpasswordconfirm) {
         user = User.findByUsername(params.username)
-        if (user && user.username == params.username && user.forgotPasswordToken == params.forgotPasswordToken) {
-            if (Validators.valPassword(newpassword, newpasswordconfirm)) {
-                user.password = newpassword
-                user.forgotPasswordToken = ''
-                try {
-                    user.save(flush: true, failOnError: true)
-                    msg = "${user.username}, your password was successfully reset. Try loggin in with your new password"
-                    render(view: '/account/login', model: [msg: msg])
-                } catch (Exception e) {
-                    msg = 'Error saving new password'
-                    logger.error(e.toString())
-                }
-            } else {
-                msg = 'Failed password requirements'
-                render(view: '/account/resetpassword', model: [msg: msg])
+        if (!user || !user.username == params.username || !(user.forgotPasswordToken == params.forgotPasswordToken)) {
+            msg = message(code: 'msg.invalidtoken', default: 'Invalid Token')
+            render(view: '/account/login', model: [msg: msg]) //user error
+        } else if (!Validators.valPassword(newpassword, newpasswordconfirm)) {
+            msg = message(code: 'msg.passwordsdonotmatch', default: 'Passwords do not match or password requirements were not met.')
+            render(view: '/account/resetpassword', model: [msg: msg, params: params]) //user error
+        } else { //should be valid
+            user.password = newpassword
+            user.forgotPasswordToken = ''
+            try {
+                user.save(flush: true, failOnError: true)
+                msg = "${user.username}, your password was successfully reset. Try loggin in with your new password"
+                render(view: '/account/login', model: [msg: msg, username: user.username]) //success
+            } catch (Exception e) {
+                msg = message(code: 'msg.errorsavingpnewpassword', default: 'Error saving new password. Try again.')
+                logger.error(e.toString())
+                render(view: '/account/login', model: [msg: msg]) //unknown error
             }
-        } else {
-            msg = 'Invalid Token'
-            render(view: '/account/login', model: [msg: msg])
         }
     }
 
     @Secured(['ROLE_CLIENT'])
-    def updateemail(String email) {
-        currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()
-        user = User.findByUsername(currentUsername)
-        user.email = email
-        user.save(flush: true, failOnError: true)
-        msg = 'Email Updated'
+    //for logged in users
+    def changepassword(String oldpassword, String newpassword, String passwordconfirm) {
+        if (!oldpassword || !Validators.valPassword(newpassword, passwordconfirm)) {
+            msg = message(code: 'msg.failedpasswordrequirements', default: 'Failed password requirements') //user error
+        } else { //should be valid
+            try {
+                currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()
+                user = User.findByUsername(currentUsername)
+                user.password = newpassword
+                user.passwordExpired = false
+                user.save(flush: true, failOnError: true)
+                msg = message(code: 'msg.passwordchanged', default: 'Password was changed')//success
+            } catch (Exception e) {
+                msg = message(code: 'msg.errorsavingpnewpassword', default: 'Error saving new password. Try again.') //unknown error
+                logger.error(e.toString())
+            }
+        }
         render(view: '/account/index', model: [user: user, msg: msg])
     }
 
     @Secured(['ROLE_CLIENT'])
-    def savesettings(String lang, String units, String location) {
-        currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()
-        user = User.findByUsername(currentUsername)
-        user.lang = lang
-        user.units = units
-        user.favoriteLocation = location
-        user.save(flush: true, failOnError: true)
-        msg = 'Settings Saved'
+    def updateemail(String email) {
+        if(!Validators.valEmail(email)){
+            msg = 'Invalid Email. This email may have already been taken.' //user error
+        } else {
+            try{
+                currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()
+                user = User.findByUsername(currentUsername)
+                user.email = email
+                user.save(flush: true, failOnError: true)
+                msg = message(code: 'msg.emailupdated', default: 'Email Updated') //success
+            } catch(Exception e){
+                logger.warn("Could not save settings")
+                logger.error(e.toString())
+                msg = 'Settings could not be Saved' //unknown error
+            }
+        }
+        render(view: '/account/index', model: [user: user, msg: msg])
+    }
+
+    @Secured(['ROLE_CLIENT'])
+    def savesettings(String lang, Character units, String location) {
+        try {
+            currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()
+            user = User.findByUsername(currentUsername)
+            user.lang = lang
+            user.units = units
+            user.favoriteLocation = location
+            user.save(flush: true, failOnError: true)
+            msg = 'Settings Saved' //success
+        } catch (Exception e) {
+            logger.warn("Could not save settings")
+            logger.error(e.toString())
+            msg = 'Settings could not be Saved' //unkown error
+        }
         render(view: '/account/index', model: [user: user, msg: msg])
     }
 
     @Secured("permitAll")
     def register(String username, String email, String password, String passwordconfirm, String favoritelocation) {
-        //the action of signing up for account
 
         def u, ur
-
         logger.info("New user, ${params.username} attempting to register")
 
-        if (Validators.validateSignup(username, email, password, passwordconfirm)) {
+        if (!Validators.validateSignup(username, email, password, passwordconfirm)) {
+            msg = 'Signup not valid.'
+            render(view: '/account/signup', model: [msg: msg]) //user error
+        } else { //should be valid
+            logger.info("Creating user: ${username}")
+            u = new User(username: username, email: email, password: password, favoriteLocation: favoritelocation)
             try {
-                logger.info("Creating user: ${username}")
-                u = new User(username: username, email: email, password: password, favoriteLocation: favoritelocation)
                 logger.info("saving user")
                 u.save(flush: true, failOnError: true)
                 logger.info("user saved")
-                if (u) {
-                    try {
-                        logger.info("Assigning ${username} to role")
-                        ur = new UserRole(user: u, role: Role.findByAuthority('ROLE_CLIENT'))
-                        logger.info("Saving user role")
-                        ur.save(flush: true, failOnError: true)
-                        logger.info("User Role saved")
-                    } catch (Exception ex) {
-                        msg = 'Sign up error'
-                        logger.warn("Could not assign ${username} to role")
-                        logger.error(ex.toString())
-                        render(view: '/account/signup', model: [msg: msg])
-                        return
-                    }
-                }
+                ur = new UserRole(user: u, role: Role.findByAuthority('ROLE_CLIENT'))
+                ur.save(flush: true, failOnError: true)
+                logger.info("User Role saved")
                 msg = "${username}, your account has been created. Now just Login."
-                render(view: '/account/login', model: [msg: msg])
+                render(view: '/account/login', model: [msg: msg]) //success
             } catch (Exception e) {
                 msg = 'Sign up error'
                 logger.warn("Could not create user: ${username}")
                 logger.error(e.toString())
-                render(view: '/account/signup', model: [msg: msg])
+                render(view: '/account/signup', model: [msg: msg]) //unknown error
             }
-        } else {
-            render(view: '/account/signup', model: [msg: msg])
         }
     }
 }

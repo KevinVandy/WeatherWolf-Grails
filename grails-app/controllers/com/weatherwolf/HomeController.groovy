@@ -6,6 +6,7 @@ import com.weatherwolf.weather.SearchResult
 import grails.plugin.springsecurity.annotation.Secured
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.security.core.context.SecurityContextHolder
 
 
@@ -21,10 +22,13 @@ class HomeController {
         def searchResult = new SearchResult()
         searchResult.location = new Location()
 
-        if (isLoggedIn()) {
+        if (!isLoggedIn()) {
+            logger.info("User is not logged in")
+            render(view: "/home/index")
+        } else { //if is logged in, show custom info
             currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()
             user = User.findByUsername(currentUsername)
-
+            LocaleContextHolder.setLocale(new Locale(user.lang)) //load language from user's settings
             searchResult.location = new Location()
             searchResult.location = WeatherUtils.assignCityStateProvinceCountry(user.favoriteLocation, searchResult.location)
             weatherService.fillWeather(searchResult)
@@ -34,9 +38,6 @@ class HomeController {
             }
             logger.info("showing favorite weather")
             render(view: "/home/index", model: [searchResult: searchResult, user: user])
-        } else {
-            logger.info("User is not logged in")
-            render(view: "/home/index")
         }
     }
 }

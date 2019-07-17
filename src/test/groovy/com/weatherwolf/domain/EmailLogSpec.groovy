@@ -1,5 +1,6 @@
-package com.weatherwolf.security
+package com.weatherwolf.domain
 
+import com.weatherwolf.security.EmailLog
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 

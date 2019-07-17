@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: kvancott
-  Date: 7/9/2019
-  Time: 2:30 PM
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
@@ -94,18 +87,18 @@
 
       <h2 class="text-center"><g:message code="msg.settings" default="Settings"/></h2>
 
-      <form action="/account/savesettings" method="post">
+      <form action="/account/savesettings" method="post" id="settingsform">
         <table class="all-left">
           <tr>
             <td>
               <label><g:message code="language" default="Language"/></label>
             </td>
             <td>
-              <select name="lang">
+              <select name="lang" onchange="document.getElementById('settingsform').submit()">
                 <option value="" disabled><g:message code="language" default="Language"/></option>
                 <option value="en" <g:if test="${user.lang == 'en'}">selected</g:if>><g:message code="language.en" default="English"/></option>
-                <option value="en" <g:if test="${user.lang == 'es'}">selected</g:if>><g:message code="language.es" default="Spanish"/></option>
-                <option value="en" <g:if test="${user.lang == 'fr'}">selected</g:if>><g:message code="language.fr" default="French"/></option>
+                <option value="es" <g:if test="${user.lang == 'es'}">selected</g:if>><g:message code="language.es" default="Spanish"/></option>
+                <option value="fr" <g:if test="${user.lang == 'fr'}">selected</g:if>><g:message code="language.fr" default="French"/></option>
               </select>
             </td>
           <tr/>

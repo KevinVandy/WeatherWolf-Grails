@@ -47,5 +47,3 @@ grails {
 
 grails.mail.disabled = false
 grails.mail.default.from = "weatherwolfgrails@gmail.com"
-
-grails.plugin.springsecurity.ui.forgotPassword.postResetUrl = '/account/resetsuccess'
