@@ -5,14 +5,17 @@ import com.weatherwolf.security.Role
 import com.weatherwolf.security.User
 import com.weatherwolf.security.UserRole
 import grails.plugin.springsecurity.annotation.Secured
+import org.apache.commons.lang.RandomStringUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.context.MessageSource
 
 
 class AccountController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass())
+    MessageSource messageSource
     String msg = ''
     String currentUsername
     def user = new User()
@@ -45,7 +48,19 @@ class AccountController {
     //secure from email validation hash
     @Secured("permitAll")
     def resetpassword() { //show reset password page
-        logger.info("User visited account/resetpassword")
+        logger.info("User ${params.username} visited account/resetpassword")
+        if (params.username && params.forgotPasswordToken) {
+            user = User.findByUsername(params.username)
+            if (user.forgotPasswordToken.equalsIgnoreCase(params.forgotPasswordToken)) {
+                msg = 'valid token'
+            } else {
+                msg = 'invalid token'
+            }
+        } else {
+            msg = 'invalid link'
+            msg = message(code: "msg.invalidlink")
+        }
+        render(view: '/account/resetpassword', model: [msg: msg])
     }
 
     @Secured("permitAll")
@@ -56,15 +71,18 @@ class AccountController {
     @Secured("permitAll")
     def sendpasswordresetemail(String username, String email) {
         logger.info("username: ${username} and email: ${email} attempting to reset password")
-        def e = new EmailLog(toAddress: email, subject: 'Weather Wolf Password Reset', body: 'Click here to reset your password')
         if (User.findByUsername(username)) {
             if (User.findByEmail(email) && User.findByEmail(email).username == username) {
                 try {
-                    logger.info("attempting to send password reset to ${e.toAddress}")
+                    logger.info("attempting to send password reset to ${email}")
+                    user = User.findByUsername(username)
+                    user.forgotPasswordToken = RandomStringUtils.random(50, (('A'..'Z') + ('0'..'9')).join().toCharArray())
+                    user.save(flush: true, failOnError: true)
+                    def e = new EmailLog(toAddress: email, subject: 'Weather Wolf Password Reset', body: "Click <a href='http://localhost:8080/account/resetpassword?username=${user.username}&forgotPasswordToken=${user.forgotPasswordToken}'>here</a> to reset your password")
                     mailService.sendMail {
                         to e.toAddress
                         subject e.subject
-                        text e.body
+                        html e.body
                     }
                     e.timeSent = new Date()
                     e.save(flush: true, failOnError: true)
@@ -86,14 +104,14 @@ class AccountController {
             render(view: '/account/forgotpassword', model: [msg: msg])
             return
         }
-        render(view: '/account/waitforemail', model: [email: e.toAddress])
+        render(view: '/account/waitforemail', model: [email: email])
     }
 
     @Secured(['ROLE_CLIENT'])
     def changepassword(String oldpassword, String newpassword, String passwordconfirm) {
         currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()
         user = User.findByUsername(currentUsername)
-        if (springSecurityService.passwordEncoder.isPasswordValid(user.password, oldpassword, null) && Validators.valPassword(newpassword, passwordconfirm)) {
+        if (oldpassword && Validators.valPassword(newpassword, passwordconfirm)) {
             user.password = newpassword
             user.passwordExpired = false
             try {
@@ -111,20 +129,28 @@ class AccountController {
 
     //not secured because this is for users who forgot their password
     @Secured("permitAll")
-    def updatepassword(String password, String passwordconfirm) {
-        if (Validators.valPassword(password, passwordconfirm)) {
-            user.password = password
-            user.passwordExpired = false
-            try {
-                user.save(flush: true, failOnError: true)
-            } catch (Exception e) {
-                msg = 'Error saving new password'
-                logger.error(e.toString())
+    def updatepassword(String newpassword, String newpasswordconfirm) {
+        user = User.findByUsername(params.username)
+        if (user && user.username == params.username && user.forgotPasswordToken == params.forgotPasswordToken) {
+            if (Validators.valPassword(newpassword, newpasswordconfirm)) {
+                user.password = newpassword
+                user.forgotPasswordToken = ''
+                try {
+                    user.save(flush: true, failOnError: true)
+                    msg = "${user.username}, your password was successfully reset. Try loggin in with your new password"
+                    render(view: '/account/login', model: [msg: msg])
+                } catch (Exception e) {
+                    msg = 'Error saving new password'
+                    logger.error(e.toString())
+                }
+            } else {
+                msg = 'Failed password requirements'
+                render(view: '/account/resetpassword', model: [msg: msg])
             }
         } else {
-            msg = 'Failed password requirements'
+            msg = 'Invalid Token'
+            render(view: '/account/login', model: [msg: msg])
         }
-        render(view: '/account/index', model: [user: user, msg: msg])
     }
 
     @Secured(['ROLE_CLIENT'])

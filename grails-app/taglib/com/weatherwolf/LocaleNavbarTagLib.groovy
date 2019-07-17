@@ -1,10 +1,8 @@
 package com.weatherwolf
 
-import com.weatherwolf.security.User
 import grails.config.Config
 import grails.core.support.GrailsConfigurationAware
 import org.springframework.context.MessageSource
-import org.springframework.security.core.Authentication
 import org.springframework.web.servlet.support.RequestContextUtils
 
 

@@ -3,6 +3,7 @@ package com.weatherwolf
 import com.weatherwolf.security.User
 import com.weatherwolf.weather.Location
 import com.weatherwolf.weather.SearchResult
+import grails.plugin.springsecurity.annotation.Secured
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.security.core.context.SecurityContextHolder
@@ -14,6 +15,7 @@ class HomeController {
     String currentUsername
     User user
 
+    @Secured("permitAll")
     def index() {
         def weatherService = new WeatherService()
         def searchResult = new SearchResult()

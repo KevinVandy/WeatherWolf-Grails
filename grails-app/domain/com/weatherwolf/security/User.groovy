@@ -14,6 +14,7 @@ class User implements Serializable {
     String username
     String email
     String password
+    String forgotPasswordToken
     boolean enabled = true
     boolean accountExpired = false
     boolean accountLocked = false
@@ -32,6 +33,7 @@ class User implements Serializable {
         email nullable: false, blank: false, unique: true, size: 5..100, email: true
         lang blank: false, size: 2..2
         favoriteLocation blank: false
+        forgotPasswordToken nullable: true, blank: true
     }
 
     static hasMany = [searchLog: SearchLog]

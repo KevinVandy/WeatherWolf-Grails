@@ -3,6 +3,7 @@ package com.weatherwolf
 import com.weatherwolf.security.User
 import com.weatherwolf.weather.Location
 import com.weatherwolf.weather.SearchResult
+import grails.plugin.springsecurity.annotation.Secured
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.security.core.context.SecurityContextHolder
@@ -14,6 +15,7 @@ class WeatherController {
     String currentUsername
     User user
 
+    @Secured("permitAll")
     def index() {
         def weatherService = new WeatherService()
         def searchResult = new SearchResult()
@@ -21,8 +23,8 @@ class WeatherController {
         if (params.location) {
             searchResult.location = WeatherUtils.assignCityStateProvinceCountry((params.location).toString().trim(), searchResult.location)
             weatherService.fillWeather(searchResult)
-            if (searchResult.currentWeather && searchResult.dayForecasts && params.units) {
-                if (params.units == 'F') {
+            if (searchResult.currentWeather && searchResult.dayForecasts) {
+                if (params.units && params.units == 'F') {
                     logger.debug("converting temps to F")
                     searchResult = WeatherUtils.convertTempsToF(searchResult)
                 }
@@ -40,6 +42,5 @@ class WeatherController {
         } else {
             render(view: '/weather/index', model: [searchResult: searchResult])
         }
-
     }
 }

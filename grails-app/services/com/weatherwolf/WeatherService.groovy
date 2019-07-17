@@ -6,6 +6,7 @@ import com.weatherwolf.weather.DayForecast
 import grails.gorm.transactions.Transactional
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.context.i18n.LocaleContextHolder
 
 
 @Transactional
@@ -21,6 +22,7 @@ class WeatherService {
     def fillWeather(SearchResult sr) {
 
         String qs
+        String lang = LocaleContextHolder.getLocale()
 
         //if location cannot be determined from string, try to fill in with geocode service
         if (!sr.location.toString().contains(',')) {
@@ -33,7 +35,7 @@ class WeatherService {
         }
 
         //optional parameters of the URL
-        String op = "days=${numDays}"
+        String op = "days=${numDays}&lang=${lang}"
 
         //assemble the full URL
         String fullURL = "${BASE}?${qs}&${op}&key=${KEY}"

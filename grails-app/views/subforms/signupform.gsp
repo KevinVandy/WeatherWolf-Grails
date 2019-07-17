@@ -6,7 +6,7 @@
 
     <form action="/account/register" method="POST" id="loginForm" autocomplete="off">
       <if test="${msg != ''}">
-        <p class="bg-danger">${errMsg}</p>
+        <p class="bg-danger">${msg}</p>
       </if>
       <table>
         <tr>
