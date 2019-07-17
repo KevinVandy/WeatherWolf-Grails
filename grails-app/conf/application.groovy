@@ -37,7 +37,7 @@ grails {
 		host = "smtp.gmail.com"
 		port = 465
 		username = "weatherwolfgrails@gmail.com"
-		password = "" //fill in password
+		password = "theweatherwolfapp" //fill in password
 		props = ["mail.smtp.auth":"true",
 				 "mail.smtp.socketFactory.port":"465",
 				 "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",

@@ -9,17 +9,19 @@
   <div id="content" role="main">
     <g:include view="subforms/searchbar.gsp"/>
     <sec:ifLoggedIn>
-        <div class="backcard">
-          <h2>Hello, <sec:username/></h2>
-          <div class="grid-2-bl">
-            <div>
-              <p>Your favorite location: ${user.favoriteLocation}</p>
-            </div>
-            <div>
-              <a href="/account/index"><button class="btn-white p-1">Change Account Settings</button></a>
-            </div>
+      <div class="backcard">
+        <h2><g:message code="msg.hello" default="Hello"/>, <sec:username/></h2>
+
+        <div class="grid-2-bl">
+          <div>
+            <p>Your favorite location: ${user.favoriteLocation}</p>
+          </div>
+
+          <div>
+            <a href="/account/index"><button class="btn-white p-1">Change Account Settings</button></a>
           </div>
         </div>
+      </div>
       <g:include view="subforms/searchresults.gsp"/>
     </sec:ifLoggedIn>
     <sec:ifNotLoggedIn>

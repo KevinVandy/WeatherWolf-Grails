@@ -144,19 +144,19 @@ class AccountController {
 
     @Secured(['ROLE_CLIENT'])
     def updateemail(String email) {
-        if(!Validators.valEmail(email)){
-            msg = 'Invalid Email. This email may have already been taken.' //user error
+        if (!Validators.valEmail(email)) {
+            msg = message(code: 'msg.invalidemail', default: 'Invalid Email. This email may have already been taken.') //user error
         } else {
-            try{
+            try {
                 currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()
                 user = User.findByUsername(currentUsername)
                 user.email = email
                 user.save(flush: true, failOnError: true)
                 msg = message(code: 'msg.emailupdated', default: 'Email Updated') //success
-            } catch(Exception e){
+            } catch (Exception e) {
                 logger.warn("Could not save settings")
                 logger.error(e.toString())
-                msg = 'Settings could not be Saved' //unknown error
+                msg = message(code: 'msg.emailnotupdated', default: 'Email could not be Updated') //unknown error
             }
         }
         render(view: '/account/index', model: [user: user, msg: msg])
@@ -171,11 +171,11 @@ class AccountController {
             user.units = units
             user.favoriteLocation = location
             user.save(flush: true, failOnError: true)
-            msg = 'Settings Saved' //success
+            msg = message(code: 'msg.settingssaved', default: 'Settings Saved') //success
         } catch (Exception e) {
             logger.warn("Could not save settings")
             logger.error(e.toString())
-            msg = 'Settings could not be Saved' //unkown error
+            msg = message(code: 'msg.settingsnotsaved', default: 'Settings could not be saved') //unkown error
         }
         render(view: '/account/index', model: [user: user, msg: msg])
     }
@@ -187,7 +187,7 @@ class AccountController {
         logger.info("New user, ${params.username} attempting to register")
 
         if (!Validators.validateSignup(username, email, password, passwordconfirm)) {
-            msg = 'Signup not valid.'
+            msg = message(code: 'msg.invalidsignup', default: 'Signup not valid.')
             render(view: '/account/signup', model: [msg: msg]) //user error
         } else { //should be valid
             logger.info("Creating user: ${username}")
@@ -199,10 +199,10 @@ class AccountController {
                 ur = new UserRole(user: u, role: Role.findByAuthority('ROLE_CLIENT'))
                 ur.save(flush: true, failOnError: true)
                 logger.info("User Role saved")
-                msg = "${username}, your account has been created. Now just Login."
+                msg = message(code: 'msg.youraccountcreated', default: 'Your Account has been Created', params: [username])
                 render(view: '/account/login', model: [msg: msg]) //success
             } catch (Exception e) {
-                msg = 'Sign up error'
+                msg = message(code: 'msg.invalidsignup', default: 'Signup not valid.')
                 logger.warn("Could not create user: ${username}")
                 logger.error(e.toString())
                 render(view: '/account/signup', model: [msg: msg]) //unknown error
