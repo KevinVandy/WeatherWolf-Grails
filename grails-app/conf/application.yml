@@ -33,6 +33,9 @@ guide:
     - es
     - fr
 ---
+server:
+  port: 9999
+---
 grails:
   mime:
     disable:
