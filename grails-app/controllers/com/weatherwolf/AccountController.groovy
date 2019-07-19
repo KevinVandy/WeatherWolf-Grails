@@ -225,7 +225,7 @@ class AccountController {
                 ur = new UserRole(user: u, role: Role.findByAuthority('ROLE_CLIENT'))
                 ur.save(flush: true, failOnError: true)
                 logger.info("User Role saved")
-                msg = message(code: 'msg.youraccountcreated', default: 'Your Account has been Created', params: [username])
+                msg = "${u.username}, " + message(code: 'msg.youraccountcreated', default: ", Your Account has been Created")
                 render(view: '/account/login', model: [msg: msg]) //success
             } catch (Exception e) {
                 msg = message(code: 'msg.invalidsignup', default: 'Signup not valid.')

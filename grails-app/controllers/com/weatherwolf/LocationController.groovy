@@ -23,7 +23,7 @@ class LocationController extends RestfulController {
             l = WeatherUtils.assignCityStateProvinceCountry(q, l)
             if (l.city && !l.country && !l.stateProvince) {
                 query = Location.where {
-                    (city ==~ "%${l.city}%")
+                    (city ==~ "%${q}%")
                 }
             } else if (l.city && l.country && !l.stateProvince) {
                 query = Location.where {
@@ -32,6 +32,10 @@ class LocationController extends RestfulController {
             } else if (l.city && l.country && l.stateProvince) {
                 query = Location.where {
                     (city ==~ "%${l.city}%") && (country ==~ "%${l.country}%") && (stateProvince ==~ "%${l.stateProvince}%")
+                }
+            } else {
+                query = Location.where {
+                    (city ==~ "%${q}%")
                 }
             }
             respond query.list(max: Math.min(limit ?: 10, 100))

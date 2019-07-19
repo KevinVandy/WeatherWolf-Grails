@@ -19,6 +19,7 @@
             ${dayForecast.condition}
           </div>
         </div>
+        <div class="all-center">${(dayForecast.precipitation).round(1)} in precipitation</div>
         <hr/>
 
         <p class="text-center p">${dayForecast.windSpeed.round()} mph winds</p>
@@ -26,7 +27,7 @@
         <div class="grid-3 all-center">
           <div style="color: blue; font-size: 2em;">${dayForecast.minTemp.round()}&deg;</div>
 
-          <div>${(dayForecast.precipitation * 100).round()}%</div>
+          <div></div>
 
           <div style="color: red; font-size: 2em;">${dayForecast.maxTemp.round()}&deg;</div>
         </div>

@@ -23,13 +23,13 @@ var cities = new Bloodhound({
 
 $('#remote .typeahead').typeahead(
     {
-        minLength: 2,
+        minLength: 3,
         hint: true
     }, {
         name: 'location',
         display: Handlebars.compile('{{city}}, {{stateProvince}}, {{country}}'),
         source: cities,
-        limit: 10,
+        limit: 50,
         templates: {
             empty: ['no cities found'],
             suggestion: Handlebars.compile('<div><strong>{{city}}</strong>, {{stateProvince}}, {{country}}</div>')

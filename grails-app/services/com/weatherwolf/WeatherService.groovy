@@ -61,6 +61,7 @@ class WeatherService {
                 sr.location.city = root.location.name
                 sr.location.stateProvince = root.location.region
                 sr.location.country = root.location.country
+                if(sr.location.country == 'United States of America') sr.location.country = 'United States'
                 logger.debug("Filled in full location info")
 
                 //fill current weather

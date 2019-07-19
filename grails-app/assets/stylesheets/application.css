@@ -96,8 +96,27 @@
 
 .tt-menu {
   background-color: #fff;
-  min-width: 300px;
-  max-height: 300px;
+  border: 1px solid black;
+  min-width: 400px;
+  max-height: 400px;
   padding: 8px;
   color: var(--primary-color);
+  opacity: 0.9;
+  transition: opacity var(--fast-transition);
+}
+
+.tt-suggestion {
+  background-color: #fff;
+  transition: background-color var(--fast-transition);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 1.2em;
+}
+
+.tt-suggestion:hover {
+  background-color: #ccc;
+  opacity: 1;
+  transition: background-color var(--fast-transition);
+  transition: opacity var(--fast-transition);
 }
