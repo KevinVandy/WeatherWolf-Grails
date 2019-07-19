@@ -2,8 +2,10 @@
   <table>
     <tr>
       <td>
-        <input type="text" name="location" style=" width: 400px; font-size: 1.5em;" placeholder="<g:message code='msg.search.placeholder'/>"
-               value="${params.location ?: ""}" required=""/>
+        <div id="remote" style="overflow: visible;">
+          <input type="text" name="location" style=" width: 400px; font-size: 1.5em;" placeholder="<g:message code='msg.search.placeholder'/>"
+                 value="${params.location ?: ""}" class="typeahead" required/>
+        </div>
       </td>
       <td>
         <select name="units">

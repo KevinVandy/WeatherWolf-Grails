@@ -14,7 +14,7 @@ class WeatherService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass())
     public static final String BASE = 'https://api.apixu.com/v1/forecast.xml'
-    public static final String KEY = 'f91adb3427b540b39d7142223190307' //daily
+    public static final String KEY = 'f91adb3427b540b39d7142223190307'
     def root
 
     Integer numDays = 5

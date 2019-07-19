@@ -8,4 +8,25 @@
 //= require jquery-3.3.1.min
 //= require bootstrap
 //= require popper.min
+//= require typeahead
 //= require_self
+
+var cities = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    prefetch: '/city/search/?q=lin&max=20',
+    remote: {
+        url: '/city/search/?q=%QUERY',
+        wildcard: '%QUERY'
+    }
+});
+
+$('#remote .typeahead').typeahead(null, {
+    name: 'location',
+    display: 'name',
+    source: cities,
+    templates: {
+        empty: ['no cities found'],
+        suggestion:  Handlebars.compile('<div><strong>{{name}}</strong>, {{country}}</div>')
+    }
+});

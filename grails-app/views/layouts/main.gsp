@@ -10,6 +10,7 @@
   <asset:link rel="icon" href="favicon.ico" type="image/x-ico"/>
   <asset:stylesheet src="application.css"/>
   <asset:javascript src="jquery-3.3.1.min.js"/>
+  <script src="https://twitter.github.io/typeahead.js/js/handlebars.js"></script>
   <asset:javascript src="application.js" defer=""/>
 
   <g:layoutHead/>

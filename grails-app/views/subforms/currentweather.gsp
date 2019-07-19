@@ -28,9 +28,5 @@
         <br/>${searchResult.location.country}
       </h2>
     </div>
-
-    <div class="all-center">
-
-    </div>
   </div>
 </div>
