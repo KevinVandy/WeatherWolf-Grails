@@ -45,9 +45,9 @@
           <td>
             <label><g:message code="msg.favoritelocation" default="Favorite Location"/>:</label>
           </td>
-          <td>
+          <td id="remote">
             <input type="text" name="favoritelocation" id="favoritelocation" required minlength="2" maxlength="100"
-                   placeholder="<g:message code='msg.search.placeholder'/>">
+                   placeholder="<g:message code='msg.search.placeholder'/>" class="typeahead">
           </td>
         </tr>
         <tr>

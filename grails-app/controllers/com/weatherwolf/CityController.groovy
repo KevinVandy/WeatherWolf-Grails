@@ -21,15 +21,19 @@ class CityController extends RestfulController {
         if (!q) {
             respond([])
         } else {
-            def c = new Location()
-            c = WeatherUtils.assignCityStateProvinceCountry(q, c)
-            if (c.city && !c.country) {
-                query = City.where {
-                    (name ==~ "%${c.city}%")
+            def l = new Location()
+            l = WeatherUtils.assignCityStateProvinceCountry(q, l)
+            if (l.city && !l.country && !l.stateProvince) {
+                query = Location.where {
+                    (city ==~ "%${l.city}%")
                 }
-            } else {
-                query = City.where {
-                    (name ==~ "%${c.city}%") && (country ==~ "%${c.country}%")
+            } else if (l.city && l.country && !l.stateProvince) {
+                query = Location.where {
+                    (city ==~ "%${l.city}%") && ((country ==~ "%${l.country}%") || (stateProvince ==~ "%${l.country}%"))
+                }
+            } else if (l.city && l.country && l.stateProvince) {
+                query = Location.where {
+                    (city ==~ "%${l.city}%") && (country ==~ "%${l.country}%") && (stateProvince ==~ "%${l.stateProvince}%")
                 }
             }
             respond query.list(max: Math.min(max ?: 10, 100))

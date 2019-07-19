@@ -19,16 +19,16 @@ class Location {
         city blank: false
         stateProvince()
         country()
-        latitude min: -90F, max: 90F
-        longitude min: 0F, max: 360F
+        latitude nullable: true, min: -90F, max: 90F
+        longitude nullable: true, min: 0F, max: 360F
     }
 
     String toString() {
         if (stateProvince && country) {
             "${city}, ${stateProvince}, ${country}"
-        } else if(stateProvince && !country)
+        } else if (stateProvince && !country)
             "${city}, ${stateProvince}"
-        else if(!stateProvince && country){
+        else if (!stateProvince && country) {
             "${city}, ${country}"
         } else {
             "${city}"
