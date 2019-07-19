@@ -14,7 +14,7 @@
 
         <div class="grid-2-bl">
           <div>
-            <p>Your favorite location: ${user.favoriteLocation}</p>
+            <p>Your favorite location: <strong>${user.favoriteLocation}</strong></p>
           </div>
 
           <div>

@@ -14,19 +14,24 @@
 var cities = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
-    prefetch: '/city/search/?q=lin&max=20',
+    prefetch: '/location/search/?q=lin&max=20',
     remote: {
-        url: '/city/search/?q=%QUERY',
+        url: '/location/search/?q=%QUERY',
         wildcard: '%QUERY'
     }
 });
 
-$('#remote .typeahead').typeahead(null, {
-    name: 'location',
-    display: Handlebars.compile('{{city}}, {{stateProvince}}, {{country}}'),
-    source: cities,
-    templates: {
-        empty: ['no cities found'],
-        suggestion:  Handlebars.compile('<div><strong>{{city}}</strong>, {{stateProvince}}, {{country}}</div>')
-    }
-});
+$('#remote .typeahead').typeahead(
+    {
+        minLength: 2,
+        hint: true
+    }, {
+        name: 'location',
+        display: Handlebars.compile('{{city}}, {{stateProvince}}, {{country}}'),
+        source: cities,
+        limit: 10,
+        templates: {
+            empty: ['no cities found'],
+            suggestion: Handlebars.compile('<div><strong>{{city}}</strong>, {{stateProvince}}, {{country}}</div>')
+        }
+    });

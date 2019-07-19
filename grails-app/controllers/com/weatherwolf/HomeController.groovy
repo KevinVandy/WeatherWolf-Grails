@@ -12,6 +12,10 @@ import org.springframework.security.core.context.SecurityContextHolder
 
 class HomeController {
 
+    static allowedMethods = [
+            index: 'GET'
+    ]
+
     private final Logger logger = LoggerFactory.getLogger(this.getClass())
     String currentUsername
     User user

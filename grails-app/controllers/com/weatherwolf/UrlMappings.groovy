@@ -12,10 +12,11 @@ class UrlMappings {
         "/"(view: '/index')
         "500"(view: '/error')
         "404"(view: '/notFound')
+        "405"(view: '/hackerman')
 
-        "/city"(resources: 'city') {
+        "/location"(resources: 'location') {
             collection {
-                '/search'(controller: 'city', action: 'search')
+                '/search'(controller: 'location', action: 'search')
             }
         }
     }

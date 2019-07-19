@@ -13,6 +13,17 @@ import org.springframework.security.core.context.SecurityContextHolder
 
 class AccountController {
 
+    static allowedMethods = [
+            resetpassword: 'GET', //needs token from url that comes from email link
+            sendpasswordresetemail: 'POST',
+            updatepassword: 'POST',
+            changepassword: 'POST',
+            updateemail: 'POST',
+            savesettings: 'POST',
+            updatelocation: 'POST',
+            register: 'POST'
+    ]
+
     private final Logger logger = LoggerFactory.getLogger(this.getClass())
     def mailService
     String msg = ''
@@ -43,7 +54,7 @@ class AccountController {
     }
 
     //secure from email validation hash
-    @Secured("permitAll")
+    @Secured("permitAll") //GET only
     def resetpassword() { //show reset password page
         logger.info("User ${params.username} visited account/resetpassword")
         if (!(params.username && params.forgotPasswordToken)) {
@@ -64,7 +75,7 @@ class AccountController {
         logger.info("User visited account/waitforemail")
     }
 
-    @Secured("permitAll")
+    @Secured("permitAll") //POST only
     def sendpasswordresetemail(String username, String email) {
         logger.info("username: ${username} and email: ${email} attempting to reset password")
         if (!User.findByUsernameAndEmail(username, email)) {
@@ -76,7 +87,7 @@ class AccountController {
                 user = User.findByUsername(username)
                 user.forgotPasswordToken = RandomStringUtils.random(50, (('A'..'Z') + ('0'..'9')).join().toCharArray())
                 user.save(flush: true, failOnError: true)
-                def e = new EmailLog(toAddress: email, subject: 'Weather Wolf Password Reset', body: "Click <a href='http://localhost:8080/account/resetpassword?username=${user.username}&forgotPasswordToken=${user.forgotPasswordToken}'>here</a> to reset your password")
+                def e = new EmailLog(toAddress: email, subject: 'Weather Wolf Password Reset', body: "Click <a href='http://localhost:9999/account/resetpassword?username=${user.username}&forgotPasswordToken=${user.forgotPasswordToken}'>here</a> to reset your password")
                 mailService.sendMail {
                     to e.toAddress
                     subject e.subject
@@ -96,11 +107,11 @@ class AccountController {
     }
 
     //not secured because this is for users who forgot their password
-    @Secured("permitAll")
+    @Secured("permitAll") //POST only
     //for not logged in users with forgotPasswordToken
-    def updatepassword(String newpassword, String newpasswordconfirm) {
-        user = User.findByUsername(params.username)
-        if (!user || !user.username == params.username || !(user.forgotPasswordToken == params.forgotPasswordToken)) {
+    def updatepassword(String username, String forgotPasswordToken, String newpassword, String newpasswordconfirm) {
+        user = User.findByUsername(username)
+        if (!user || !user.username == username || !(user.forgotPasswordToken == forgotPasswordToken)) {
             msg = message(code: 'msg.invalidtoken', default: 'Invalid Token')
             render(view: '/account/login', model: [msg: msg]) //user error
         } else if (!Validators.valPassword(newpassword, newpasswordconfirm)) {
@@ -121,8 +132,7 @@ class AccountController {
         }
     }
 
-    @Secured(['ROLE_CLIENT'])
-    //for logged in users
+    @Secured(['ROLE_CLIENT']) //POST only
     def changepassword(String oldpassword, String newpassword, String passwordconfirm) {
         if (!oldpassword || !Validators.valPassword(newpassword, passwordconfirm)) {
             msg = message(code: 'msg.failedpasswordrequirements', default: 'Failed password requirements') //user error
@@ -142,7 +152,7 @@ class AccountController {
         render(view: '/account/index', model: [user: user, msg: msg])
     }
 
-    @Secured(['ROLE_CLIENT'])
+    @Secured(['ROLE_CLIENT']) //POST only
     def updateemail(String email) {
         if (!Validators.valEmail(email)) {
             msg = message(code: 'msg.invalidemail', default: 'Invalid Email. This email may have already been taken.') //user error
@@ -162,7 +172,7 @@ class AccountController {
         render(view: '/account/index', model: [user: user, msg: msg])
     }
 
-    @Secured(['ROLE_CLIENT'])
+    @Secured(['ROLE_CLIENT']) //POST only
     def savesettings(String lang, Character units, String location) {
         try {
             currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()
@@ -180,7 +190,23 @@ class AccountController {
         render(view: '/account/index', model: [user: user, msg: msg])
     }
 
-    @Secured("permitAll")
+    @Secured(['ROLE_CLIENT']) //POST only
+    def updatelocation(String location){
+        try {
+            currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()
+            user = User.findByUsername(currentUsername)
+            user.favoriteLocation = location
+            user.save(flush: true, failOnError: true)
+            msg = message(code: 'msg.settingssaved', default: 'Settings Saved') //success
+        } catch (Exception e) {
+            logger.warn("Could not save new Location")
+            logger.error(e.toString())
+            msg = message(code: 'msg.settingssaved', default: 'Location could not be saved') //unkown error
+        }
+        render(view: '/account/index', model: [user: user, msg: msg])
+    }
+
+    @Secured("permitAll") //POST only
     def register(String username, String email, String password, String passwordconfirm, String favoritelocation) {
 
         def u, ur

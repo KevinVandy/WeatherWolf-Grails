@@ -1,9 +1,10 @@
-package com.weatherwolf
+package com.weatherwolf.controller
 
+import com.weatherwolf.LocationController
 import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
-class CityControllerSpec extends Specification implements ControllerUnitTest<CityController> {
+class LocationControllerSpec extends Specification implements ControllerUnitTest<LocationController> {
 
     def setup() {
     }

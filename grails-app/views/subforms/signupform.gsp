@@ -47,7 +47,7 @@
           </td>
           <td id="remote">
             <input type="text" name="favoritelocation" id="favoritelocation" required minlength="2" maxlength="100"
-                   placeholder="<g:message code='msg.search.placeholder'/>" class="typeahead">
+                   placeholder="<g:message code='msg.search.placeholder'/>" class="typeahead" value="${params.location}">
           </td>
         </tr>
         <tr>

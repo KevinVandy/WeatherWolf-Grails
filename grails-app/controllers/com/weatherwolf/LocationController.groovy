@@ -1,22 +1,20 @@
 package com.weatherwolf
 
-import com.weatherwolf.weather.City
 import com.weatherwolf.weather.Location
 import grails.rest.RestfulController
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 
-class CityController extends RestfulController {
+class LocationController extends RestfulController {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass())
-    static responseFormats = ['json', 'xml']
+    static allowedMethods = [
+            search: ['GET', 'POST']
+    ]
 
-    CityController() {
-        super(City)
+    LocationController() {
+        super(Location)
     }
 
-    def search(String q, Integer max) {
+    def search(String q, Integer limit) {
         def query
         if (!q) {
             respond([])
@@ -36,7 +34,7 @@ class CityController extends RestfulController {
                     (city ==~ "%${l.city}%") && (country ==~ "%${l.country}%") && (stateProvince ==~ "%${l.stateProvince}%")
                 }
             }
-            respond query.list(max: Math.min(max ?: 10, 100))
+            respond query.list(max: Math.min(limit ?: 10, 100))
         }
     }
 }

@@ -110,11 +110,11 @@ dataSource:
 environments:
   development:
     dataSource:
-      dbCreate: update
+      dbCreate: create-drop
       url: jdbc:mysql://localhost:3306/weatherwolf
       test:
         dataSource:
-          dbCreate: update
+          dbCreate: create-drop
           url: jdbc:mysql://localhost:3306/weatherwolf
   production:
     dataSource:
