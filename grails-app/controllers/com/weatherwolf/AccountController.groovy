@@ -208,20 +208,19 @@ class AccountController {
 
     @Secured("permitAll") //POST only
     def register(String username, String email, String password, String passwordconfirm, String favoritelocation) {
-
         def u, ur
-        logger.info("New user, ${params.username} attempting to register")
-
-        if (!Validators.validateSignup(username, email, password, passwordconfirm)) {
-            msg = message(code: 'msg.invalidsignup', default: 'Signup not valid.')
-            render(view: '/account/signup', model: [msg: msg]) //user error
+        logger.info("New user, ${username} attempting to register")
+        msg = Validators.validateSignup(username, email, password, passwordconfirm)
+        logger.info("message: " + msg)
+        if (msg) {
+            render(view: '/account/signup', model: [msg: msg, username: username, email: email, favoriteLocation: favoritelocation]) //user error
         } else { //should be valid
             logger.info("Creating user: ${username}")
             u = new User(username: username, email: email, password: password, favoriteLocation: favoritelocation)
             try {
-                logger.info("saving user")
+                logger.debug("saving user")
                 u.save(flush: true, failOnError: true)
-                logger.info("user saved")
+                logger.debug("user saved")
                 ur = new UserRole(user: u, role: Role.findByAuthority('ROLE_CLIENT'))
                 ur.save(flush: true, failOnError: true)
                 logger.info("User Role saved")

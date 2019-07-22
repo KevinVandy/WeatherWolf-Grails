@@ -133,7 +133,16 @@
 
       <h2><g:message code="msg.searchhistory" default="Search History"/></h2>
       <table>
-
+        <tr>
+          <th>Date</th>
+          <th>Search</th>
+        </tr>
+        <g:each in="${user.searchLog}" var="sl">
+          <tr>
+            <td>${sl.date}</td>
+            <td>${sl.searchString}</td>
+          </tr>
+        </g:each>
       </table>
     </div>
   </g:if>

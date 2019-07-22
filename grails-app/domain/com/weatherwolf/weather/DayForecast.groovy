@@ -11,6 +11,8 @@ class DayForecast {
     Float precipitation
     Float windSpeed
 
+    static belongsTo = [searchResult: SearchResult]
+
     static mapping = {
         version false
         condition column: 'weather_condition'

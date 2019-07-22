@@ -1,5 +1,6 @@
 package com.weatherwolf
 
+import com.weatherwolf.security.SearchLog
 import com.weatherwolf.security.User
 import com.weatherwolf.weather.Location
 import com.weatherwolf.weather.SearchResult
@@ -38,6 +39,8 @@ class WeatherController {
         } else {
             currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()
             user = User.findByUsername(currentUsername)
+            SearchLog sl = new SearchLog(searchString: params.location, date: new Date(), user: user)
+            sl.save(flush: true, failOnError: true)
             render(view: '/weather/index', model: [searchResult: searchResult, user: user])
         }
     }

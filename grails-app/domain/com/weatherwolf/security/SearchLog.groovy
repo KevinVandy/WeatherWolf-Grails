@@ -7,16 +7,15 @@ class SearchLog {
 
     Integer id
     String searchString
-    String locationString
-    String weatherAPIURL
     Date date
 
     static belongsTo = [user: User]
 
+    static mapping = {
+        version false
+    }
+
     static constraints = {
         searchString blank: false
-        locationString()
-        weatherAPIURL()
-        date max: new Date()
     }
 }

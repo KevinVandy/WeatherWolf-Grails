@@ -10,6 +10,8 @@ class CurrentWeather {
     Float windSpeed
     String windDirection
 
+    static belongsTo = [searchResult: SearchResult]
+
     static mapping = {
         version false
         condition column: 'weather_condition'

@@ -1,5 +1,6 @@
 package com.weatherwolf
 
+import com.weatherwolf.security.SearchLog
 import com.weatherwolf.weather.SearchResult
 import com.weatherwolf.weather.CurrentWeather
 import com.weatherwolf.weather.DayForecast

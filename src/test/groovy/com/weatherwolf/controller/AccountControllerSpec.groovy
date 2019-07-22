@@ -1,12 +1,26 @@
 package com.weatherwolf.controller
 
 import com.weatherwolf.AccountController
+import com.weatherwolf.Validators
 import com.weatherwolf.security.EmailLog
+import com.weatherwolf.security.Role
+import com.weatherwolf.security.SearchLog
+import com.weatherwolf.security.User
+import com.weatherwolf.security.UserRole
+import com.weatherwolf.weather.CurrentWeather
+import com.weatherwolf.weather.DayForecast
+import com.weatherwolf.weather.Location
+import com.weatherwolf.weather.SearchResult
+import grails.testing.gorm.DataTest
 import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
 
-class AccountControllerSpec extends Specification implements ControllerUnitTest<AccountController> {
+class AccountControllerSpec extends Specification implements DataTest, ControllerUnitTest<AccountController> {
+
+    Class<?>[] getDomainClassesToMock(){
+        return [User, Role, UserRole, SearchLog, EmailLog, CurrentWeather, DayForecast, Location, SearchResult] as Class[]
+    }
 
     void "show login page for login user"() {
 
@@ -53,23 +67,23 @@ class AccountControllerSpec extends Specification implements ControllerUnitTest<
         true
     }
 
-    void "register valid account"() {
+    void "test valid signup"() {
 
     }
 
-    void "register invalid account with password too short"() {
+    void "test too short username"() {
 
     }
 
-    void "change password, fail requirements with invalid old password"() {
+    void "test invalid email"() {
 
     }
 
-    void "change password, fail requirements with invalid new password"() {
+    void "test duplicate email"() {
 
     }
 
-    void "change password, fail requirements with unmatching new password confirm"() {
+    void "test too short password"() {
 
     }
 

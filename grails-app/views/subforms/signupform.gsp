@@ -14,7 +14,7 @@
             <label for="username"><g:message code="msg.username" default="Username"/>:</label>
           </td>
           <td>
-            <input type="text" name="username" id="username" minlength="3" maxlength="50" required/>
+            <input type="text" name="username" id="username" value="${username}" minlength="3" maxlength="50" required/>
           </td>
         </tr>
         <tr>
@@ -22,7 +22,7 @@
             <label for="email"><g:message code="msg.email" default="Email"/>:</label>
           </td>
           <td>
-            <input type="email" name="email" id="email" minlength="5" maxlength="100" required/>
+            <input type="email" name="email" id="email" value="${email}" minlength="5" maxlength="100" required/>
           </td>
         </tr>
         <tr>
@@ -47,7 +47,8 @@
           </td>
           <td id="remote">
             <input type="text" name="favoritelocation" id="favoritelocation" required minlength="2" maxlength="100"
-                   placeholder="<g:message code='msg.search.placeholder'/>" class="typeahead" value="${params.location}">
+                   placeholder="<g:message code='msg.search.placeholder'/>" class="typeahead"
+                   value="<g:if test="${params.location}">${params.location}</g:if><g:else>${favoriteLocation}</g:else>">
           </td>
         </tr>
         <tr>
