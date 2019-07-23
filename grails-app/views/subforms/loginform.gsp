@@ -36,7 +36,7 @@
         <tr>
           <td colspan="2">
             <p class="text-center"><g:message code="msg.donthaveaccount" default="Don't have an account yet?"/> <a
-                href="/account/signup"><g:message code="msg.signup"/>!</a></p>
+                href="/signup"><g:message code="msg.signup"/>!</a></p>
           </td>
         </tr>
       </table>

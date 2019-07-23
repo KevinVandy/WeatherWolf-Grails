@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: kvancott
-  Date: 7/12/2019
-  Time: 3:44 PM
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
@@ -14,7 +7,7 @@
 
 <body>
   <div class="backcard">
-    <g:if test="${msg == 'valid token'}">
+    <g:if test="${msg == ''}">
       <g:form controller="account" action="updatepassword" method="post">
         <input type="hidden" name="username" value="${params.username}">
         <input type="hidden" name="forgotPasswordToken" value="${params.forgotPasswordToken}">

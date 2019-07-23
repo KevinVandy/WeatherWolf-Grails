@@ -59,7 +59,7 @@
         <tr>
           <td colspan="2">
             <p class="text-center"><g:message code="msg.alreadyhaveacount" default="Already Have an Account?"/> <a
-                href="/account/login"><g:message code="msg.login" default="Login"/></a></p>
+                href="/login"><g:message code="msg.login" default="Login"/></a></p>
           </td>
         </tr>
       </table>
