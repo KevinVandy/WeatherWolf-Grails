@@ -1,44 +1,35 @@
 package com.weatherwolf
 
-import com.weatherwolf.security.EmailLog
 import com.weatherwolf.security.User
 import grails.plugin.springsecurity.annotation.Secured
-import org.apache.commons.lang.RandomStringUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.security.core.context.SecurityContextHolder
 
 
+@Secured(['ROLE_CLIENT'])
 class AccountController {
 
     static allowedMethods = [
-            resetpassword: 'GET', //needs token from url that comes from email link
-            sendpasswordresetemail: 'POST',
-            updatepassword: 'POST',
-            changepassword: 'POST',
-            updateemail: 'POST',
-            savesettings: 'POST',
-            updatelocation: 'POST',
-            register: 'POST'
+            changepassword        : 'POST',
+            updateemail           : 'POST',
+            savesettings          : 'POST',
+            updatelocation        : 'POST'
     ]
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass())
-    def mailService
     String msg = ''
     String currentUsername
     def user = new User()
 
-    @Secured(['ROLE_CLIENT'])
     def index() { //show user's account settings page
         logger.info("User visited account/index")
         currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()
         user = User.findByUsername(currentUsername)
-        render(view: '/account/index', model: [user: user])
+        render(view: '/account', model: [user: user])
     }
 
-
-
-    @Secured(['ROLE_CLIENT']) //POST only
+    //POST only
     def changepassword(String oldpassword, String newpassword, String passwordconfirm) {
         if (!oldpassword || !Validators.valPassword(newpassword, passwordconfirm)) {
             msg = message(code: 'msg.failedpasswordrequirements', default: 'Failed password requirements') //user error
@@ -58,7 +49,7 @@ class AccountController {
         render(view: '/account/index', model: [user: user, msg: msg])
     }
 
-    @Secured(['ROLE_CLIENT']) //POST only
+    //POST only
     def updateemail(String email) {
         if (!Validators.valEmail(email)) {
             msg = message(code: 'msg.invalidemail', default: 'Invalid Email. This email may have already been taken.') //user error
@@ -78,7 +69,7 @@ class AccountController {
         render(view: '/account/index', model: [user: user, msg: msg])
     }
 
-    @Secured(['ROLE_CLIENT']) //POST only
+    //POST only
     def savesettings(String lang, Character units, String location) {
         try {
             currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()
@@ -96,8 +87,8 @@ class AccountController {
         render(view: '/account/index', model: [user: user, msg: msg])
     }
 
-    @Secured(['ROLE_CLIENT']) //POST only
-    def updatelocation(String location){
+    //POST only
+    def updatelocation(String location) {
         try {
             currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()
             user = User.findByUsername(currentUsername)
@@ -111,6 +102,5 @@ class AccountController {
         }
         render(view: '/account/index', model: [user: user, msg: msg])
     }
-
 
 }

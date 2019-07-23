@@ -10,6 +10,11 @@ class EmailLog {
     Date timeSent
 
     static constraints = {
+        toAddress blank: false
+        fromAddress blank: false
+        subject blank: false
+        body blank: false
+        timeSent nullable: false
     }
 
     static mapping = {

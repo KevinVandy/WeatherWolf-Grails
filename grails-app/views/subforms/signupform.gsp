@@ -4,7 +4,7 @@
       <g:message code="msg.signup.why" default="Sign up to see Personalized Weather"/>
     </div>
 
-    <form action="/account/register" method="POST" id="loginForm" autocomplete="off">
+    <form action="/signup/register" method="POST" id="loginForm" autocomplete="off">
       <if test="${msg != ''}">
         <p class="bg-danger">${msg}</p>
       </if>

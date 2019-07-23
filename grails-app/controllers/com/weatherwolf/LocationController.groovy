@@ -38,7 +38,7 @@ class LocationController extends RestfulController {
                     (city ==~ "%${q}%")
                 }
             }
-            respond query.list(max: Math.min(limit ?: 10, 100))
+            respond query.list(max: 20)
         }
     }
 }

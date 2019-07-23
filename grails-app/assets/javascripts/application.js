@@ -14,7 +14,7 @@
 var cities = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
-    prefetch: '/location/search/?q=lin&max=20',
+    prefetch: '/location/search/?q=new',
     remote: {
         url: '/location/search/?q=%QUERY',
         wildcard: '%QUERY'
@@ -23,13 +23,13 @@ var cities = new Bloodhound({
 
 $('#remote .typeahead').typeahead(
     {
-        minLength: 3,
+        minLength: 2,
         hint: true
     }, {
         name: 'location',
         display: Handlebars.compile('{{city}}, {{stateProvince}}, {{country}}'),
         source: cities,
-        limit: 50,
+        limit: 30,
         templates: {
             empty: ['no cities found'],
             suggestion: Handlebars.compile('<div><strong>{{city}}</strong>, {{stateProvince}}, {{country}}</div>')

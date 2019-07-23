@@ -6,14 +6,13 @@ import spock.lang.Specification
 
 class EmailLogSpec extends Specification implements DomainUnitTest<EmailLog> {
 
-    def setup() {
+    void "test valid email log"(){
+        when:
+        def el = new EmailLog(id: 0, toAddress: 'test@gmail.com', subject: 'test', body: 'hello there', timeSent: new Date())
+
+        then:
+        el.validate()
+        el.errors.errorCount == 0
     }
 
-    def cleanup() {
-    }
-
-    void "test something"() {
-        expect:"fix me"
-            true == false
-    }
 }

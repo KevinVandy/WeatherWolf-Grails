@@ -1,7 +1,6 @@
 package com.weatherwolf.controller
 
-import com.weatherwolf.AccountController
-import com.weatherwolf.Validators
+import com.weatherwolf.SignupController
 import com.weatherwolf.security.EmailLog
 import com.weatherwolf.security.Role
 import com.weatherwolf.security.SearchLog
@@ -15,23 +14,33 @@ import grails.testing.gorm.DataTest
 import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
-
-class AccountControllerSpec extends Specification implements DataTest, ControllerUnitTest<AccountController> {
+class SignupControllerSpec extends Specification implements DataTest, ControllerUnitTest<SignupController> {
 
     Class<?>[] getDomainClassesToMock() {
         return [User, Role, UserRole, SearchLog, EmailLog, CurrentWeather, DayForecast, Location, SearchResult] as Class[]
     }
 
-    void "show login page for login user"() {
+    void "show signup page"() {
 
     }
 
-    void "redirect to login/auth if non-logged in user tries to view account home page"() {
+    void "test valid signup"() {
 
     }
 
-    void "change password successfully"() {
+    void "test too short username"() {
 
     }
 
+    void "test invalid email"() {
+
+    }
+
+    void "test duplicate email"() {
+
+    }
+
+    void "test too short password"() {
+
+    }
 }

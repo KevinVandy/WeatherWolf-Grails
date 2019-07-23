@@ -13,7 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 class HomeController {
 
     static allowedMethods = [
-            index: 'GET'
+            index: 'GET' //needs url parameters to search
     ]
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass())

@@ -1,4 +1,4 @@
-package com.weatherwolf.domain
+package com.weatherwolf.util
 
 import com.weatherwolf.Validators
 import com.weatherwolf.security.EmailLog

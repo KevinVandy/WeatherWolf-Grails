@@ -12,14 +12,9 @@ import org.springframework.security.access.annotation.Secured
 class LoginController extends grails.plugin.springsecurity.LoginController {
 
     static allowedMethods = [
-            resetpassword: 'GET', //needs token from url that comes from email link
+            resetpassword         : 'GET', //needs token from url that comes from email link
             sendpasswordresetemail: 'POST',
-            updatepassword: 'POST',
-            changepassword: 'POST',
-            updateemail: 'POST',
-            savesettings: 'POST',
-            updatelocation: 'POST',
-            register: 'POST'
+            updatepassword        : 'POST'
     ]
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass())
@@ -28,31 +23,30 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
     def user = new User()
 
     @Override
-    def index(){
+    def index() {
         if (isLoggedIn()) {
             redirect uri: conf.successHandler.defaultTargetUrl
-        }
-        else {
+        } else {
             render(view: '/login/index')
         }
     }
 
+    //override the default spring security login form
     @Override
     def auth() {
         if (isLoggedIn()) {
             redirect(controller: 'home', action: 'index')
-            return
+        } else {
+            redirect(controller: 'login', action: 'index')
         }
-        redirect(controller: 'login', action: 'index')
     }
 
-    @Secured("permitAll")
     def forgotpassword() { //show forgot password page that will prompt to send email password reset
         logger.info("User visited login/forgotpassword")
     }
 
     //secure from email validation hash
-    @Secured("permitAll") //GET only
+    //GET only
     def resetpassword() { //show reset password page
         logger.info("User ${params.username} visited account/resetpassword")
         if (!(params.username && params.forgotPasswordToken)) {
@@ -68,12 +62,11 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
         render(view: '/login/resetpassword', model: [msg: msg])
     }
 
-    @Secured("permitAll")
     def waitforemail() {
         logger.info("User visited login/waitforemail")
     }
 
-    @Secured("permitAll") //POST only
+    //POST only
     def sendpasswordresetemail(String username, String email) {
         logger.info("username: ${username} and email: ${email} attempting to reset password")
         if (!User.findByUsernameAndEmail(username, email)) {
@@ -85,7 +78,7 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
                 user = User.findByUsername(username)
                 user.forgotPasswordToken = RandomStringUtils.random(50, (('A'..'Z') + ('0'..'9')).join().toCharArray())
                 user.save(flush: true, failOnError: true)
-                def e = new EmailLog(toAddress: email, subject: 'Weather Wolf Password Reset', body: "Click <a href='http://localhost:9999/account/resetpassword?username=${user.username}&forgotPasswordToken=${user.forgotPasswordToken}'>here</a> to reset your password")
+                def e = new EmailLog(toAddress: email, subject: 'Weather Wolf Password Reset', body: "Click <a href='http://localhost:9999/login/resetpassword?username=${user.username}&forgotPasswordToken=${user.forgotPasswordToken}'>here</a> to reset your password")
                 mailService.sendMail {
                     to e.toAddress
                     subject e.subject
@@ -104,14 +97,13 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
         }
     }
 
-    //not secured because this is for users who forgot their password
-    @Secured("permitAll") //POST only
-    //for not logged in users with forgotPasswordToken
+    //not secured by role because this is for users who forgot their password
+    //POST only
     def updatepassword(String username, String forgotPasswordToken, String newpassword, String newpasswordconfirm) {
         user = User.findByUsername(username)
         if (!user || !user.username == username || !(user.forgotPasswordToken == forgotPasswordToken)) {
             msg = message(code: 'msg.invalidtoken', default: 'Invalid Token')
-            render(view: '/login/index', model: [msg: msg]) //user error
+            render(view: '/login', model: [msg: msg]) //user error
         } else if (!Validators.valPassword(newpassword, newpasswordconfirm)) {
             msg = message(code: 'msg.passwordsdonotmatch', default: 'Passwords do not match or password requirements were not met.')
             render(view: '/login/resetpassword', model: [msg: msg, params: params]) //user error
@@ -121,11 +113,11 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
             try {
                 user.save(flush: true, failOnError: true)
                 msg = "${user.username}, your password was successfully reset. Try loggin in with your new password"
-                render(view: '/login/index', model: [msg: msg, username: user.username]) //success
+                render(view: '/login', model: [msg: msg, username: user.username]) //success
             } catch (Exception e) {
                 msg = message(code: 'msg.errorsavingpnewpassword', default: 'Error saving new password. Try again.')
                 logger.error(e.toString())
-                render(view: '/login/index', model: [msg: msg]) //unknown error
+                render(view: '/login', model: [msg: msg]) //unknown error
             }
         }
     }
