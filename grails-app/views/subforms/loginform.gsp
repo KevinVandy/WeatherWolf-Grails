@@ -1,18 +1,16 @@
 <div id="login">
   <div class="inner p-2" style="width: 500px;">
+    <g:include view="subforms/msg.gsp"/>
     <div class="fheader"><g:message code="msg.login.why" default="Login to see Personalized Weather"/></div>
 
     <form action="/login/authenticate" method="POST" id="loginForm" autocomplete="off">
-      <if test="${msg != null}">
-        <p class="alert-info">${msg}</p>
-      </if>
       <table>
         <tr>
           <td>
             <label for="username"><g:message code="msg.username" default="Username"/>:</label>
           </td>
           <td>
-            <input type="text" name="username" id="username" <g:if test="${username}">value="${username}" </g:if> />
+            <input type="text" name="username" id="username" value="${params.username}"/>
           </td>
         </tr>
         <tr>
@@ -21,7 +19,7 @@
           </td>
           <td>
             <input type="password" name="password" id="password"/>
-            <a href="/account/forgotpassword">Forgot your password?</a>
+            <a href="/login/forgotpassword">Forgot your password?</a>
           </td>
         </tr>
         <tr>

@@ -7,8 +7,9 @@
 
 <body>
   <div class="backcard">
-    <g:if test="${msg == ''}">
-      <g:form controller="account" action="updatepassword" method="post">
+    <g:include view="subforms/msg.gsp"/>
+    <g:if test="${validToken}">
+      <g:form controller="login" action="updatepassword" method="post">
         <input type="hidden" name="username" value="${params.username}">
         <input type="hidden" name="forgotPasswordToken" value="${params.forgotPasswordToken}">
         <table>
@@ -38,7 +39,7 @@
       </g:form>
     </g:if>
     <g:else>
-      <p class="alert-info">${msg}</p>
+      <g:include view="subforms/msg.gsp"/>
     </g:else>
   </div>
 </body>

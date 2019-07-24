@@ -20,7 +20,7 @@ class User implements Serializable {
     boolean accountLocked = false
     boolean passwordExpired = false
     String lang = 'en'
-    Character units = 'F'
+    String units = 'F'
     String favoriteLocation = 'Washington D.C.'
 
     Set<Role> getAuthorities() {
@@ -31,8 +31,8 @@ class User implements Serializable {
         password nullable: false, blank: false, password: true, size: 6..100
         username nullable: false, blank: false, unique: true, size: 3..50
         email nullable: false, blank: false, unique: true, size: 5..100, email: true
-//        lang inList: ['en', 'es', 'fr'] //only English, Spanish, and French are supported
-//        units inList: ['C', 'F']
+        lang inList: ['en', 'es', 'fr'] //only English, Spanish, and French are supported
+        units inList: ['C', 'F']
         favoriteLocation blank: false
         forgotPasswordToken nullable: true, blank: true
     }
@@ -40,6 +40,7 @@ class User implements Serializable {
     static hasMany = [searchLog: SearchLog]
 
     static mapping = {
+        searchLog cascade: 'all-delete-orphan'
         password column: '`password`'
     }
 }

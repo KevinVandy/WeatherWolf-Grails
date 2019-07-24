@@ -8,12 +8,12 @@ import com.weatherwolf.security.UserRole
 class BootStrap {
 
     def init = { servletContext ->
-//        def authorities = ['ROLE_CLIENT']
-//        authorities.each {
-//            if (!Role.findByAuthority(it)) {
-//                new Role(authority: it).save()
-//            }
-//        }
+        def authorities = ['ROLE_CLIENT']
+        authorities.each {
+            if (!Role.findByAuthority(it)) {
+                new Role(authority: it).save()
+            }
+        }
 //        if (!User.findByUsername('kevinvandy')) {
 //            def u = new User(username: 'kevinvandy', email: 'kvancott@talentplus.com', password: 'hellothere')
 //            u.save()

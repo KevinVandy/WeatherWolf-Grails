@@ -1,13 +1,11 @@
 <div id="login">
   <div class="inner p-2" style="width: 500px;">
+    <g:include view="subforms/msg.gsp"/>
     <div class="fheader">
       <g:message code="msg.signup.why" default="Sign up to see Personalized Weather"/>
     </div>
 
     <form action="/signup/register" method="POST" id="loginForm" autocomplete="off">
-      <if test="${msg != ''}">
-        <p class="bg-danger">${msg}</p>
-      </if>
       <table>
         <tr>
           <td>
@@ -22,7 +20,7 @@
             <label for="email"><g:message code="msg.email" default="Email"/>:</label>
           </td>
           <td>
-            <input type="email" name="email" id="email" value="${email}" minlength="5" maxlength="100" required/>
+            <input type="email" name="email" id="email" value="${email}" minlength="6" maxlength="100" required/>
           </td>
         </tr>
         <tr>
@@ -48,7 +46,7 @@
           <td id="remote">
             <input type="text" name="favoritelocation" id="favoritelocation" required minlength="2" maxlength="100"
                    placeholder="<g:message code='msg.search.placeholder'/>" class="typeahead"
-                   value="<g:if test="${params.location}">${params.location}</g:if><g:else>${favoriteLocation}</g:else>">
+                   value="${favoritelocation}">
           </td>
         </tr>
         <tr>

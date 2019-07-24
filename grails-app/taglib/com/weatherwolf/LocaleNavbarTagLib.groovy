@@ -25,10 +25,12 @@ class LocaleNavbarTagLib implements GrailsConfigurationAware {
         Map params = args.params
         String encodedParams = ''
 
+        //
+
         //preserve url parameters
         if (params) {
-            encodedParams = params.collect { k, v ->
-                if (k != "lang") {
+            encodedParams = params.collect { String k, String v ->
+                if (k != "lang" && !k.contains("password")) {
                     "${k}=${v}"
                 }
             }.join("&")

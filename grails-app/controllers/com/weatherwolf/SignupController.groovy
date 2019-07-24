@@ -16,19 +16,19 @@ class SignupController {
     ]
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass())
-    String msg = ''
 
     def index() {
-        logger.info("user visited /signup/index")
+        render(view: '/signup/index', model: [username: params.username, email: params.email, favoritelocation: params.favoritelocation])
     }
+
     //POST only
     def register(String username, String email, String password, String passwordconfirm, String favoritelocation) {
         def u, ur
         logger.info("New user, ${username} attempting to register")
-        msg = Validators.validateSignup(username, email, password, passwordconfirm)
-        logger.info("message: " + msg)
-        if (msg) {
-            render(view: '/signup', model: [msg: msg, username: username, email: email, favoriteLocation: favoritelocation]) //user error
+        flash.error = Validators.validateSignup(username, email, password, passwordconfirm)
+        logger.info("message: " + flash.error)
+        if (flash.error) {
+            redirect(url: "/signup/index?username=${username}&email=${email}&favoritelocation=${favoritelocation}") //user error
         } else { //should be valid
             logger.info("Creating user: ${username}")
             u = new User(username: username, email: email, password: password, favoriteLocation: favoritelocation)
@@ -39,13 +39,13 @@ class SignupController {
                 ur = new UserRole(user: u, role: Role.findByAuthority('ROLE_CLIENT'))
                 ur.save(flush: true, failOnError: true)
                 logger.info("User Role saved")
-                msg = "${u.username}" + message(code: 'msg.youraccountcreated', default: ", Your Account has been Created")
-                render(view: '/login', model: [msg: msg]) //success
+                flash.success = "${u.username}" + message(code: 'msg.youraccountcreated', default: ", Your Account has been Created")
+                redirect(url: "/login/index?username=${username}") //success
             } catch (Exception e) {
-                msg = message(code: 'msg.invalidsignup', default: 'Signup not valid.')
+                flash.error = message(code: 'msg.invalidsignup', default: 'Signup not valid.')
                 logger.warn("Could not create user: ${username}")
                 logger.error(e.toString())
-                render(view: '/signup', model: [msg: msg]) //unknown error
+                redirect(url: "/signup/index?username=${username}&email=${email}&favoritelocation=${favoritelocation}") //unknown error
             }
         }
     }

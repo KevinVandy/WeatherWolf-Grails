@@ -6,6 +6,11 @@ import org.apache.commons.lang.RandomStringUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.annotation.Secured
+import org.springframework.security.authentication.AccountExpiredException
+import org.springframework.security.authentication.CredentialsExpiredException
+import org.springframework.security.authentication.DisabledException
+import org.springframework.security.authentication.LockedException
+import org.springframework.security.web.WebAttributes
 
 
 @Secured('permitAll')
@@ -19,7 +24,6 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass())
     def mailService
-    String msg = ''
     def user = new User()
 
     @Override
@@ -41,37 +45,35 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
         }
     }
 
-    def forgotpassword() { //show forgot password page that will prompt to send email password reset
-        logger.info("User visited login/forgotpassword")
-    }
-
-    //secure from email validation hash
-    //GET only
-    def resetpassword() { //show reset password page
-        logger.info("User ${params.username} visited account/resetpassword")
-        if (!(params.username && params.forgotPasswordToken)) {
-            msg = message(code: 'msg.invalidlink', default: 'Invalid Link') //user error
-        } else {
-            user = User.findByUsername(params.username)
-            if (!(user && user.forgotPasswordToken && user.forgotPasswordToken.equalsIgnoreCase(params.forgotPasswordToken))) {
-                msg = message(code: 'msg.invalidtoken', default: 'Invalid Token') //user error
+    @Override
+    def authfail() {
+        def exception = session[WebAttributes.AUTHENTICATION_EXCEPTION]
+        if (exception) {
+            if (exception instanceof AccountExpiredException) {
+                flash.error = messageSource.getMessage('springSecurity.errors.login.expired', null, "Account Expired", request.locale)
+            } else if (exception instanceof CredentialsExpiredException) {
+                flash.error = messageSource.getMessage('springSecurity.errors.login.passwordExpired', null, "Password Expired", request.locale)
+            } else if (exception instanceof DisabledException) {
+                flash.error = messageSource.getMessage('springSecurity.errors.login.disabled', null, "Account Disabled", request.locale)
+            } else if (exception instanceof LockedException) {
+                flash.error = messageSource.getMessage('springSecurity.errors.login.locked', null, "Account Locked", request.locale)
             } else {
-                msg = '' //success
+                flash.error = messageSource.getMessage('springSecurity.errors.login.fail', null, "Authentication Failure", request.locale)
             }
         }
-        render(view: '/login/resetpassword', model: [msg: msg])
+        render(view: '/login/index')
     }
 
-    def waitforemail() {
-        logger.info("User visited login/waitforemail")
+    def forgotpassword() { //show forgot password page that will prompt to send email password reset
+        logger.info("User visited login/forgotpassword")
     }
 
     //POST only
     def sendpasswordresetemail(String username, String email) {
         logger.info("username: ${username} and email: ${email} attempting to reset password")
         if (!User.findByUsernameAndEmail(username, email)) {
-            msg = message(code: 'msg.couldnotfindusernameemail', default: 'Could not find Username, or username and email do not match')
-            render(view: '/login/forgotpassword', model: [msg: msg]) //user error
+            flash.error = message(code: 'msg.couldnotfindusernameemail', default: 'Could not find Username, or username and email do not match')
+            redirect(url: '/login/forgotpassword') //user error
         } else { //should be valid
             try {
                 logger.info("attempting to send password reset to ${email}")
@@ -87,37 +89,62 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
                 e.timeSent = new Date()
                 e.save(flush: true, failOnError: true)
                 logger.info("Email sent to ${email}")
-                render(view: '/login/waitforemail', model: [email: email]) //success
+                flash.success = "An email to reset your password has been sent to ${email}"
+                redirect(url: '/login/waitforemail') //success
             } catch (Exception ex) {
                 logger.warn("Could not send email")
                 logger.error(ex.toString())
-                msg = message(code: 'msg.emailfail', default: 'Email failed to send for unknown reason. Try again later')
-                render(view: '/login/forgotpassword', model: [msg: msg]) //unknown failure
+                flash.error = message(code: 'msg.emailfail', default: 'Email failed to send for unknown reason. Try again later')
+                redirect(url: '/login/forgotpassword') //unknown failure
             }
         }
+    }
+
+    def waitforemail() {
+        logger.info("User visited login/waitforemail")
+    }
+
+    //secure from email validation hash
+    //GET only
+    def resetpassword() { //show reset password page
+        logger.info("User ${params.username} visited account/resetpassword")
+        boolean validToken = false
+        if (!(params.username && params.forgotPasswordToken)) {
+            flash.error = message(code: 'msg.invalidlink', default: 'Invalid Link') //user error
+        } else {
+            user = User.findByUsername(params.username)
+            if (!(user && user.forgotPasswordToken && user.forgotPasswordToken.equalsIgnoreCase(params.forgotPasswordToken))) {
+                flash.error = message(code: 'msg.invalidtoken', default: 'Invalid Token') //user error
+            } else {
+                validToken = true
+            }
+        }
+        render(view: '/login/resetpassword', model: [validToken: validToken])
     }
 
     //not secured by role because this is for users who forgot their password
     //POST only
     def updatepassword(String username, String forgotPasswordToken, String newpassword, String newpasswordconfirm) {
         user = User.findByUsername(username)
-        if (!user || !user.username == username || !(user.forgotPasswordToken == forgotPasswordToken)) {
-            msg = message(code: 'msg.invalidtoken', default: 'Invalid Token')
-            render(view: '/login', model: [msg: msg]) //user error
-        } else if (!Validators.valPassword(newpassword, newpasswordconfirm)) {
-            msg = message(code: 'msg.passwordsdonotmatch', default: 'Passwords do not match or password requirements were not met.')
-            render(view: '/login/resetpassword', model: [msg: msg, params: params]) //user error
-        } else { //should be valid
-            user.password = newpassword
-            user.forgotPasswordToken = ''
-            try {
-                user.save(flush: true, failOnError: true)
-                msg = "${user.username}, your password was successfully reset. Try loggin in with your new password"
-                render(view: '/login', model: [msg: msg, username: user.username]) //success
-            } catch (Exception e) {
-                msg = message(code: 'msg.errorsavingpnewpassword', default: 'Error saving new password. Try again.')
-                logger.error(e.toString())
-                render(view: '/login', model: [msg: msg]) //unknown error
+        if (!user || !(user.username == username) || !(user.forgotPasswordToken == forgotPasswordToken)) {
+            flash.error = message(code: 'msg.invalidtoken', default: 'Invalid Token')
+            redirect(url: '/login/index') //user error
+        } else {
+            flash.error = Validators.valPassword(newpassword, newpasswordconfirm)
+            if (flash.error) {
+                redirect(url: "/login/resetpassword?username=${user.username}&forgotPasswordToken=${user.forgotPasswordToken}") //user error
+            } else { //should be valid
+                user.password = newpassword
+                user.forgotPasswordToken = null
+                try {
+                    user.save(flush: true, failOnError: true)
+                    flash.success = "${user.username}, your password was successfully reset. Try logging in with your new password"
+                    redirect(username: "/login/index?username=${user.username}") //success
+                } catch (Exception e) {
+                    flash.error = message(code: 'msg.errorsavingpnewpassword', default: 'Error saving new password. Try again.')
+                    logger.error(e.toString())
+                    redirect(url: '/login/index') //unknown error
+                }
             }
         }
     }

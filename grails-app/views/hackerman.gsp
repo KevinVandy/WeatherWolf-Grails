@@ -15,7 +15,7 @@
 
 <body>
   <div class="backcard">
-    Not today hacker man
+    Invalid request
   </div>
 </body>
 </html>

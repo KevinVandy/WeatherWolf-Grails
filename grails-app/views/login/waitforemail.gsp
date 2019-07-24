@@ -14,7 +14,7 @@
 
 <body>
 <div class="backcard">
-  <p>An email for a password reset has been sent to ${email}</p>
+  <p>${flash.success}</p>
 </div>
 </body>
 </html>

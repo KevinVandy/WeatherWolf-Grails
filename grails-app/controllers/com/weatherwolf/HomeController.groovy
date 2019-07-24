@@ -20,6 +20,22 @@ class HomeController {
     String currentUsername
     User user
 
+    //workaround to get user's locale loaded
+    @Secured(['ROLE_CLIENT'])
+    def success() {
+        currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()
+        user = User.findByUsername(currentUsername)
+        if(user.forgotPasswordToken){
+            try{
+                user.forgotPasswordToken = null
+                user.save(flush: true, failOnError: true)
+            } catch(Exception e){
+                logger.warn("Could not wipe forgot password token")
+            }
+        }
+        redirect(url: "/home?lang=${user.lang}")
+    }
+
     @Secured("permitAll")
     def index() {
         def weatherService = new WeatherService()

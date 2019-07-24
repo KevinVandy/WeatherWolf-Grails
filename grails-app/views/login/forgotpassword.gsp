@@ -14,11 +14,9 @@
 
 <body>
   <div class="backcard">
-    <g:form controller="account" action="sendpasswordresetemail" method="post">
+    <g:form controller="login" action="sendpasswordresetemail" method="post">
+      <g:include view="subforms/msg.gsp"/>
       <p><g:message code="msg.forgotpassword" default="Forgot your password? Don't worry! You can reset it through your email."/></p>
-      <if test="${msg != null}">
-        <p class="alert-info">${msg}</p>
-      </if>
       <table>
         <tr>
           <td>
