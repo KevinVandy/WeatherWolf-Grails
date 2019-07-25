@@ -21,11 +21,19 @@ class SignupControllerSpec extends Specification implements DataTest, Controller
     }
 
     void "show signup page"() {
+        when:
+        controller.index()
 
+        then:
+        render().contains("Sign up")
     }
 
     void "test valid signup"() {
+        when:
+        controller.register('kevinvandy', 'kvancott@talentplus.com', 'hellothere', 'hellothere', 'lincoln,ne')
 
+        then:
+        render().contains('already exists')
     }
 
     void "test too short username"() {

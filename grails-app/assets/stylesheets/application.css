@@ -94,11 +94,12 @@
   background-color: #fff;
   border: 1px solid black;
   min-width: 400px;
-  max-height: 400px;
+  max-height: 500px;
   padding: 8px;
   color: var(--primary-color);
   opacity: 0.9;
   transition: opacity var(--fast-transition);
+  overflow: hidden;
 }
 
 .tt-suggestion {
