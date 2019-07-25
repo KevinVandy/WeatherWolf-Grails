@@ -12,6 +12,10 @@ import org.springframework.security.core.context.SecurityContextHolder
 
 class WeatherController {
 
+    static allowedMethods = [
+            index: 'GET' //needs url parameters to search
+    ]
+
     private final Logger logger = LoggerFactory.getLogger(this.getClass())
     String currentUsername
     User user

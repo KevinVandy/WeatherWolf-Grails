@@ -20,7 +20,7 @@ class HomeController {
     String currentUsername
     User user
 
-    //workaround to get user's locale loaded
+    //workaround to get user's locale loaded and also deletes any old forgotPasswordTokens
     @Secured(['ROLE_CLIENT'])
     def success() {
         currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()

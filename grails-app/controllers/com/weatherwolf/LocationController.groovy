@@ -4,17 +4,19 @@ import com.weatherwolf.weather.Location
 import grails.rest.RestfulController
 
 
-class LocationController extends RestfulController {
+class LocationController extends RestfulController<Location> {
+
+    static responseFormats = ['json']
 
     static allowedMethods = [
-            search: ['GET', 'POST']
+            search: ['GET']
     ]
 
     LocationController() {
         super(Location)
     }
 
-    def search(String q, Integer limit) {
+    def search(String q) {
         def query
         if (!q) {
             respond([])

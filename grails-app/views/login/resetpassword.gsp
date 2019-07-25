@@ -38,9 +38,6 @@
         </table>
       </g:form>
     </g:if>
-    <g:else>
-      <g:include view="subforms/msg.gsp"/>
-    </g:else>
   </div>
 </body>
 </html>

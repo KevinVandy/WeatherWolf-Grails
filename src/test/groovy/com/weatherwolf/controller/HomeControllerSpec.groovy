@@ -6,5 +6,12 @@ import spock.lang.Specification
 
 class HomeControllerSpec extends Specification implements ControllerUnitTest<HomeController> {
 
+    def "test not logged in user on home page"(){
+        when:
+        controller.index()
+
+        then:
+        response.text.contains("Login to see Personalized Weather")
+    }
 
 }
