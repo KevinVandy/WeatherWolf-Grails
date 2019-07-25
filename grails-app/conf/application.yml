@@ -19,7 +19,19 @@ spring:
   groovy:
     template:
       check-template-location: false
+---
+environments:
+  development:
+    grails:
+      serverURL: http://localhost:8080
+  test:
+    grails:
+      serverURL: http://localhost:8080
+  production:
+    grails:
+      serverURL: http://localhost:8080
 
+---
 # Spring Actuator Endpoints are Disabled by Default
 endpoints:
   enabled: false
@@ -34,7 +46,7 @@ guide:
     - fr
 ---
 server:
-  port: 9999
+  port: 8080
 ---
 grails:
   mime:
@@ -119,7 +131,7 @@ environments:
   production:
     dataSource:
       dbCreate: update
-      url: jdbc:h2:./prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+      url: jdbc:mysql://localhost:3306/weatherwolf
       properties:
         jmxEnabled: true
         initialSize: 5

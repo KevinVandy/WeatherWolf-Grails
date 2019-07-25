@@ -80,7 +80,7 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
                 user = User.findByUsername(username)
                 user.forgotPasswordToken = RandomStringUtils.random(50, (('A'..'Z') + ('0'..'9')).join().toCharArray())
                 user.save(flush: true, failOnError: true)
-                def e = new EmailLog(toAddress: email, subject: 'Weather Wolf Password Reset', body: "Click <a href='http://localhost:9999/login/resetpassword?username=${user.username}&forgotPasswordToken=${user.forgotPasswordToken}'>here</a> to reset your password")
+                def e = new EmailLog(toAddress: email, subject: 'Weather Wolf Password Reset', body: "Click <a href='http://localhost:8080/login/resetpassword?username=${user.username}&forgotPasswordToken=${user.forgotPasswordToken}'>here</a> to reset your password")
                 mailService.sendMail {
                     to e.toAddress
                     subject e.subject

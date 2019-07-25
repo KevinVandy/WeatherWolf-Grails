@@ -13,7 +13,7 @@
         <h1 class="text-center"><g:message code="msg.youraccount" default="Your Account"/></h1>
 
         <form action="/account/updateemail" method="post" class="all-center">
-          <table class="all-left">
+          <table>
             <tr>
               <td>
                 <label><g:message code="msg.username" default="Username"/></label>
@@ -27,7 +27,7 @@
                 <label><g:message code="msg.email" default="email"/></label>
               </td>
               <td>
-                <input type="email" name="email" value="${user.email}"/>
+                <input type="email" name="email" value="${user.email}" style="width: 300px;"/>
               </td>
               <td colspan="2">
                 <input class="btn-white p" type="submit" value="<g:message code="msg.updateemail" default="Update Email"/>">
@@ -46,7 +46,7 @@
 
         <div style="display: none;" id="changepasswordform" class="all-center">
           <g:form controller="account" action="changepassword" method="post">
-            <table class="all-center">
+            <table>
               <tr>
                 <td>
                   <label><g:message code="msg.oldpassword" default="Old Password"/>:</label>
@@ -113,14 +113,14 @@
 
         <h2 class="text-center"><g:message code="msg.settings" default="Settings"/></h2>
 
-        <form action="/account/savesettings" method="post" id="settingsform">
-          <table class="all-center">
+        <form action="/account/savesettings" method="post" id="settingsform" class="all-center">
+          <table>
             <tr>
               <td>
                 <label><g:message code="language" default="Language"/></label>
               </td>
               <td>
-                <select name="lang" onchange="document.getElementById('settingsform').submit()">
+                <select name="lang" style="width: 300px;" onchange="document.getElementById('settingsform').submit()">
                   <option value="" disabled><g:message code="language" default="Language"/></option>
                   <option value="en" <g:if test="${user.lang == 'en'}">selected</g:if>><g:message code="language.en"
                                                                                                   default="English"/></option>
@@ -135,7 +135,7 @@
                 <label><g:message code="msg.units" default="Units"/></label>
               </td>
               <td>
-                <select name="units">
+                <select name="units" style="width: 300px;">
                   <option value="" disabled><g:message code="msg.units" default="Units"/></option>
                   <option value="C" <g:if test="${user.units == 'C'}">selected</g:if>>C&deg;</option>
                   <option value="F" <g:if test="${user.units == 'F'}">selected</g:if>>F&deg;</option>
@@ -146,9 +146,9 @@
               <td>
                 <label><g:message code="msg.favoritelocation" default="Favorite Location"/></label>
               </td>
-              <td>
+              <td id="remote">
                 <input type="text" name="location" placeholder="<g:message code='msg.search.placeholder'/>"
-                       value="${user.favoriteLocation}"/>
+                       value="${user.favoriteLocation}" class="typeahead" style="width: 300px;"/>
               </td>
             </tr>
             <tr>
@@ -160,6 +160,7 @@
         </form>
 
         <h2><g:message code="msg.searchhistory" default="Search History"/></h2>
+
         <table>
           <tr>
             <th>Date</th>
@@ -167,13 +168,33 @@
           </tr>
           <g:each in="${user.searchLog}" var="sl">
             <tr>
-              <td>${sl.date}</td>
-              <td>${sl.searchString}</td>
+              <td><g:formatDate date="${sl.date}" type="datetime" style="MEDIUM"/></td>
+              <td>
+                <g:form controller="weather" action="index">
+                  <input type="hidden" name="location" value="${sl.searchString}">
+                  <input type="submit" value="${sl.searchString}" class="btn-white p" style="width: 100%;">
+                </g:form>
+              </td>
             </tr>
           </g:each>
+          <g:if test="${user.searchLog}">
+            <tr>
+              <td colspan="2">
+                <g:form controller="account" action="deletesearchhistory" method="POST">
+                  <input type="submit" value="Delete Search History" class="btn-white p all-center">
+                </g:form>
+              </td>
+            </tr>
+          </g:if>
+          <g:else>
+            <tr>
+              <td colspan="2">
+                <p class="all-center">No Searches</p>
+              </td>
+            </tr>
+          </g:else>
         </table>
       </div>
-
     </div>
   </g:if>
   <g:else>

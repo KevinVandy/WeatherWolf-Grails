@@ -21,7 +21,7 @@ class User implements Serializable {
     boolean passwordExpired = false
     String lang = 'en'
     String units = 'F'
-    String favoriteLocation = 'Washington D.C.'
+    String favoriteLocation = ''
 
     Set<Role> getAuthorities() {
         (UserRole.findAllByUser(this) as List<UserRole>)*.role as Set<Role>
@@ -40,7 +40,7 @@ class User implements Serializable {
     static hasMany = [searchLog: SearchLog]
 
     static mapping = {
-        searchLog cascade: 'all-delete-orphan'
+        searchLog cascade: 'all-delete-orphan', sort: 'date', order: 'desc'
         password column: '`password`'
     }
 }

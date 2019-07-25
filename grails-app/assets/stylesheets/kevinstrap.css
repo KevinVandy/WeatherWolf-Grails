@@ -3,6 +3,7 @@
 
 :root {
   --danger-color: #dc3545;
+  --warning-color: #dca422;
   --dark-color: #333333;
   --light-color: #f4f4f4;
   --medium-color: #a0a0a0;
@@ -179,11 +180,12 @@ table {
   max-width: 1200px;
   padding: 3em;
   margin: 3em auto;
+  overflow: hidden;
 }
 
 .backcard table {
   margin: auto;
-  width: 80%;
+  width: 90%;
 }
 
 .card {
@@ -406,6 +408,12 @@ input[type="submit"], button {
 
 .btn-danger, .bg-danger, .badge-danger, .alert-danger {
   background: var(--danger-color);
+  color: #fff;
+  transition: color var(--medium-transition);
+}
+
+.btn-warning, .bg-warning, .badge-warning, .alert-warning {
+  background: var(--warning-color);
   color: #fff;
   transition: color var(--medium-transition);
 }
