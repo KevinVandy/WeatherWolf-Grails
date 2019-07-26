@@ -25,6 +25,7 @@
           <th>Favorite Location</th>
           <th>Language</th>
           <th>Units</th>
+          <th>Contact</th>
           <th>Delete</th>
         </tr>
       </thead>
@@ -37,6 +38,12 @@
             <td>${userData.favoriteLocation}</td>
             <td>${userData.lang}</td>
             <td>${userData.units}</td>
+            <td>
+              <g:form controller="admin" action="contactuser" method="post">
+                <input type="hidden" name="userId" value="${userData.id}">
+                <input type="submit" value="Contact" class="btn-white p">
+              </g:form>
+            </td>
             <td>
               <g:form controller="admin" action="deleteuser" method="post"
                       onsubmit="return confirm('Are you sure you want to delete this account?');">

@@ -16,6 +16,9 @@
   <g:include view="subforms/navadmin.gsp"/>
   <div class="backcard">
 
+  <g:each in="${pages}" var="page">
+    <a href="/admin/locations?firstLetter=${page}" class="step">${page}</a>
+  </g:each>
     <table id="location-table" class="display">
       <thead>
         <tr>
@@ -39,7 +42,9 @@
         </tr>
       </tfoot>
     </table>
-    <g:paginate controller="admin" action="locations" total="${locationCount}" max="100" next="Next" back="Back"/>
+    <g:each in="${pages}" var="page">
+      <a href="/admin/locations?firstLetter=${page}" class="step">${page}</a>
+    </g:each>
 
   </div>
   <script>

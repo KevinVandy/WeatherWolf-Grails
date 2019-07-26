@@ -14,16 +14,16 @@ class AdminController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass())
 
-    def index(){
+    def index() {
 
     }
 
     def users() {
-        Set<User> userDataSet = User.findAll(max: 1000)
+        Set<User> userDataSet = User.findAll(sort: 'username', max: 1000)
         render(view: '/admin/users', model: [userDataSet: userDataSet])
     }
 
-    def deleteuser(){
+    def deleteuser() {
 
     }
 
@@ -37,21 +37,21 @@ class AdminController {
         render(view: '/admin/emaillogs', model: [emailLogDataSet: emailLogDataSet])
     }
 
-    def locations(int max, int offset){
-        Set<String> countries
-        Set<Location> locationDataSet = Location.findAll(offset: offset ?: 0, max: max ?: 1000)
-        locationDataSet.sort{it.country}
-        render(view: '/admin/locations', model: [locationDataSet: locationDataSet, locationCount: Location.count()])
+    def locations(String firstLetter) {
+
+        def query = Location.where {
+            city =~ "${firstLetter ?: 'A'}%"
+        }
+        Set<Location> locationDataSet = query.list()
+        render(view: '/admin/locations', model: [locationDataSet: locationDataSet, locationCount: 26, pages: ('A'..'Z')])
     }
 
-    def addlocation(){
+    def addlocation() {
 
     }
 
     def deletelocation() {
 
     }
-
-
 
 }
