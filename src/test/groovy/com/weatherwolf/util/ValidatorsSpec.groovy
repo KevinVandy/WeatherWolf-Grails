@@ -18,7 +18,7 @@ import spock.lang.Specification
 class ValidatorsSpec extends Specification implements DataTest {
 
     Class<?>[] getDomainClassesToMock(){
-        return [User, Role, UserRole, SearchLog, EmailLog, CurrentWeather, DayForecast, Location, SearchResult] as Class[]
+        return [User, Role, SearchLog, EmailLog, CurrentWeather, DayForecast, Location, SearchResult] as Class[]
     }
 
     void "test valid signup"() {

@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.security.core.context.SecurityContextHolder
 
 
-@Secured(['ROLE_CLIENT'])
+@Secured(['ROLE_CLIENT', 'ROLE_ADMIN'])
 class AccountController {
 
     static allowedMethods = [

@@ -9,6 +9,7 @@
   <div id="content" role="main">
     <g:include view="subforms/searchbar.gsp"/>
     <sec:ifLoggedIn>
+
       <div class="backcard">
         <h2><g:message code="msg.hello" default="Hello"/>, <sec:username/></h2>
 
@@ -16,9 +17,11 @@
           <div>
             <p>Your favorite location: <strong>${user.favoriteLocation}</strong></p>
           </div>
-
           <div>
-            <a href="/account/index"><button class="btn-white p-1">Change Account Settings</button></a>
+            <sec:ifAnyGranted roles="ROLE_ADMIN">
+              <g:link controller="admin" action="index"><button class="btn-white p-1 m all-center">Admin Portal</button></g:link>
+            </sec:ifAnyGranted>
+            <g:link controller="account" action="index"><button class="btn-white p-1 m all-center">Change Account Settings</button></g:link>
           </div>
         </div>
       </div>

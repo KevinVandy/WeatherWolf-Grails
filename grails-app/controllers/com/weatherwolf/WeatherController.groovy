@@ -9,7 +9,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.security.core.context.SecurityContextHolder
 
-
+@Secured("permitAll")
 class WeatherController {
 
     static allowedMethods = [
@@ -20,7 +20,6 @@ class WeatherController {
     String currentUsername
     User user
 
-    @Secured("permitAll")
     def index() {
         def weatherService = new WeatherService()
         def searchResult = new SearchResult()

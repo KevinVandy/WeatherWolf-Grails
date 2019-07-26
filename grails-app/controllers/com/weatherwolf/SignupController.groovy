@@ -31,7 +31,7 @@ class SignupController {
             redirect(url: "/signup/index?username=${username}&email=${email}&favoritelocation=${favoritelocation}") //user error
         } else { //should be valid
             logger.info("Creating user: ${username}")
-            u = new User(username: username, email: email, password: password, favoriteLocation: favoritelocation)
+            u = new User(username: username, email: email, password: password, favoriteLocation: favoritelocation, dateCreated: new Date())
             try {
                 logger.debug("saving user")
                 u.save(flush: true, failOnError: true)

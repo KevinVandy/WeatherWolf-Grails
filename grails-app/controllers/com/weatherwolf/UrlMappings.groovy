@@ -16,8 +16,10 @@ class UrlMappings {
 
         "/location"(resources: 'location') {
             collection {
+                '/index'(controller: 'location', action: 'index')
                 '/search'(controller: 'location', action: 'search')
             }
         }
+
     }
 }

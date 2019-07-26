@@ -162,37 +162,41 @@
         <h2><g:message code="msg.searchhistory" default="Search History"/></h2>
 
         <table>
-          <tr>
-            <th>Date</th>
-            <th>Search</th>
-          </tr>
-          <g:each in="${user.searchLog}" var="sl">
+          <thead>
             <tr>
-              <td><g:formatDate date="${sl.date}" type="datetime" style="MEDIUM"/></td>
-              <td>
-                <g:form controller="weather" action="index">
-                  <input type="hidden" name="location" value="${sl.searchString}">
-                  <input type="submit" value="${sl.searchString}" class="btn-white p" style="width: 100%;">
-                </g:form>
-              </td>
+              <th>Date</th>
+              <th>Search</th>
             </tr>
-          </g:each>
-          <g:if test="${user.searchLog}">
-            <tr>
-              <td colspan="2">
-                <g:form controller="account" action="deletesearchhistory" method="POST">
-                  <input type="submit" value="Delete Search History" class="btn-white p all-center">
-                </g:form>
-              </td>
-            </tr>
-          </g:if>
-          <g:else>
-            <tr>
-              <td colspan="2">
-                <p class="all-center">No Searches</p>
-              </td>
-            </tr>
-          </g:else>
+          </thead>
+          <tbody>
+            <g:each in="${user.searchLog}" var="sl">
+              <tr>
+                <td><g:formatDate date="${sl.date}" type="datetime" style="MEDIUM"/></td>
+                <td>
+                  <g:form controller="weather" action="index">
+                    <input type="hidden" name="location" value="${sl.searchString}">
+                    <input type="submit" value="${sl.searchString}" class="btn-white p" style="width: 100%;">
+                  </g:form>
+                </td>
+              </tr>
+            </g:each>
+            <g:if test="${user.searchLog}">
+              <tr>
+                <td colspan="2">
+                  <g:form controller="account" action="deletesearchhistory" method="POST">
+                    <input type="submit" value="Delete Search History" class="btn-white p all-center">
+                  </g:form>
+                </td>
+              </tr>
+            </g:if>
+            <g:else>
+              <tr>
+                <td colspan="2">
+                  <p class="all-center">No Searches</p>
+                </td>
+              </tr>
+            </g:else>
+          </tbody>
         </table>
       </div>
     </div>

@@ -1,20 +1,37 @@
 package com.weatherwolf
 
 import com.weatherwolf.weather.Location
+import grails.plugin.springsecurity.annotation.Secured
 import grails.rest.RestfulController
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 
+@Secured("permitAll")
 class LocationController extends RestfulController<Location> {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass())
 
     static responseFormats = ['json']
 
     static allowedMethods = [
+            load: ['GET'],
             search: ['GET']
     ]
 
     LocationController() {
         super(Location)
     }
+
+    def index(int offset, int max) {
+        if(!max || max > 1000){
+            logger.info("Invalid parameters: max - ${max}, offset: ${offset}")
+            respond([])
+        } else {
+            respond Location.findAll(max: max, offset: offset ?: 0)
+        }
+    }
+
 
     def search(String q) {
         def query

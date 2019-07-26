@@ -8,6 +8,7 @@
 * compiled file, but it's generally better to create a new file per style scope.
 *
 *= require kevinstrap
+*= require jqueryDataTables.min.css
 *= require_self
 */
 
@@ -116,4 +117,8 @@
   opacity: 1;
   transition: background-color var(--fast-transition);
   transition: opacity var(--fast-transition);
+}
+
+.step {
+  padding: 6px;
 }

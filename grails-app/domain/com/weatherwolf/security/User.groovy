@@ -22,6 +22,7 @@ class User implements Serializable {
     String lang = 'en'
     String units = 'F'
     String favoriteLocation = ''
+    Date dateCreated
 
     Set<Role> getAuthorities() {
         (UserRole.findAllByUser(this) as List<UserRole>)*.role as Set<Role>
