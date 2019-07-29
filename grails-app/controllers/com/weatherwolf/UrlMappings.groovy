@@ -18,6 +18,9 @@ class UrlMappings {
             collection {
                 '/index'(controller: 'location', action: 'index')
                 '/search'(controller: 'location', action: 'search')
+                '/searchcity'(controller: 'location', action: 'searchcity')
+                '/searchstateprovince'(controller: 'location', action: 'searchstateprovince')
+                '/searchcountry'(controller: 'location', action: 'searchcountry')
             }
         }
 

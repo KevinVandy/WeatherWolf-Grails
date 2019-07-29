@@ -15,7 +15,7 @@
 <body>
   <g:include view="subforms/navadmin.gsp"/>
   <div class="backcard">
-
+    <g:include view="subforms/msg.gsp"/>
     <table id="user-table" class="display">
       <thead>
         <tr>
@@ -25,7 +25,7 @@
           <th>Favorite Location</th>
           <th>Language</th>
           <th>Units</th>
-          <th>Contact</th>
+          <th>Num Searches</th>
           <th>Delete</th>
         </tr>
       </thead>
@@ -34,16 +34,17 @@
           <tr>
             <td>${userData.id}</td>
             <td>${userData.username}</td>
-            <td>${userData.email}</td>
+            <td>
+              <g:form controller="admin" action="contactuser" method="post" class="m" style="display: inline;">
+                <input type="hidden" name="email" value="${userData.email}">
+                <input type="submit" value="Contact" class="btn-white p">
+              </g:form>
+              ${userData.email}
+            </td>
             <td>${userData.favoriteLocation}</td>
             <td>${userData.lang}</td>
             <td>${userData.units}</td>
-            <td>
-              <g:form controller="admin" action="contactuser" method="post">
-                <input type="hidden" name="userId" value="${userData.id}">
-                <input type="submit" value="Contact" class="btn-white p">
-              </g:form>
-            </td>
+            <td>${userData.searchLog.size()}</td>
             <td>
               <g:form controller="admin" action="deleteuser" method="post"
                       onsubmit="return confirm('Are you sure you want to delete this account?');">

@@ -9,27 +9,100 @@
 //= require typeahead
 //= require_self
 
-var cities = new Bloodhound({
+//city, stateprovince, country
+let locations = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
-    prefetch: '/location/search/?q=new',
     remote: {
         url: '/location/search/?q=%QUERY',
         wildcard: '%QUERY'
     }
 });
 
-$('#remote .typeahead').typeahead(
+$('.typeahead').typeahead(
     {
         minLength: 2,
         hint: true
     }, {
         name: 'location',
         display: Handlebars.compile('{{city}}, {{stateProvince}}, {{country}}'),
-        source: cities,
+        source: locations,
         limit: 30,
         templates: {
             empty: ['no cities found'],
             suggestion: Handlebars.compile('<div><strong>{{city}}</strong>, {{stateProvince}}, {{country}}</div>')
         }
     });
+
+//cities only
+let cities = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    remote: {
+        url: '/location/searchcity/?q=%QUERY',
+        wildcard: '%QUERY'
+    }
+});
+
+
+$('.typeaheadCity').typeahead(
+    {
+        minLength: 2,
+        hint: true
+    }, {
+        name: 'city',
+        source: cities,
+        limit: 30,
+        templates: {
+            empty: ['No record of city']
+        }
+    });
+
+// states / provinces only
+let stateProvinces = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    remote: {
+        url: '/location/searchstateprovince/?q=%QUERY',
+        wildcard: '%QUERY'
+    }
+});
+
+
+$('.typeaheadStateProvince').typeahead(
+    {
+        minLength: 2,
+        hint: true
+    }, {
+        name: 'stateProvince',
+        source: stateProvinces,
+        limit: 30,
+        templates: {
+            empty: ['no record of state or province']
+        }
+    });
+
+//countries only
+let countries = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    remote: {
+        url: '/location/searchcountry/?q=%QUERY',
+        wildcard: '%QUERY'
+    }
+});
+
+
+$('.typeaheadCountry').typeahead(
+    {
+        minLength: 2,
+        hint: true
+    }, {
+        name: 'country',
+        source: countries,
+        limit: 30,
+        templates: {
+            empty: ['no record of country']
+        }
+    });
+

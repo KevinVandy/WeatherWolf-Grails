@@ -15,7 +15,36 @@
 <body>
   <g:include view="subforms/navadmin.gsp"/>
   <div class="backcard">
+    <g:include view="subforms/msg.gsp"/>
+    <table id="user-table" class="display">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Date Time</th>
+          <th>Search</th>
+          <th>User</th>
+        </tr>
+      </thead>
+      <tbody>
+        <g:each in="${searchLogDataSet}" var="searchLog">
+          <tr>
+            <td>${searchLog.id}</td>
+            <td>${searchLog.date}</td>
+            <td>${searchLog.searchString}</td>
+            <td>${searchLog.user.username}</td>
+          </tr>
+        </g:each>
+      </tbody>
+    </table>
 
   </div>
+  <script>
+      $(document).ready(function () {
+          $('#user-table').DataTable({
+              select: true,
+              ordering: true
+          });
+      });
+  </script>
 </body>
 </html>

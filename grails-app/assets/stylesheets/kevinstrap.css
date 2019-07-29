@@ -230,6 +230,9 @@ table {
 }
 
 /* Padding */
+.p-0 {
+  padding: 0;
+}
 
 .p {
   padding: 0.5rem;
@@ -264,6 +267,9 @@ table {
 }
 
 /* Margin */
+.m-0 {
+  margin: 0 auto;
+}
 
 .m {
   margin: 0.5rem;
@@ -518,16 +524,17 @@ table th {
 .nav-rel {
   position: relative;
   background-image: linear-gradient(  var(--primary-color), #004d61);
+  z-index: 2;
 }
 
 .nav-fixed {
   position: fixed;
   background-image: linear-gradient( #004d61, var(--primary-color));
+  z-index: 3;
 }
 
 .navbar {
   align-items: center;
-
   display: flex;
   justify-content: space-between;
   height: 50px;
@@ -609,6 +616,10 @@ footer, .footer {
 .toggle-5day {
   font-size: 2em;
   cursor: pointer;
+}
+
+fieldset {
+  overflow: hidden;
 }
 
 /* Mobile Styles */

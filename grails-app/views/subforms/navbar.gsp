@@ -11,9 +11,14 @@
     <li>
       <a href="/home"><g:message code="msg.home" default="Home"/></a>
     </li>
+    <sec:ifAnyGranted roles="ROLE_ADMIN">
+      <li>
+        <g:link controller="admin" action="index"><g:message code="msg.admin" default="Admin"/></g:link>
+      </li>
+    </sec:ifAnyGranted>
     <sec:ifLoggedIn>
       <li>
-        <a href="/account"><g:message code="msg.account" default="Account"/></a>
+        <g:link controller="account" action="index"><g:message code="msg.account" default="Account"/></g:link>
       </li>
       <li>
         <g:link controller="logout" action="index"><g:message code="msg.logout" default="Logout"/></g:link>
@@ -21,10 +26,10 @@
     </sec:ifLoggedIn>
     <sec:ifNotLoggedIn>
       <li>
-        <a href="/signup"><g:message code="msg.signup" default="Sign up"/></a>
+        <g:link controller="signup" action="index"><g:message code="msg.signup" default="Sign up"/></g:link>
       </li>
       <li>
-        <a href="/login"><g:message code="msg.login" default="Log in"/></a>
+        <g:link controller="login" action="index"><g:message code="msg.login" default="Log in"/></g:link>
       </li>
     </sec:ifNotLoggedIn>
   </ul>

@@ -7,7 +7,7 @@
 
 <body>
   <g:if test="${user}">
-    <div class="backcard all-center grid-1">
+    <div class="backcard all-center grid-1" style="max-width: 800px;">
       <g:include view="subforms/msg.gsp"/>
       <div class="grid-1 all-center">
         <h1 class="text-center"><g:message code="msg.youraccount" default="Your Account"/></h1>

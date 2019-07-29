@@ -15,7 +15,7 @@ class LocationController extends RestfulController<Location> {
     static responseFormats = ['json']
 
     static allowedMethods = [
-            load: ['GET'],
+            load  : ['GET'],
             search: ['GET']
     ]
 
@@ -24,14 +24,13 @@ class LocationController extends RestfulController<Location> {
     }
 
     def index(int offset, int max) {
-        if(!max || max > 1000){
+        if (!max || max > 1000) {
             logger.info("Invalid parameters: max - ${max}, offset: ${offset}")
             respond([])
         } else {
             respond Location.findAll(max: max, offset: offset ?: 0)
         }
     }
-
 
     def search(String q) {
         def query
@@ -57,6 +56,42 @@ class LocationController extends RestfulController<Location> {
                     (city ==~ "%${q}%")
                 }
             }
+            respond query.list(max: 20)
+        }
+    }
+
+    def searchcity(String q) {
+        def query
+        if (!q) {
+            respond([])
+        } else {
+            query = Location.where {
+                (city ==~ "%${q}%")
+            }.distinct('city')
+            respond query.list(max: 20)
+        }
+    }
+
+    def searchstateprovince(String q) {
+        def query
+        if (!q) {
+            respond([])
+        } else {
+            query = Location.where {
+                (stateProvince ==~ "%${q}%")
+            }.distinct('stateProvince')
+            respond query.list(max: 20)
+        }
+    }
+
+    def searchcountry(String q) {
+        def query
+        if (!q) {
+            respond([])
+        } else {
+            query = Location.where {
+                (country ==~ "%${q}%")
+            }.distinct('country')
             respond query.list(max: 20)
         }
     }

@@ -122,3 +122,8 @@
 .step {
   padding: 6px;
 }
+
+.typeahead, .typeaheadCity, .typeaheadStateProvince, .typeaheadCountry {
+  min-width: 300px;
+  font-size: 1.2em;
+}
