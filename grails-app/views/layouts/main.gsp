@@ -21,7 +21,7 @@
   <asset:javascript src="vfs_fonts.js"/>
   <asset:javascript src="buttons.html5.min.js"/>
   <asset:javascript src="buttons.print.min.js"/>
-  <asset:javascript src="dataTables.editor.min.js"/>
+%{--  <asset:javascript src="dataTables.editor.min.js"/>--}%
   <asset:javascript src="handlebars.js"/>
   <asset:javascript src="application.js" defer = ""/>
   <g:layoutHead/>

@@ -47,7 +47,7 @@ let cities = new Bloodhound({
 
 $('.typeaheadCity').typeahead(
     {
-        minLength: 2,
+        minLength: 4,
         hint: true
     }, {
         name: 'city',
@@ -71,7 +71,7 @@ let stateProvinces = new Bloodhound({
 
 $('.typeaheadStateProvince').typeahead(
     {
-        minLength: 2,
+        minLength: 3,
         hint: true
     }, {
         name: 'stateProvince',

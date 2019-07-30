@@ -7,7 +7,7 @@
 
       <div class="grid-2">
         <div class="m-1">
-          <p>${searchResult.currentWeather.temperature.round()}&deg;</p>
+          <p>${searchResult.currentWeather.temperature.round()}&deg;${params.units}</p>
         </div>
 
         <div class="m-1">

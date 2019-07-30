@@ -26,7 +26,6 @@
             <input type="text" name="q" style=" width: 400px; font-size: 1.5em;" placeholder="<g:message code='msg.search.placeholder'/>"
                    class="typeahead" />
             <input type="submit" value="Search All" class="btn-white p m">
-
         </tr>
         <tr>
           <td colspan="2">
@@ -92,30 +91,32 @@
           <th>Delete</th>
         </tr>
       </thead>
-      <g:each in="${locationDataSet}" var="location">
-        <tr>
-          <td>${location.city}</td>
-          <td>${location.stateProvince}</td>
-          <td>${location.country}</td>
-          <td>
-            <g:form controller="admin" action="deletelocation" method="post"
-                    onsubmit="return confirm('Are you sure you want to delete this location?');">
-              <input type="hidden" name="q" value="${params.q}">
-              <input type="hidden" name="locationId" value="${location.id}">
-              <input type="submit" value="Delete" class="btn-danger p m-0">
-            </g:form>
-          </td>
-        </tr>
-      </g:each>
-      <g:if test="${locationDataSet.size() > 10}">
-        <tfoot>
+      <g:if test="${locationDataSet}">
+        <g:each in="${locationDataSet}" var="location">
           <tr>
-            <th>City</th>
-            <th>State / Province / Region</th>
-            <th>Country</th>
-            <th>Delete</th>
+            <td>${location.city}</td>
+            <td>${location.stateProvince}</td>
+            <td>${location.country}</td>
+            <td>
+              <g:form controller="admin" action="deletelocation" method="post"
+                      onsubmit="return confirm('Are you sure you want to delete this location?');">
+                <input type="hidden" name="q" value="${params.q}">
+                <input type="hidden" name="locationId" value="${location.id}">
+                <input type="submit" value="Delete" class="btn-danger p m-0">
+              </g:form>
+            </td>
           </tr>
-        </tfoot>
+        </g:each>
+        <g:if test="${locationDataSet.size() > 10}">
+          <tfoot>
+            <tr>
+              <th>City</th>
+              <th>State / Province / Region</th>
+              <th>Country</th>
+              <th>Delete</th>
+            </tr>
+          </tfoot>
+        </g:if>
       </g:if>
     </table>
     <br/>

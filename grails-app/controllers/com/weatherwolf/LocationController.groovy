@@ -15,8 +15,11 @@ class LocationController extends RestfulController<Location> {
     static responseFormats = ['json']
 
     static allowedMethods = [
-            load  : ['GET'],
-            search: ['GET']
+            index  : ['GET'],
+            search: ['GET'],
+            searchcity: ['GET'],
+            searchstateprovince: ['GET'],
+            searchcountry: ['GET']
     ]
 
     LocationController() {
@@ -41,19 +44,19 @@ class LocationController extends RestfulController<Location> {
             l = WeatherUtils.assignCityStateProvinceCountry(q, l)
             if (l.city && !l.country && !l.stateProvince) {
                 query = Location.where {
-                    (city ==~ "%${q}%")
+                    (city ==~ "${q}%")
                 }
             } else if (l.city && l.country && !l.stateProvince) {
                 query = Location.where {
-                    (city ==~ "%${l.city}%") && ((country ==~ "%${l.country}%") || (stateProvince ==~ "%${l.country}%"))
+                    (city ==~ "${l.city}%") && ((country ==~ "${l.country}%") || (stateProvince ==~ "${l.country}%"))
                 }
             } else if (l.city && l.country && l.stateProvince) {
                 query = Location.where {
-                    (city ==~ "%${l.city}%") && (country ==~ "%${l.country}%") && (stateProvince ==~ "%${l.stateProvince}%")
+                    (city ==~ "${l.city}%") && (country ==~ "${l.country}%") && (stateProvince ==~ "${l.stateProvince}%")
                 }
             } else {
                 query = Location.where {
-                    (city ==~ "%${q}%")
+                    (city ==~ "${q}%")
                 }
             }
             respond query.list(max: 20)
@@ -62,11 +65,11 @@ class LocationController extends RestfulController<Location> {
 
     def searchcity(String q) {
         def query
-        if (!q) {
+        if (!q || q.length() <= 3) {
             respond([])
         } else {
             query = Location.where {
-                (city ==~ "%${q}%")
+                (city ==~ "${q}%")
             }.distinct('city')
             respond query.list(max: 20)
         }
@@ -74,11 +77,11 @@ class LocationController extends RestfulController<Location> {
 
     def searchstateprovince(String q) {
         def query
-        if (!q) {
+        if (!q || q.length() <= 2) {
             respond([])
         } else {
             query = Location.where {
-                (stateProvince ==~ "%${q}%")
+                (stateProvince ==~ "${q}%")
             }.distinct('stateProvince')
             respond query.list(max: 20)
         }
@@ -86,11 +89,11 @@ class LocationController extends RestfulController<Location> {
 
     def searchcountry(String q) {
         def query
-        if (!q) {
+        if (!q || q.length() <= 1) {
             respond([])
         } else {
             query = Location.where {
-                (country ==~ "%${q}%")
+                (country ==~ "${q}%")
             }.distinct('country')
             respond query.list(max: 20)
         }

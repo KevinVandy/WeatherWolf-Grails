@@ -6,5 +6,13 @@ import spock.lang.Specification
 
 class LocationControllerSpec extends Specification implements ControllerUnitTest<LocationController> {
 
+    void "test valid search"(){
+        given:
+
+        when:
+
+        then:
+
+    }
 
 }

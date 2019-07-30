@@ -68,4 +68,15 @@
     (function () {
         document.forms['loginForm'].elements['username'].focus();
     })();
+
+    //disable typing spaces in username
+    $("#username").on({
+        keydown: function(e) {
+            if (e.which === 32)
+                return false;
+        },
+        change: function() {
+            this.value = this.value.replace(/\s/g, "");
+        }
+    });
 </script>

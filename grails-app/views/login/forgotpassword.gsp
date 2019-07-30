@@ -31,7 +31,7 @@
             <label for="email"><g:message code="msg.email" default="Email"/>:</label>
           </td>
           <td>
-            <input type="email" name="email" id="email" minlength="5" maxlength="100" required>
+            <input type="email" name="email" id="email" minlength="3" maxlength="100" required>
           </td>
         </tr>
         <tr>

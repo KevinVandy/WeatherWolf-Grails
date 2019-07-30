@@ -629,10 +629,6 @@ footer, .footer {
   cursor: pointer;
 }
 
-fieldset {
-  overflow: hidden;
-}
-
 /* Mobile Styles */
 
 @media (max-width: 1000px) {

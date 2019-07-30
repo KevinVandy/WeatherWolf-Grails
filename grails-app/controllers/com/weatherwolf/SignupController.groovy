@@ -23,7 +23,8 @@ class SignupController {
 
     //POST only
     def register(String username, String email, String password, String passwordconfirm, String favoritelocation) {
-        def u, ur
+        def u, r
+        def ur = new UserRole()
         logger.info("New user, ${username} attempting to register")
         flash.error = Validators.validateSignup(username, email, password, passwordconfirm)
         logger.info("message: " + flash.error)
@@ -36,8 +37,8 @@ class SignupController {
                 logger.debug("saving user")
                 u.save(flush: true, failOnError: true)
                 logger.debug("user saved")
-                ur = new UserRole(user: u, role: Role.findByAuthority('ROLE_CLIENT'))
-                ur.save(flush: true, failOnError: true)
+                r = Role.findByAuthority('ROLE_CLIENT')
+                ur.create(u, r, true)
                 logger.info("User Role saved")
                 flash.success = "${u.username}" + message(code: 'msg.youraccountcreated', default: ", Your Account has been Created")
                 redirect(url: "/login/index?username=${username}") //success

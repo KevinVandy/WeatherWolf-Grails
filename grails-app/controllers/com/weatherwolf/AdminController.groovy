@@ -1,12 +1,12 @@
 package com.weatherwolf
 
 import com.weatherwolf.security.EmailLog
+import com.weatherwolf.security.Role
 import com.weatherwolf.security.SearchLog
 import com.weatherwolf.security.User
 import com.weatherwolf.security.UserRole
 import com.weatherwolf.weather.Location
 import grails.plugin.springsecurity.annotation.Secured
-import org.grails.datastore.mapping.query.Query.In
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -25,8 +25,48 @@ class AdminController {
         render(view: '/admin/users', model: [userDataSet: userDataSet])
     }
 
-    def disableuser(Integer userId){
-        if(!userId){
+    def changeadminstatus(Integer userId, String adminstatus) {
+        try {
+            User u = User.findById(userId)
+            Role r = Role.findByAuthority('ROLE_ADMIN')
+            UserRole ur = new UserRole()
+            if (adminstatus == '1') {
+                ur.create(u, r, true)
+                flash.success = "${u.username} is now an admin"
+            } else {
+                ur.remove(u, r)
+                flash.success = "${u.username} is no longer an admin"
+            }
+        } catch (Exception e) {
+            flash.error = 'Could not change role'
+            logger.warn('Could not change role')
+            logger.error(e.toString())
+        }
+        redirect(url: '/admin/users')
+    }
+
+    def changeuserstatus(Integer userId, String userstatus) {
+        try {
+            User u = User.findById(userId)
+            Role r = Role.findByAuthority('ROLE_CLIENT')
+            UserRole ur = new UserRole()
+            if (userstatus == '1') {
+                ur.create(u, r, true)
+                flash.success = "${u.username} is now a user"
+            } else {
+                ur.remove(u, r)
+                flash.success = "${u.username} is no longer a user"
+            }
+        } catch (Exception e) {
+            flash.error = 'Could not change role'
+            logger.warn('Could not change role')
+            logger.error(e.toString())
+        }
+        redirect(url: '/admin/users')
+    }
+
+    def disableuser(Integer userId) {
+        if (!userId) {
             flash.error = 'Invalid User ID'
         } else {
             try {
@@ -34,15 +74,15 @@ class AdminController {
                 u.enabled = false
                 u.save(flush: true, failOnError: true)
                 flash.success = "Disabled ${u.username}"
-            } catch(Exception e){
+            } catch (Exception e) {
                 flash.error = "Could not disable user"
             }
         }
         redirect(url: '/admin/users')
     }
 
-    def enableuser(Integer userId){
-        if(!userId){
+    def enableuser(Integer userId) {
+        if (!userId) {
             flash.error = 'Invalid User ID'
         } else {
             try {
@@ -50,7 +90,7 @@ class AdminController {
                 u.enabled = true
                 u.save(flush: true, failOnError: true)
                 flash.success = "Enabled ${u.username}"
-            } catch(Exception e){
+            } catch (Exception e) {
                 flash.error = "Could not disable user"
             }
         }
@@ -58,14 +98,19 @@ class AdminController {
     }
 
     def deleteuser(Integer userId) {
+        def u, ur
         if (!userId) {
             flash.error = 'Invalid user id'
         } else {
             try {
-                def u = User.findById(userId)
-                def ur = UserRole.findByUser(u)
-                ur.delete(flush: true, failOnError: true)
-                u.delete(flush: true, failOnError: true)
+                u = User.findById(userId)
+                if (u) {
+                    ur = UserRole.findByUser(u)
+                    if (ur) {
+                        ur.delete(flush: true, failOnError: true)
+                    }
+                    u.delete(flush: true, failOnError: true)
+                }
                 flash.success = "Deleted ${u.username}"
             } catch (Exception e) {
                 flash.error = "Failed to delete user"
@@ -87,8 +132,11 @@ class AdminController {
 
     def locations(String q) {
         def query
+        Set<Location> locationDataSet
 
-        if (q && q.contains(',')) {
+        if (!q) {
+            locationDataSet = null
+        } else if (q && q.contains(',')) {
             def l = new Location()
             l = WeatherUtils.assignCityStateProvinceCountry(q, l)
             if (l.city && !l.country && !l.stateProvince) {
@@ -108,12 +156,13 @@ class AdminController {
                     (city ==~ "%${q}%")
                 }
             }
+            locationDataSet = query.list(max: 6000)
         } else {
             query = Location.where {
                 city =~ "${q ?: 'A'}%"
             }
+            locationDataSet = query.list(max: 6000)
         }
-        Set<Location> locationDataSet = query.list(max: 6000)
         render(view: '/admin/locations', model: [locationDataSet: locationDataSet, locationCount: Location.count(), pages: ('A'..'Z')])
     }
 

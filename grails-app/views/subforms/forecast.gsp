@@ -10,9 +10,9 @@
         </div>
         <hr/>
 
-        <div class="grid-2">
+        <div class="grid-2" style="height: 100px;">
           <div>
-            <img src="${dayForecast.iconURL}" alt="${dayForecast.iconURL}" style="float: left; width: 75px"/>
+            <img src="${dayForecast.iconURL}" alt="${dayForecast.iconURL}" style="float: left; width: 70px"/>
           </div>
 
           <div class="text-center-inline">
@@ -25,11 +25,11 @@
         <p class="text-center p">${dayForecast.windSpeed.round()} mph winds</p>
 
         <div class="grid-3 all-center">
-          <div style="color: blue; font-size: 2em;">${dayForecast.minTemp.round()}&deg;</div>
+          <div style="color: blue; font-size: 2em;">${dayForecast.minTemp.round()}&deg;${params.units}</div>
 
           <div></div>
 
-          <div style="color: red; font-size: 2em;">${dayForecast.maxTemp.round()}&deg;</div>
+          <div style="color: red; font-size: 2em;">${dayForecast.maxTemp.round()}&deg;${params.units}</div>
         </div>
       </div>
     </g:each>

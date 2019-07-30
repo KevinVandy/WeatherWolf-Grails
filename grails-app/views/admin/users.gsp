@@ -5,7 +5,7 @@
   Time: 10:09 AM
 --%>
 
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="com.weatherwolf.security.Role" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
   <meta name="layout" content="main"/>
@@ -25,7 +25,8 @@
           <th>Favorite Location</th>
           <th>Language</th>
           <th>Units</th>
-          <th>Num Searches</th>
+          <th># Searches</th>
+          <th>Roles</th>
           <th>Enabled</th>
           <th>Ban</th>
         </tr>
@@ -35,17 +36,28 @@
           <tr>
             <td>${userData.id}</td>
             <td>${userData.username}</td>
-            <td>
-              <g:form controller="admin" action="contactuser" method="post" class="m" style="display: inline;">
-                <input type="hidden" name="email" value="${userData.email}">
-                <input type="submit" value="Contact" class="btn-white p">
-              </g:form>
-              ${userData.email}
-            </td>
+            <td><a href="mailto:${userData.email}?subject=Weather%20Wolf">${userData.email}</a></td>
             <td>${userData.favoriteLocation}</td>
             <td>${userData.lang}</td>
             <td>${userData.units}</td>
             <td>${userData.searchLog.size()}</td>
+            <td>
+              <form action="/admin/changeadminstatus" method="post" id="${userData.username}adminstatusform">
+                <input type="hidden" name="userId" value="${userData.id}">
+                <input type="checkbox" name="adminstatus" value="1"
+                       onchange="document.getElementById('${userData.username}adminstatusform').submit()"
+                       <g:if test="${userData.getAuthorities().contains(new Role("ROLE_ADMIN"))}">checked</g:if>>
+                <label>Admin</label>
+              </form>
+
+              <form action="/admin/changeuserstatus" method="post" id="${userData.username}userstatusform">
+                <input type="hidden" name="userId" value="${userData.id}">
+                <input type="checkbox" name="userstatus" value="1" disabled
+                       onchange="document.getElementById('${userData.username}userstatusform').submit()"
+                       <g:if test="${userData.getAuthorities().contains(new Role("ROLE_CLIENT"))}">checked</g:if>>
+                <label>User</label>
+              </form>
+            </td>
             <td>
               <g:if test="${userData.enabled}">
                 <g:form controller="admin" action="disableuser" method="post">

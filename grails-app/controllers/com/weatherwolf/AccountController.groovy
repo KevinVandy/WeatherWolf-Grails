@@ -1,6 +1,5 @@
 package com.weatherwolf
 
-import com.weatherwolf.security.SearchLog
 import com.weatherwolf.security.User
 import com.weatherwolf.security.UserRole
 import grails.plugin.springsecurity.annotation.Secured
@@ -22,13 +21,15 @@ class AccountController {
     ]
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass())
-    def currentUsername
     def user = new User()
+
+    private User refreshUser(){
+        user = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
+    }
 
     def index() { //show user's account settings page
         logger.info("User visited account/index")
-        currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()
-        user = User.findByUsername(currentUsername)
+        refreshUser()
         render(view: '/account/index', model: [user: user])
     }
 
@@ -37,20 +38,23 @@ class AccountController {
         flash.error = Validators.valPassword(newpassword, newpasswordconfirm)
         if (oldpassword && !flash.error) {
             try {
+                refreshUser()
                 user.password = newpassword
                 user.passwordExpired = false
                 user.save(flush: true, failOnError: true)
                 flash.success = message(code: 'msg.passwordchanged', default: 'Password was changed') //success
             } catch (Exception e) {
                 flash.error = message(code: 'msg.errorsavingpnewpassword', default: 'Error saving new password. Try again.') //unknown error
+                logger.warn('Could not change password')
                 logger.error(e.toString())
             }
         }
-        render(view: '/account/index', model: [user: user])
+        redirect(url: '/account/index')
     }
 
     //POST only
     def updateemail(String email) {
+        refreshUser()
         if(email && email == user.email){
             flash.warning = 'Email not changed because that is your same email'
         } else {
@@ -67,13 +71,12 @@ class AccountController {
                 }
             }
         }
-        render(view: '/account/index', model: [user: user])
+        redirect(url: '/account/index')
     }
 
     //POST only
     def savesettings(String lang, Character units, String location) {
-        currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()
-        user = User.findByUsername(currentUsername)
+        refreshUser()
         if (user.lang == lang && user.units == units && user.favoriteLocation == location) {
             flash.warning = message(code: 'msg.nosettingschanged', default: 'No settings were changed')
         } else {
@@ -102,7 +105,7 @@ class AccountController {
                 flash.error = message(code: 'msg.settingsnotsaved', default: 'Settings could not be saved') //unkown error
             }
         }
-        render(view: '/account/index', model: [user: user])
+        redirect(url: '/account/index')
     }
 
     //POST only
@@ -116,7 +119,7 @@ class AccountController {
             logger.error(e.toString())
             flash.error = message(code: 'msg.settingsnotsaved', default: 'Location could not be saved') //unkown error
         }
-        render(view: '/account/index', model: [user: user])
+        redirect(url: '/account/index')
     }
 
     def deletesearchhistory() {
@@ -128,24 +131,21 @@ class AccountController {
         } catch (Exception e) {
             flash.error = message(code: 'msg.couldnotdeletesearchhistory', default: 'Could not delete search history')
         }
-        currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()
-        user = User.findByUsername(currentUsername)
-        render(view: '/account/index', model: [user: user])
+        redirect(url: '/account/index')
     }
 
     //POST only, username only from session
     def deleteaccount() {
         try {
-            currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()
-            user = User.findByUsername(currentUsername)
+            refreshUser()
             def userRole = UserRole.findByUser(user)
-            userRole.delete(flush: true, failOnError: true) //TODO Rollback on error?
-            user.delete(flush: true, failOnError: true) //TODO Rollback on error?
+            userRole.delete(flush: true, failOnError: true)
+            user.delete(flush: true, failOnError: true)
             flash.success = message(code: 'msg.accountdeleted', default: 'Account Deleted')
             redirect(url: '/logout')
         } catch (Exception e) {
             flash.error = message(code: 'msg.couldnotdeleteaccount', default: 'Could not delete your account')
-            render(view: '/account/index', model: [user: user])
+            redirect(url: '/account/index')
         }
     }
 

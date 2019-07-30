@@ -192,13 +192,6 @@
             </td>
           </tr>
         </g:if>
-        <g:else>
-          <tr>
-            <td colspan="2">
-              <p class="all-center">No Searches</p>
-            </td>
-          </tr>
-        </g:else>
       </table>
       </div>
     </div>
@@ -217,23 +210,23 @@
       });
 
       $("#togglepasswordform").click(function (e) {
-          e.preventDefault()
+          e.preventDefault();
           $("#changepasswordform").slideDown(500);
           $("#togglepasswordform").slideUp(500);
       });
       $("#cancelpasswordform").click(function (e) {
-          e.preventDefault()
+          e.preventDefault();
           $("#changepasswordform").slideUp(500);
           $("#togglepasswordform").slideDown(500);
       });
 
       $("#toggledeleteform").click(function (e) {
-          e.preventDefault()
+          e.preventDefault();
           $("#deleteaccountform").slideDown(500);
           $("#toggledeleteform").slideUp(500);
       });
       $("#canceldeleteform").click(function (e) {
-          e.preventDefault()
+          e.preventDefault();
           $("#deleteaccountform").slideUp(500);
           $("#toggledeleteform").slideDown(500);
       });

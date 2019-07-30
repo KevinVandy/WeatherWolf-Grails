@@ -101,7 +101,10 @@
   opacity: 0.9;
   transition: opacity var(--fast-transition);
   overflow: hidden;
+  z-index: 6;
 }
+
+.tt-menu
 
 .tt-suggestion {
   background-color: #fff;
@@ -126,4 +129,5 @@
 .typeahead, .typeaheadCity, .typeaheadStateProvince, .typeaheadCountry {
   min-width: 300px;
   font-size: 1.2em;
+  z-index: 5;
 }
