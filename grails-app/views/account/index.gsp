@@ -161,7 +161,7 @@
 
         <h2><g:message code="msg.searchhistory" default="Search History"/></h2>
 
-        <table>
+        <table id="searchhistorytable">
           <thead>
             <tr>
               <th>Date</th>
@@ -173,31 +173,33 @@
               <tr>
                 <td><g:formatDate date="${sl.date}" type="datetime" style="MEDIUM"/></td>
                 <td>
-                  <g:form controller="weather" action="index">
+                  <g:form controller="weather" action="index" method="GET">
                     <input type="hidden" name="location" value="${sl.searchString}">
                     <input type="submit" value="${sl.searchString}" class="btn-white p" style="width: 100%;">
                   </g:form>
                 </td>
               </tr>
             </g:each>
-            <g:if test="${user.searchLog}">
-              <tr>
-                <td colspan="2">
-                  <g:form controller="account" action="deletesearchhistory" method="POST">
-                    <input type="submit" value="Delete Search History" class="btn-white p all-center">
-                  </g:form>
-                </td>
-              </tr>
-            </g:if>
-            <g:else>
-              <tr>
-                <td colspan="2">
-                  <p class="all-center">No Searches</p>
-                </td>
-              </tr>
-            </g:else>
           </tbody>
         </table>
+      <table>
+        <g:if test="${user.searchLog}">
+          <tr>
+            <td colspan="2">
+              <g:form controller="account" action="deletesearchhistory" method="POST" onsubmit="return confirm('Are you sure you want to delete your search history?');">
+                <input type="submit" value="Delete Search History" class="btn-white p all-center">
+              </g:form>
+            </td>
+          </tr>
+        </g:if>
+        <g:else>
+          <tr>
+            <td colspan="2">
+              <p class="all-center">No Searches</p>
+            </td>
+          </tr>
+        </g:else>
+      </table>
       </div>
     </div>
   </g:if>
@@ -206,6 +208,14 @@
   </g:else>
 
   <script>
+
+      $(document).ready(function () {
+          $('#searchhistorytable').DataTable({
+              select: true,
+              ordering: true
+          });
+      });
+
       $("#togglepasswordform").click(function (e) {
           e.preventDefault()
           $("#changepasswordform").slideDown(500);

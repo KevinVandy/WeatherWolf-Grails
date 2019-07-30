@@ -42,8 +42,12 @@ class WeatherController {
         } else {
             currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()
             user = User.findByUsername(currentUsername)
-            SearchLog sl = new SearchLog(searchString: params.location, date: new Date(), user: user)
-            sl.save(flush: true, failOnError: true)
+            try {
+                SearchLog sl = new SearchLog(searchString: params.location, date: new Date(), user: user)
+                sl.save(flush: true, failOnError: true)
+            } catch(Exception e){
+                logger.error(e.toString())
+            }
             render(view: '/weather/index', model: [searchResult: searchResult, user: user])
         }
     }

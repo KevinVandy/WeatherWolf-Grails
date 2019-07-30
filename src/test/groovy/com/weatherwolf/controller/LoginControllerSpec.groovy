@@ -17,7 +17,7 @@ import spock.lang.Specification
 class LoginControllerSpec extends Specification implements DataTest, ControllerUnitTest<LoginController> {
 
     Class<?>[] getDomainClassesToMock() {
-        return [User, Role, UserRole, SearchLog, EmailLog, CurrentWeather, DayForecast, Location, SearchResult] as Class[]
+        return [User] as Class[]
     }
 
     void "show login page"() {

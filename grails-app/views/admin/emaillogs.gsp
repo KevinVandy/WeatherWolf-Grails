@@ -16,7 +16,7 @@
   <g:include view="subforms/navadmin.gsp"/>
   <div class="backcard">
     <g:include view="subforms/msg.gsp"/>
-    <table id="user-table" class="display">
+    <table id="email-table" class="display">
       <thead>
         <tr>
           <th>ID</th>
@@ -44,10 +44,16 @@
   </div>
   <script>
       $(document).ready(function () {
-          $('#user-table').DataTable({
+          $('#email-table').DataTable({
               select: true,
-              ordering: true
+              ordering: true,
+              dom: 'Blfrtip',
+              buttons: [
+                  'copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5'
+              ]
           });
+          $("select[name='email-table_length']").addClass('inline');
+          $(".dt-button").addClass('btn-white p m')
       });
 
       $("#toggle-content").click(function () {

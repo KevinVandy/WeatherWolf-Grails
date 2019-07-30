@@ -33,6 +33,9 @@ body {
   min-height: 1200px;
 }
 
+label {
+  display: inline;
+}
 
 a {
   color: var(--primary-color);
@@ -56,6 +59,14 @@ table {
 }
 
 /* Utilities */
+
+.inline {
+  display: inline;
+}
+
+.block {
+  display: block;
+}
 
 .container {
   margin: 10px auto;

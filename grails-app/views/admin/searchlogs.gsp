@@ -16,7 +16,7 @@
   <g:include view="subforms/navadmin.gsp"/>
   <div class="backcard">
     <g:include view="subforms/msg.gsp"/>
-    <table id="user-table" class="display">
+    <table id="searchlog-table" class="display">
       <thead>
         <tr>
           <th>ID</th>
@@ -40,10 +40,16 @@
   </div>
   <script>
       $(document).ready(function () {
-          $('#user-table').DataTable({
+          $('#searchlog-table').DataTable({
               select: true,
-              ordering: true
+              ordering: true,
+              dom: 'Blfrtip',
+              buttons: [
+                  'copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5'
+              ]
           });
+          $("select[name='searchlog-table_length']").addClass('inline');
+          $(".dt-button").addClass('btn-white p m')
       });
   </script>
 </body>

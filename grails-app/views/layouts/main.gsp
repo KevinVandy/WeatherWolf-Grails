@@ -9,10 +9,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <asset:link rel="icon" href="favicon.ico" type="image/x-ico"/>
   <asset:stylesheet src="application.css"/>
+  <asset:stylesheet src="buttons.dataTables.min.css"/>
+  <asset:stylesheet src="select.dataTables.min.css"/>
+  <asset:stylesheet src="editor.dataTables.min.css"/>
   <asset:javascript src="jquery-3.3.1.min.js"/>
   <asset:javascript src="jqueryDataTables.min.js"/>
+  <asset:javascript src="dataTables.buttons.min.js"/>
+  <asset:javascript src="buttons.flash.min.js"/>
+  <asset:javascript src="jszip.min.js"/>
+  <asset:javascript src="pdfmake.min.js"/>
+  <asset:javascript src="vfs_fonts.js"/>
+  <asset:javascript src="buttons.html5.min.js"/>
+  <asset:javascript src="buttons.print.min.js"/>
+  <asset:javascript src="dataTables.editor.min.js"/>
+  <asset:javascript src="handlebars.js"/>
   <asset:javascript src="application.js" defer = ""/>
-  <script src="https://twitter.github.io/typeahead.js/js/handlebars.js"></script>
   <g:layoutHead/>
   <style type="text/css" media="screen">
   body {

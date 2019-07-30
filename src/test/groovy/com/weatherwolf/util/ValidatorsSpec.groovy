@@ -1,15 +1,7 @@
 package com.weatherwolf.util
 
 import com.weatherwolf.Validators
-import com.weatherwolf.security.EmailLog
-import com.weatherwolf.security.Role
-import com.weatherwolf.security.SearchLog
 import com.weatherwolf.security.User
-import com.weatherwolf.security.UserRole
-import com.weatherwolf.weather.CurrentWeather
-import com.weatherwolf.weather.DayForecast
-import com.weatherwolf.weather.Location
-import com.weatherwolf.weather.SearchResult
 import grails.testing.gorm.DataTest
 import org.apache.commons.lang.RandomStringUtils
 import spock.lang.Specification
@@ -18,7 +10,7 @@ import spock.lang.Specification
 class ValidatorsSpec extends Specification implements DataTest {
 
     Class<?>[] getDomainClassesToMock(){
-        return [User, Role, SearchLog, EmailLog, CurrentWeather, DayForecast, Location, SearchResult] as Class[]
+        return [User] as Class[]
     }
 
     void "test valid signup"() {
@@ -29,7 +21,7 @@ class ValidatorsSpec extends Specification implements DataTest {
         def msg = Validators.validateSignup(u.username, u.email, u.password, u.password)
 
         then:
-        msg == ''
+        msg == '' //no error
     }
 
     void "test too short username"() {
@@ -40,21 +32,22 @@ class ValidatorsSpec extends Specification implements DataTest {
         def msg = Validators.valUsername(username)
 
         then:
-        msg != ''
+        msg != '' //should have error
     }
 
     void "test duplicate username"() {
         given:
-        if (!User.findByUsername('kevinvandy')) {
-            def u1 = new User(username: 'kevinvandy', email: 'fdas@talentplus.com', password: 'hellothere')
-            u1.save()
+        def username = 'kevinvandy'
+        if (!User.findByUsername(username)) {
+            def u1 = new User(username: username, email: 'fdas@talentplus.com', password: 'hellothere', favoriteLocation: 'new york')
+            u1.save(flush: true, failOnError: true)
         }
 
         when:
-        def msg = Validators.valUsername('kevinvandy')
+        def msg = Validators.valUsername(username)
 
         then:
-        msg != ''
+        msg != '' //should have error
     }
 
     void "test valid email"() {
@@ -76,7 +69,7 @@ class ValidatorsSpec extends Specification implements DataTest {
         def msg = Validators.valEmail(email)
 
         then:
-        msg != ''
+        msg != '' //should have error
     }
 
     void "test duplicate email"() {
@@ -91,7 +84,7 @@ class ValidatorsSpec extends Specification implements DataTest {
         def msg = Validators.valEmail(u2.username)
 
         then:
-        msg != ''
+        msg != '' //should have error
     }
 
     void "test valid matching passwords"() {
@@ -114,7 +107,7 @@ class ValidatorsSpec extends Specification implements DataTest {
         def msg = Validators.valPassword(password, password)
 
         then:
-        msg != ''
+        msg != '' //should have error
     }
 
     void "test mismatching passwords"() {
@@ -126,7 +119,7 @@ class ValidatorsSpec extends Specification implements DataTest {
         def msg = Validators.valPassword(password1, password2)
 
         then:
-        msg != ''
+        msg != '' //should have error
     }
 
 }

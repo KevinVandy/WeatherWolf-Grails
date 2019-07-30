@@ -10,8 +10,8 @@ class EmailLog {
     Date timeSent
 
     static constraints = {
-        toAddress blank: false
-        fromAddress blank: false
+        toAddress blank: false, email: true
+        fromAddress blank: false, email: true
         subject blank: false
         body blank: false
         timeSent nullable: false

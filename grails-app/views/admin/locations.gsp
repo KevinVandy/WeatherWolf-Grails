@@ -111,7 +111,7 @@
         <tfoot>
           <tr>
             <th>City</th>
-            <th>State / Province</th>
+            <th>State / Province / Region</th>
             <th>Country</th>
             <th>Delete</th>
           </tr>
@@ -136,8 +136,14 @@
               search: {
                   caseInsensitive: true,
                   smart: true
-              }
+              },
+              dom: 'Blfrtip',
+              buttons: [
+                  'copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5'
+              ]
           });
+          $("select[name='location-table_length']").addClass('inline');
+          $(".dt-button").addClass('btn-white p m')
           $('input[type=search]').addClass('typeahead p').attr('placeholder', 'Filter Results');
           $('#location-table').fadeIn(1000);
           $('input[type=search]').focus()

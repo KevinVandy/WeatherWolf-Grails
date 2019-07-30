@@ -26,7 +26,8 @@
           <th>Language</th>
           <th>Units</th>
           <th>Num Searches</th>
-          <th>Delete</th>
+          <th>Enabled</th>
+          <th>Ban</th>
         </tr>
       </thead>
       <tbody>
@@ -46,10 +47,24 @@
             <td>${userData.units}</td>
             <td>${userData.searchLog.size()}</td>
             <td>
+              <g:if test="${userData.enabled}">
+                <g:form controller="admin" action="disableuser" method="post">
+                  <input type="hidden" name="userId" value="${userData.id}">
+                  <input type="submit" value="Disable" class="btn-danger p">
+                </g:form>
+              </g:if>
+              <g:else>
+                <g:form controller="admin" action="enableuser" method="post">
+                  <input type="hidden" name="userId" value="${userData.id}">
+                  <input type="submit" value="Enable" class="btn-primary p">
+                </g:form>
+              </g:else>
+            </td>
+            <td>
               <g:form controller="admin" action="deleteuser" method="post"
                       onsubmit="return confirm('Are you sure you want to delete this account?');">
                 <input type="hidden" name="userId" value="${userData.id}">
-                <input type="submit" value="Delete" class="btn-danger p">
+                <input type="submit" value="Ban" class="btn-danger p">
               </g:form>
             </td>
           </tr>
@@ -61,9 +76,19 @@
   <script>
       $(document).ready(function () {
           $('#user-table').DataTable({
-              select: true,
-              ordering: true
+              select: {
+                  style: 'os',
+                  selector: 'td:first-child'
+              },
+              ordering: true,
+              dom: 'Blfrtip',
+              buttons: [
+                  'copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5'
+              ]
           });
+
+          $("select[name='user-table_length']").addClass('block');
+          // $(".dt-button").addClass('btn-white p m');
       });
   </script>
 

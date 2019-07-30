@@ -6,6 +6,7 @@ import com.weatherwolf.security.User
 import com.weatherwolf.security.UserRole
 import com.weatherwolf.weather.Location
 import grails.plugin.springsecurity.annotation.Secured
+import org.grails.datastore.mapping.query.Query.In
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -22,6 +23,38 @@ class AdminController {
     def users() {
         Set<User> userDataSet = User.findAll(sort: 'username', max: 1000)
         render(view: '/admin/users', model: [userDataSet: userDataSet])
+    }
+
+    def disableuser(Integer userId){
+        if(!userId){
+            flash.error = 'Invalid User ID'
+        } else {
+            try {
+                def u = User.findById(userId)
+                u.enabled = false
+                u.save(flush: true, failOnError: true)
+                flash.success = "Disabled ${u.username}"
+            } catch(Exception e){
+                flash.error = "Could not disable user"
+            }
+        }
+        redirect(url: '/admin/users')
+    }
+
+    def enableuser(Integer userId){
+        if(!userId){
+            flash.error = 'Invalid User ID'
+        } else {
+            try {
+                def u = User.findById(userId)
+                u.enabled = true
+                u.save(flush: true, failOnError: true)
+                flash.success = "Enabled ${u.username}"
+            } catch(Exception e){
+                flash.error = "Could not disable user"
+            }
+        }
+        redirect(url: '/admin/users')
     }
 
     def deleteuser(Integer userId) {

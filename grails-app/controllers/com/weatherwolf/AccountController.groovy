@@ -51,16 +51,20 @@ class AccountController {
 
     //POST only
     def updateemail(String email) {
-        flash.error = Validators.valEmail(email)
-        if (!flash.error) { //not user error
-            try {
-                user.email = email
-                user.save(flush: true, failOnError: true)
-                flash.success = message(code: 'msg.emailupdated', default: 'Email Updated') //success
-            } catch (Exception e) {
-                logger.warn("Could not save settings")
-                logger.error(e.toString())
-                flash.error = message(code: 'msg.emailnotupdated', default: 'Email could not be Updated') //unknown error
+        if(email && email == user.email){
+            flash.warning = 'Email not changed because that is your same email'
+        } else {
+            flash.error = Validators.valEmail(email)
+            if (!flash.error) { //not user error
+                try {
+                    user.email = email
+                    user.save(flush: true, failOnError: true)
+                    flash.success = message(code: 'msg.emailupdated', default: 'Email Updated') //success
+                } catch (Exception e) {
+                    logger.warn("Could not save settings")
+                    logger.error(e.toString())
+                    flash.error = message(code: 'msg.emailnotupdated', default: 'Email could not be Updated') //unknown error
+                }
             }
         }
         render(view: '/account/index', model: [user: user])
@@ -68,6 +72,8 @@ class AccountController {
 
     //POST only
     def savesettings(String lang, Character units, String location) {
+        currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()
+        user = User.findByUsername(currentUsername)
         if (user.lang == lang && user.units == units && user.favoriteLocation == location) {
             flash.warning = message(code: 'msg.nosettingschanged', default: 'No settings were changed')
         } else {
