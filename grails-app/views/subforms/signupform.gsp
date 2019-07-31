@@ -28,7 +28,7 @@
             <label for="password"><g:message code="msg.password"/>:</label>
           </td>
           <td>
-            <input type="password" name="password" id="password" minlength="6" maxlength="100" required/>
+            <g:passwordField name="password" id="password" minlength="6" maxlength="100" required=""/>
           </td>
         </tr>
         <tr>
@@ -36,7 +36,13 @@
             <label for="passwordconfirm"><g:message code="msg.confirmpassword" default="Confirm Password"/>:</label>
           </td>
           <td>
-            <input type="password" name="passwordconfirm" id="passwordconfirm" minlength="6" maxlength="100" required/>
+            <g:passwordField name="passwordconfirm" id="passwordconfirm" minlength="6" maxlength="100" required=""/>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <g:checkBox name="togglePassword" id="togglePassword" />Show Password
           </td>
         </tr>
         <tr>
@@ -71,12 +77,22 @@
 
     //disable typing spaces in username
     $("#username").on({
-        keydown: function(e) {
+        keydown: function (e) {
             if (e.which === 32)
                 return false;
         },
-        change: function() {
+        change: function () {
             this.value = this.value.replace(/\s/g, "");
+        }
+    });
+
+    $("#togglePassword").change(function () {
+        if ($('#password').attr('type') == 'text') {
+            $('#password').attr('type', 'password');
+            $('#passwordconfirm').attr('type', 'password');
+        } else {
+            $('#password').attr('type', 'text');
+            $('#passwordconfirm').attr('type', 'text');
         }
     });
 </script>

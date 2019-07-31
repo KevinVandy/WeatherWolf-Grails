@@ -52,9 +52,9 @@
 
               <form action="/admin/changeuserstatus" method="post" id="${userData.username}userstatusform">
                 <input type="hidden" name="userId" value="${userData.id}">
-                <input type="checkbox" name="userstatus" value="1" disabled
+                <input type="checkbox" name="userstatus" value="1"
                        onchange="document.getElementById('${userData.username}userstatusform').submit()"
-                       <g:if test="${userData.getAuthorities().contains(new Role("ROLE_CLIENT"))}">checked</g:if>>
+                       <g:if test="${userData.getAuthorities().contains(new Role("ROLE_CLIENT"))}">checked disabled</g:if>>
                 <label>User</label>
               </form>
             </td>
@@ -88,10 +88,6 @@
   <script>
       $(document).ready(function () {
           $('#user-table').DataTable({
-              select: {
-                  style: 'os',
-                  selector: 'td:first-child'
-              },
               ordering: true,
               dom: 'Blfrtip',
               buttons: [

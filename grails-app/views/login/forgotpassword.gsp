@@ -23,7 +23,7 @@
             <label for="username"><g:message code="msg.username" default="Username"/>:</label>
           </td>
           <td>
-            <input type="text" name="username" id="username" minlength="5" maxlength="100" required>
+            <g:textField name="username" id="username" minlength="3" maxlength="100" required=""/>
           </td>
         </tr>
         <tr>
@@ -31,13 +31,13 @@
             <label for="email"><g:message code="msg.email" default="Email"/>:</label>
           </td>
           <td>
-            <input type="email" name="email" id="email" minlength="3" maxlength="100" required>
+            <g:field type="email" name="email" id="email" minlength="5" maxlength="100" required=""/>
           </td>
         </tr>
         <tr>
           <td colspan="2">
-            <input type="submit" value="<g:message code="msg.sendpasswordreset" default="Send Password Reset Link"/>"
-                   class="btn-white p-1 all-center">
+            <g:submitButton name="submit" value="${message(code: 'msg.sendpasswordreset', default: 'Send Password Reset Link')}"
+                            class="btn-white p-1 all-center"/>
           </td>
         </tr>
       </table>

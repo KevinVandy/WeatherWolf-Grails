@@ -19,7 +19,7 @@
 }
 
 #login .inner {
-  width: 340px;
+  width: 400px;
   padding-bottom: 6px;
   margin: 60px auto;
   text-align: left;
@@ -49,8 +49,20 @@
   height: 1%;
 }
 
-#login .inner .cssform input[type="text"] {
-  width: 120px;
+#login .inner input[type="text"],
+#login .inner input[type="email"],
+#login .inner input[type="password"] {
+  width: 300px;
+}
+
+#login .inner input[type="checkbox"]{
+  height: 20px;
+  width: 20px;
+  padding: 8px;
+  margin: 8px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
 }
 
 #login .inner .cssform label {
@@ -129,5 +141,4 @@
 .typeahead, .typeaheadCity, .typeaheadStateProvince, .typeaheadCountry {
   min-width: 300px;
   font-size: 1.2em;
-  z-index: 5;
 }

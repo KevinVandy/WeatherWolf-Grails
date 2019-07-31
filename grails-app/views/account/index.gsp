@@ -204,7 +204,7 @@
 
       $(document).ready(function () {
           $('#searchhistorytable').DataTable({
-              select: true,
+              dom: 'tip',
               ordering: true
           });
       });
