@@ -185,7 +185,7 @@ class AccountController {
     /** POST only
      *
      * Delete's a user's account. Only delete's a user by the session id of the logged in user.
-     * first delete all user roles for the user,
+     * First delete all user roles for the user,
      * then delete the user. All other info associated should cascade delete.
      *
      * @redirect /logout on success, /account/index on fail
@@ -193,12 +193,12 @@ class AccountController {
     def deleteaccount() {
         try {
             refreshCurrentUser()
-            if (!UserRole.where {
+            if (UserRole.where {
                 user == currentUser
             }.deleteAll()){
-                logger.warn('Could not delete user roles')
-            } else {
                 currentUser.delete(flush: true, failOnError: true) //the main delete
+            } else {
+                logger.warn('Could not delete user roles')
             }
             flash.success = message(code: 'msg.accountdeleted', default: 'Account Deleted')
             session.invalidate()

@@ -16,7 +16,7 @@
   <g:include view="subforms/navadmin.gsp"/>
   <div class="backcard">
     <g:include view="subforms/msg.gsp"/>
-    <g:form controller="admin" action="locations">
+    <g:form controller="admin" action="locations" method="GET">
       <table>
         <tr>
           <td>
@@ -24,7 +24,7 @@
           </td>
           <td>
             <input type="text" name="q" style=" width: 400px; font-size: 1.5em;" placeholder="<g:message code='msg.search.placeholder'/>"
-                   class="typeahead" />
+                   class="typeahead"/>
             <input type="submit" value="Search All" class="btn-white p m">
         </tr>
         <tr>
@@ -52,7 +52,7 @@
             <td>
               <label for="city" class="all-right">City</label>
             </td>
-            <td>
+            <td colspan="2">
               <input type="text" name="city" id="city" class="text-left typeaheadCity">
             </td>
           </tr>
@@ -60,7 +60,7 @@
             <td>
               <label for="stateProvince" class="all-right">State / Province</label>
             </td>
-            <td>
+            <td colspan="2">
               <input type="text" name="stateProvince" id="stateProvince" class="text-left typeaheadStateProvince">
             </td>
           </tr>
@@ -68,14 +68,29 @@
             <td>
               <label for="country" class="all-right">Country</label>
             </td>
-            <td>
+            <td colspan="2">
               <input type="text" name="country" id="country" class="text-left typeaheadCountry">
             </td>
           </tr>
           <tr>
-            <td></td>
-            <td>
-              <input type="submit" value="Add New Location" class="btn-white p">
+            <td>Lattitude</td>
+            <td><g:field type="number" name="lat" id="lat"/></td>
+            <td rowspan="2"><button id="getgeo" class="btn-primary p">Search Coordinates</button></td>
+            <script>
+                $("getgeo").click(async function (e) {
+                    const url = "/location/fillcoordinates?city=" + $('#city').val() + "&stateProvince=" + $('#stateProvince').val() + "&country=" + $('#country').val();
+                    const res = await axios.get(url);
+                    let  
+                });
+            </script>
+          </tr>
+          <tr>
+            <td>Longitude</td>
+            <td><g:field type="number" name="lng" id="lng"/></td>
+          </tr>
+          <tr>
+            <td colspan="3">
+              <input type="submit" value="Add New Location" class="btn-white p all-center">
             </td>
           </tr>
         </table>

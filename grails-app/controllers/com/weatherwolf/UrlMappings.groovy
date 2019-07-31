@@ -21,6 +21,7 @@ class UrlMappings {
                 '/searchcity'(controller: 'location', action: 'searchcity')
                 '/searchstateprovince'(controller: 'location', action: 'searchstateprovince')
                 '/searchcountry'(controller: 'location', action: 'searchcountry')
+                '/fillcoordinates'(controller: 'location', action: 'fillcoordinates')
             }
         }
 

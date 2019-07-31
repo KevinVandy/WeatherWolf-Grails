@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory
 class LocationController extends RestfulController<Location> {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass())
+    def geocodeService
 
     static responseFormats = ['json']
 
@@ -26,6 +27,12 @@ class LocationController extends RestfulController<Location> {
         super(Location)
     }
 
+    /**
+     *
+     * @param offset
+     * @param max
+     * @return
+     */
     def index(int offset, int max) {
         if (!max || max > 1000) {
             logger.info("Invalid parameters: max - ${max}, offset: ${offset}")
@@ -35,6 +42,11 @@ class LocationController extends RestfulController<Location> {
         }
     }
 
+    /**
+     *
+     * @param q
+     * @return
+     */
     def search(String q) {
         def query
         if (!q) {
@@ -63,6 +75,11 @@ class LocationController extends RestfulController<Location> {
         }
     }
 
+    /**
+     *
+     * @param q
+     * @return
+     */
     def searchcity(String q) {
         def query
         if (!q || q.length() <= 3) {
@@ -75,6 +92,11 @@ class LocationController extends RestfulController<Location> {
         }
     }
 
+    /**
+     *
+     * @param q
+     * @return
+     */
     def searchstateprovince(String q) {
         def query
         if (!q || q.length() <= 2) {
@@ -87,6 +109,11 @@ class LocationController extends RestfulController<Location> {
         }
     }
 
+    /**
+     *
+     * @param q
+     * @return
+     */
     def searchcountry(String q) {
         def query
         if (!q || q.length() <= 1) {
@@ -97,5 +124,17 @@ class LocationController extends RestfulController<Location> {
             }.distinct('country')
             respond query.list(max: 20)
         }
+    }
+
+    /**
+     *
+     * @param city
+     * @param stateProvince
+     * @param country
+     */
+    def fillcoordinates(String city, String stateProvince, String country){
+        def l = new Location(city: city, stateProvince: stateProvince, country: country)
+        geocodeService.fillLatLng(l)
+        respond l
     }
 }

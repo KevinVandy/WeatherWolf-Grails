@@ -111,6 +111,8 @@ class AdminController {
 
     /** POST only
      *
+     * Disables the account for a user so that they cannot login
+     *
      * @param userId
      * @redirect /admin/users
      */
@@ -131,6 +133,8 @@ class AdminController {
     }
 
     /** POST only
+     *
+     * Enables the account of a user so that they can log in
      *
      * @param userId
      * @redirect /admin/users
@@ -153,6 +157,9 @@ class AdminController {
 
     /** POST only
      *
+     * Permanently deletes a user and all of their info.
+     * First, all user roles are deleted
+     *
      * @param userId
      * @redirect /admin/users
      */
@@ -164,11 +171,14 @@ class AdminController {
             try {
                 u = User.findById(userId)
                 if (u) {
-                    ur = UserRole.findByUser(u)
-                    if (ur) {
-                        ur.delete(flush: true, failOnError: true)
+                    if (UserRole.where {
+                        user == u
+                    }.deleteAll()){ // <- delete user's roles first
+                        u.delete(flush: true, failOnError: true) //the main delete
+                    } else {
+                        logger.warn('Could not delete user roles')
+                        flash.error = 'Could not delete user roles'
                     }
-                    u.delete(flush: true, failOnError: true)
                 }
                 flash.success = "Deleted ${u.username}"
             } catch (Exception e) {
@@ -180,6 +190,7 @@ class AdminController {
     }
 
     /**
+     * Shows the admin page for Search Logs
      *
      * @render /admin/searchlogs
      */
@@ -189,6 +200,7 @@ class AdminController {
     }
 
     /**
+     * Shows the admin page for Email Logs
      *
      * @return
      */
@@ -198,6 +210,10 @@ class AdminController {
     }
 
     /** //GET optional
+     *
+     * Shows the admin page for Locations. Locations are used for Typeahead suggestions.
+     * If a param q is not supplied, then no locations load to the page
+     * If a
      *
      * @param q
      * @return
