@@ -132,9 +132,9 @@ class LocationController extends RestfulController<Location> {
      * @param stateProvince
      * @param country
      */
-    def fillcoordinates(String city, String stateProvince, String country){
-        def l = new Location(city: city, stateProvince: stateProvince, country: country)
-        geocodeService.fillLatLng(l)
+    def fill(String city, String stateProvince, String country, Float lat, Float lng){
+        def l = new Location(city: city, stateProvince: stateProvince, country: country, latitude: lat, longitude: lng)
+        geocodeService.fill(l)
         respond l
     }
 }

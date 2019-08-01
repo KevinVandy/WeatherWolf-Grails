@@ -37,7 +37,7 @@ class HomeController {
                 logger.warn("Could not wipe forgot password token")
             }
         }
-        redirect(url: "/home?lang=${currentUser.lang}")
+        redirect(url: "/home?lang=${currentUser.lang}&units=${currentUser.units}")
     }
 
     /**

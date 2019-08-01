@@ -14,7 +14,7 @@ class GeocodeServiceSpec extends Specification implements DataTest, ServiceUnitT
         Location lincoln = new Location(city: 'Lincoln', stateProvince: 'Nebraska', country: 'United States')
 
         when:
-        service.fillLatLng(lincoln)
+        service.fill(lincoln)
 
         then:
         (lincoln.latitude - 40.86).abs() < 0.1
@@ -27,7 +27,7 @@ class GeocodeServiceSpec extends Specification implements DataTest, ServiceUnitT
         Location berlin = new Location(city: 'Berlin', country: 'Germany')
 
         when:
-        service.fillLatLng(berlin)
+        service.fill(berlin)
 
         then:
         (berlin.latitude - 52.52).abs() < 0.1
@@ -40,7 +40,7 @@ class GeocodeServiceSpec extends Specification implements DataTest, ServiceUnitT
         Location topeka = new Location(city: 'Topeka')
 
         when:
-        service.fillLatLng(topeka)
+        service.fill(topeka)
 
         then:
         (topeka.latitude - 39.04).abs() < 0.1
@@ -52,10 +52,23 @@ class GeocodeServiceSpec extends Specification implements DataTest, ServiceUnitT
         Location l = new Location(city: 'a')
 
         when:
-        service.fillLatLng(l)
+        service.fill(l)
 
         then:
         l.latitude.round().toInteger() == 0
         l.longitude.round().toInteger() == 0
+    }
+
+    void "verify city, region, country filled in when provided lat and long"() {
+        given:
+        Location l = new Location(latitude: 40.86, longitude: -96.71)
+
+        when:
+        service.fill(l)
+
+        then:
+        l.city == 'Lincoln'
+        l.stateProvince == 'Nebraska'
+        l.country == 'United States'
     }
 }

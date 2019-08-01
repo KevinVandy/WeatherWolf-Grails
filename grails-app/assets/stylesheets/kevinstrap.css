@@ -499,7 +499,7 @@ input {
   margin-top: 0.3rem;
 }
 
-input[type='text'], input[type='email'], input[type='password'], input[type='date'], select, textarea {
+input[type='text'], input[type='email'], input[type='password'], input[type='date'], input[type="number"], select, textarea {
   border: 1px solid var(--medium-color);
   border-radius: 4px;
   display: block;

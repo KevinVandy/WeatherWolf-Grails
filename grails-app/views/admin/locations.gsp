@@ -55,6 +55,10 @@
             <td colspan="2">
               <input type="text" name="city" id="city" class="text-left typeaheadCity">
             </td>
+            <td rowspan="5">
+              <button id="intelligentfill" class="btn-primary p m all-center">Intelligent Auto Fill</button>
+              <button id="clearform" class="btn-white p m all-center">Clear Form</button>
+            </td>
           </tr>
           <tr>
             <td>
@@ -73,23 +77,20 @@
             </td>
           </tr>
           <tr>
-            <td>Lattitude</td>
-            <td><g:field type="number" name="lat" id="lat"/></td>
-            <td rowspan="2"><button id="getgeo" class="btn-primary p">Search Coordinates</button></td>
-            <script>
-                $("getgeo").click(async function (e) {
-                    const url = "/location/fillcoordinates?city=" + $('#city').val() + "&stateProvince=" + $('#stateProvince').val() + "&country=" + $('#country').val();
-                    const res = await axios.get(url);
-                    let  
-                });
-            </script>
+            <td>
+              <label class="all-right">Lattitude</label>
+            </td>
+            <td><g:field type="number" step="any" name="lat" id="lat" style="max-width: 150px;"/></td>
+
           </tr>
           <tr>
-            <td>Longitude</td>
-            <td><g:field type="number" name="lng" id="lng"/></td>
+            <td>
+              <label class="all-right">Longitude</label>
+            </td>
+            <td><g:field type="number" step="any" name="lng" id="lng" style="max-width: 150px;"/></td>
           </tr>
           <tr>
-            <td colspan="3">
+            <td colspan="4">
               <input type="submit" value="Add New Location" class="btn-white p all-center">
             </td>
           </tr>
@@ -103,6 +104,7 @@
           <th>City</th>
           <th>State / Province</th>
           <th>Country</th>
+          <th>Coordinates</th>
           <th>Delete</th>
         </tr>
       </thead>
@@ -112,6 +114,7 @@
             <td>${location.city}</td>
             <td>${location.stateProvince}</td>
             <td>${location.country}</td>
+            <td>${location.latitude.round(2)}, ${location.longitude.round(2)}</td>
             <td>
               <g:form controller="admin" action="deletelocation" method="post"
                       onsubmit="return confirm('Are you sure you want to delete this location?');">
@@ -128,6 +131,7 @@
               <th>City</th>
               <th>State / Province / Region</th>
               <th>Country</th>
+              <th>Coordinates</th>
               <th>Delete</th>
             </tr>
           </tfoot>
@@ -172,6 +176,32 @@
           } else {
               $("#toggle-add-location").html("-");
           }
+      });
+
+      $("#intelligentfill").click(async function (e) {
+          e.preventDefault();
+          const url =
+              "/location/fill?city=" + $('#city').val() +
+              "&stateProvince=" + $('#stateProvince').val() +
+              "&country=" + $('#country').val() +
+              "&lat=" + $('#lat').val() +
+              "&lng=" + $('#lng').val();
+          $.get(url, function (res) {
+              $("#city").val(res.city);
+              $("#stateProvince").val(res.stateProvince);
+              $("#country").val(res.country);
+              $("#lat").val(res.latitude);
+              $("#lng").val(res.longitude);
+          });
+      });
+
+      $('#clearform').click(function (e) {
+          e.preventDefault();
+          $("#city").val('');
+          $("#stateProvince").val('');
+          $("#country").val('');
+          $("#lat").val('');
+          $("#lng").val('');
       });
   </script>
 

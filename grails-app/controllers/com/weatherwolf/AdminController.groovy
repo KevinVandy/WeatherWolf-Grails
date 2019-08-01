@@ -261,15 +261,15 @@ class AdminController {
      * @param country
      * @return
      */
-    def addlocation(String q, String city, String stateProvince, String country) {
+    def addlocation(String q, String city, String stateProvince, String country, Float lat, Float lng) {
         if (!city || !stateProvince || !country) {
-            flash.error = 'All fields are required'
+            flash.error = 'City, State / Province, and Country are required'
         } else if (Location.findByCityAndStateProvinceAndCountry(city, stateProvince, country)) {
             flash.warning = "${city}, ${stateProvince}, ${country} already exists in the database. See the table below"
-            q = "${city},${stateProvince},${country}"
+            q = "${city},${stateProvince},${country}" //show the already existing city in db
         } else {
             try {
-                def l = new Location(city: city, stateProvince: stateProvince, country: country)
+                def l = new Location(city: city, stateProvince: stateProvince, country: country, latitude: lat ?: 0.0F, longitude: lng ?: 0.0F)
                 l.save(flush: true, failOnError: true)
                 flash.success = "${city}, ${stateProvince}, ${country} was added"
             } catch (Exception e) {
@@ -277,7 +277,7 @@ class AdminController {
                 logger.error(e.toString())
             }
         }
-        redirect(url: "/admin/locations?q=${q ?: 'A'}")
+        redirect(url: "/admin/locations?q=${q ?: ''}")
     }
 
     /** POST only

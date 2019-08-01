@@ -1,6 +1,5 @@
 package com.weatherwolf
 
-import com.weatherwolf.security.SearchLog
 import com.weatherwolf.weather.SearchResult
 import com.weatherwolf.weather.CurrentWeather
 import com.weatherwolf.weather.DayForecast
@@ -26,14 +25,14 @@ class WeatherService {
         String lang = LocaleContextHolder.getLocale()
 
         //if location cannot be determined from string, try to fill in with geocode service
-        if (!sr.location.toString().contains(',')) {
-            logger.info("Using geocoding service")
-            def geocodeService = new GeocodeService()
-            geocodeService.fillLatLng(sr.location)
-            qs = "q=${sr.location.latitude},${sr.location.longitude}"
-        } else {
-            qs = "q=${URLEncoder.encode(sr.location.toString(), 'UTF-8')}"
-        }
+//        if (!sr.location.toString().contains(',')) {
+//            logger.info("Using geocoding service")
+//            def geocodeService = new GeocodeService()
+//            geocodeService.fill(sr.location)
+//            qs = "q=${sr.location.latitude},${sr.location.longitude}"
+//        } else {
+        qs = "q=${URLEncoder.encode(sr.location.toString(), 'UTF-8')}"
+//        }
 
         //optional parameters of the URL
         String op = "days=${numDays}&lang=${lang}"
@@ -62,7 +61,7 @@ class WeatherService {
                 sr.location.city = root.location.name
                 sr.location.stateProvince = root.location.region
                 sr.location.country = root.location.country
-                if(sr.location.country == 'United States of America') sr.location.country = 'United States'
+                if (sr.location.country == 'United States of America') sr.location.country = 'United States'
                 logger.debug("Filled in full location info")
 
                 //fill current weather
@@ -79,7 +78,7 @@ class WeatherService {
                 logger.debug("Filling 5 day forecast")
                 (0..<numDays).each {
                     def df = new DayForecast()
-                    df.date = Date.parse('yyyy-mm-dd', (String) root.forecast.forecastday[it].date)
+                    df.date = Date.parse('yyyy-MM-dd', (String) root.forecast.forecastday[it].date)
                     df.condition = root.forecast.forecastday[it].day.condition.text
                     df.iconURL = root.forecast.forecastday[it].day.condition.icon
                     df.minTemp = root.forecast.forecastday[it].day.mintemp_c.toFloat()

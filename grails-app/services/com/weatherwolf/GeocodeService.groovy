@@ -14,12 +14,24 @@ class GeocodeService {
     public static final String KEY = '5102abc471004e50ac56c239958c42cb'
     def root
 
-    def fillLatLng(Location location) {
+    /**
+     *
+     * @param location
+     * @return
+     */
+    def fill(Location location) {
 
-        //pull data from the castle and encode it for the URL
-        String encoded = [location.city ?: '', location.stateProvince ?: '', location.country ?: ''].collect {
-            URLEncoder.encode(it, 'UTF-8')
-        }.join(',')
+        String encoded
+        //if only lat and long are provided, then search by lat and long
+        if (!location.city && !location.stateProvince && !location.country && location.latitude && location.longitude) {
+            encoded = [location.latitude.toString(), location.longitude.toString()].collect {
+                URLEncoder.encode(it, 'UTF-8')
+            }.join(',')
+        } else { //otherwise, search by query string to get lat and long
+            encoded = [location.city ?: '', location.stateProvince ?: '', location.country ?: ''].collect {
+                URLEncoder.encode(it, 'UTF-8')
+            }.join(',')
+        }
 
         //get rid of double commas caused by null values
         while (encoded.contains(',,')) {
@@ -39,11 +51,18 @@ class GeocodeService {
         try {
             //Parse the XML response
             root = new XmlSlurper().parse(fullURL)
-            def loc = root.results[0].result[0].geometry
+            def geo = root.results[0].result[0].geometry
+            def loc = root.results[0].result[0].components
 
             //fill in data into the location object
-            location.latitude = loc.lat.toFloat()
-            location.longitude = loc.lng.toFloat()
+            location.city = loc.city
+            location.stateProvince = loc.state
+            location.country = loc.country
+            location.latitude = geo.lat.toFloat()
+            location.longitude = geo.lng.toFloat()
+
+            //small corrections
+            if (location.country == 'USA') location.country = 'United States'
         } catch (Exception e) {
             location = new Location()
             logger.warn("could not find location")

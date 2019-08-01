@@ -96,14 +96,19 @@
 
         <div style="display: none;" id="deleteaccountform" class="all-center">
           <g:form controller="account" action="deleteaccount" method="post"
-                  onsubmit="return confirm('Are you sure you want to delete your account?');">
+                  onsubmit="return confirm('Are you REALLY sure you want to delete your account?');">
             <table class="all-center">
+              <tr>
+                <td colspan="2">
+                  <p class="alert-warning p m all-center" style="min-width: 400px;">Are you sure you want to delete your account?</p>
+                </td>
+              </tr>
               <tr>
                 <td>
                   <button id="canceldeleteform" class="btn-white p-1 all-center">Cancel</button>
                 </td>
                 <td>
-                  <input type="submit" value="Are you sure you want to delete your account?" class="btn-danger all-center p-1">
+                  <input type="submit" value="Yes, Delete My Account" class="btn-danger all-center p-1">
                 </td>
               </tr>
 
