@@ -23,7 +23,7 @@ class GeocodeService {
 
         String encoded
         //if only lat and long are provided, then search by lat and long
-        if (!location.city && !location.stateProvince && !location.country && location.latitude && location.longitude) {
+        if (!location.city && location.latitude && location.longitude) {
             encoded = [location.latitude.toString(), location.longitude.toString()].collect {
                 URLEncoder.encode(it, 'UTF-8')
             }.join(',')

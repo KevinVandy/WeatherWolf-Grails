@@ -549,7 +549,7 @@ table th {
   display: flex;
   justify-content: space-between;
   height: 50px;
-  opacity: 0.8;
+  opacity: 0.85;
   padding: 0.7rem 2rem;
   transition: opacity var(--medium-transition);
   width: 100%;

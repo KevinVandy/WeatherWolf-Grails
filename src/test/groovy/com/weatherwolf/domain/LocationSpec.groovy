@@ -55,7 +55,7 @@ class LocationSpec extends Specification implements DomainUnitTest<Location> {
 
     void "test location must have valid ranges"() {
         when:
-        def l = new Location(city: 'Montreat', stateProvince: 'North Carolina', country: 'United States', latitude: 93, longitude: -9, searchResult: new SearchResult())
+        def l = new Location(city: 'Montreat', stateProvince: 'North Carolina', country: 'United States', latitude: 193, longitude: -900, searchResult: new SearchResult())
 
         then:
         !l.validate()

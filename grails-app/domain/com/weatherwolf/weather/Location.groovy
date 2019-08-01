@@ -20,7 +20,7 @@ class Location {
         stateProvince blank: true
         country blank: true
         latitude nullable: true, min: -90F, max: 90F
-        longitude nullable: true, min: 0F, max: 360F
+        longitude nullable: true, min: -180F, max: 180F
         searchResult nullable: true
     }
 
