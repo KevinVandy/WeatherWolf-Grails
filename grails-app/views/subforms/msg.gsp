@@ -13,8 +13,8 @@
 
   <script>
       setTimeout(() => {
-          $('#flashparent').fadeOut(4500);
-          $('#flashmsg').slideUp(5000);
+          $('#flashparent').fadeOut(3000);
+          $('#flashmsg').slideUp(3100);
       }, 20000)
   </script>
 </g:if>

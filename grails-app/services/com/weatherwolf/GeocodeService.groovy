@@ -15,6 +15,7 @@ class GeocodeService {
     def root
 
     /**
+     * Uses the Open Cage Data API to fill in missing information for a location
      *
      * @param location
      * @return

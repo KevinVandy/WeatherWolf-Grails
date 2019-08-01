@@ -19,20 +19,18 @@ class WeatherService {
 
     Integer numDays = 5
 
+    /**
+     * Fills in the full location, the current weather, and a 5 day forecast into the search result object
+     *
+     * @param sr
+     * @return
+     */
     def fillWeather(SearchResult sr) {
 
         String qs
         String lang = LocaleContextHolder.getLocale()
 
-        //if location cannot be determined from string, try to fill in with geocode service
-//        if (!sr.location.toString().contains(',')) {
-//            logger.info("Using geocoding service")
-//            def geocodeService = new GeocodeService()
-//            geocodeService.fill(sr.location)
-//            qs = "q=${sr.location.latitude},${sr.location.longitude}"
-//        } else {
         qs = "q=${URLEncoder.encode(sr.location.toString(), 'UTF-8')}"
-//        }
 
         //optional parameters of the URL
         String op = "days=${numDays}&lang=${lang}"
