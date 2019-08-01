@@ -26,6 +26,12 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
     def mailService
     def user = new User()
 
+    /**
+     * Shows the login page for non-logged in users.
+     * If a user is already logged in, then it redirects to the success login page
+     *
+     * @return
+     */
     @Override
     def index() {
         if (isLoggedIn()) {
@@ -35,6 +41,13 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
         }
     }
 
+    /**
+     * Whenever a user tries to view a page that they are not permitted to view, they go through this method
+     * Overriding the Spring security method that shows its own login form.
+     * Now this just redirects to our own custom login form.
+     *
+     * @return
+     */
     //override the default spring security login form
     @Override
     def auth() {
@@ -45,6 +58,13 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
         }
     }
 
+    /**
+     * Whenever a user fails to login, they go through this method.
+     * Overriding the Spring Security method that shows its own login errors and form.
+     * Now this shows the login error message on owr own login form
+     *
+     * @return
+     */
     @Override
     def authfail() {
         def exception = session[WebAttributes.AUTHENTICATION_EXCEPTION]
@@ -64,11 +84,27 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
         render(view: '/login/index')
     }
 
+    /**
+     * Shows the Forgot Password page that has a form to request a password reset
+     *
+     * @return
+     */
     def forgotpassword() { //show forgot password page that will prompt to send email password reset
         logger.info("User visited login/forgotpassword")
     }
 
-    //POST only
+    /** POST only
+     *
+     * If a user provides a matching email and username
+     * Then a password reset will be sent to that email.
+     * Sends the email via the grails email service.
+     * Generates a forgotPasswordToken for the user,
+     * puts the token in the email link and in the user database.
+     *
+     * @param username
+     * @param email
+     * @return
+     */
     def sendpasswordresetemail(String username, String email) {
         logger.info("username: ${username} and email: ${email} attempting to reset password")
         if (!User.findByUsernameAndEmail(username, email)) {
@@ -100,12 +136,23 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
         }
     }
 
+    /**
+     * After a password reset email is sent, this page will display
+     *
+     * @return
+     */
     def waitforemail() {
         logger.info("User visited login/waitforemail")
     }
 
-    //secure from email validation hash
-    //GET only
+    /** GET only
+     *
+     * After a user clicks the link from a password reset email, this page will show.
+     * The reset password form will only show to the user if they have a valid username and token.
+     * A valid token will also be needed submitting the new password.
+     *
+     * @return
+     */
     def resetpassword() { //show reset password page
         logger.info("User ${params.username} visited account/resetpassword")
         boolean validToken = false
@@ -122,8 +169,18 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
         render(view: '/login/resetpassword', model: [validToken: validToken])
     }
 
-    //not secured by role because this is for users who forgot their password
-    //POST only
+    /** POST only
+     *
+     * Changes the password for a user who submitted a reset password request
+     * The username and forgotPasswordToken must match the database before the new password is accepted
+     * The new password must pass the password requirements
+     *
+     * @param username
+     * @param forgotPasswordToken
+     * @param newpassword
+     * @param newpasswordconfirm
+     * @return
+     */
     def updatepassword(String username, String forgotPasswordToken, String newpassword, String newpasswordconfirm) {
         user = User.findByUsername(username)
         if (!user || !(user.username == username) || !(user.forgotPasswordToken == forgotPasswordToken)) {

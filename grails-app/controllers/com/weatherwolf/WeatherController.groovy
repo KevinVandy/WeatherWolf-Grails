@@ -17,9 +17,19 @@ class WeatherController {
     ]
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass())
-    String currentUsername
-    User user
+    private def currentUser = new User()
 
+    private User refreshCurrentUser() {
+        currentUser = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
+    }
+
+    /** GET only
+     *
+     * Shows the current weather and forecast for a search result.
+     * Logs a search log if the user is logged in
+     *
+     * @return
+     */
     def index() {
         def weatherService = new WeatherService()
         def searchResult = new SearchResult()
@@ -40,15 +50,14 @@ class WeatherController {
         if (!isLoggedIn()) {
             render(view: '/weather/index', model: [searchResult: searchResult])
         } else {
-            currentUsername = SecurityContextHolder.getContext().getAuthentication().getName()
-            user = User.findByUsername(currentUsername)
+            refreshCurrentUser()
             try {
-                SearchLog sl = new SearchLog(searchString: params.location, date: new Date(), user: user)
+                SearchLog sl = new SearchLog(searchString: params.location, date: new Date(), user: currentUser)
                 sl.save(flush: true, failOnError: true)
             } catch(Exception e){
                 logger.error(e.toString())
             }
-            render(view: '/weather/index', model: [searchResult: searchResult, user: user])
+            render(view: '/weather/index', model: [searchResult: searchResult, user: currentUser])
         }
     }
 }

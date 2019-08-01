@@ -20,11 +20,11 @@
       <table>
         <tr>
           <td>
-            <label class="all-right">Search All Pre-existing</label>
+            <label class="all-right">Test Search Bar</label>
           </td>
           <td>
             <input type="text" name="q" style=" width: 400px; font-size: 1.5em;" placeholder="<g:message code='msg.search.placeholder'/>"
-                   class="typeahead"/>
+                   class="typeahead" value="${(params.q && params.q.length() > 1) ? params.q : ''}" />
             <input type="submit" value="Search All" class="btn-white p m">
         </tr>
         <tr>

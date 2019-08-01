@@ -17,14 +17,30 @@ class SignupController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass())
 
+    /**
+     * Shows the signup page.
+     * Some fields can be pre-filled in if showing again after failing signup requirements
+     *
+     * @return
+     */
     def index() {
         render(view: '/signup/index', model: [username: params.username, email: params.email, favoritelocation: params.favoritelocation])
     }
 
-    //POST only
+    /** POST only
+     *
+     * Attempts to register a new user.
+     * Must pass validation for username, email, password, and favoriteLocation
+     *
+     * @param username
+     * @param email
+     * @param password
+     * @param passwordconfirm
+     * @param favoritelocation
+     * @return
+     */
     def register(String username, String email, String password, String passwordconfirm, String favoritelocation) {
         def u, r
-        def ur = new UserRole()
         logger.info("New user, ${username} attempting to register")
         flash.error = Validators.validateSignup(username, email, password, passwordconfirm)
         logger.info("message: " + flash.error)
@@ -38,7 +54,7 @@ class SignupController {
                 u.save(flush: true, failOnError: true)
                 logger.debug("user saved")
                 r = Role.findByAuthority('ROLE_CLIENT')
-                ur.create(u, r, true)
+                UserRole.create(u, r, true)
                 logger.info("User Role saved")
                 flash.success = "${u.username}" + message(code: 'msg.youraccountcreated', default: ", Your Account has been Created")
                 redirect(url: "/login/index?username=${username}") //success

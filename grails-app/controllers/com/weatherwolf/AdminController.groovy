@@ -158,13 +158,14 @@ class AdminController {
     /** POST only
      *
      * Permanently deletes a user and all of their info.
-     * First, all user roles are deleted
+     * First, all user roles are deleted,
+     * then the user is delted
      *
      * @param userId
      * @redirect /admin/users
      */
     def deleteuser(Integer userId) {
-        def u, ur
+        def u
         if (!userId) {
             flash.error = 'Invalid user id'
         } else {
@@ -173,7 +174,7 @@ class AdminController {
                 if (u) {
                     if (UserRole.where {
                         user == u
-                    }.deleteAll()){ // <- delete user's roles first
+                    }.deleteAll()) { // <- delete user's roles first
                         u.delete(flush: true, failOnError: true) //the main delete
                     } else {
                         logger.warn('Could not delete user roles')
@@ -182,7 +183,8 @@ class AdminController {
                 }
                 flash.success = "Deleted ${u.username}"
             } catch (Exception e) {
-                flash.error = "Failed to delete user"
+                flash.warn = "Failed to delete user"
+                logger.warn("Failed to delete user")
                 logger.error(e.toString())
             }
         }
@@ -195,7 +197,14 @@ class AdminController {
      * @render /admin/searchlogs
      */
     def searchlogs() {
-        Set<SearchLog> searchLogDataSet = SearchLog.findAll(max: 1000)
+        Set<SearchLog> searchLogDataSet
+        try {
+            searchLogDataSet = SearchLog.findAll(max: 1000)
+        } catch (Exception e) {
+            flash.warn = "Failed to load search logs"
+            logger.warn("Failed to load search logs")
+            logger.error(e.toString())
+        }
         render(view: '/admin/searchlogs', model: [searchLogDataSet: searchLogDataSet])
     }
 
@@ -205,7 +214,14 @@ class AdminController {
      * @return
      */
     def emaillogs() {
-        Set<EmailLog> emailLogDataSet = EmailLog.findAll(max: 1000)
+        Set<EmailLog> emailLogDataSet
+        try {
+            emailLogDataSet = EmailLog.findAll(max: 1000)
+        } catch (Exception e) {
+            flash.warn = "Failed to load email logs"
+            logger.warn("Failed to load email logs")
+            logger.error(e.toString())
+        }
         render(view: '/admin/emaillogs', model: [emailLogDataSet: emailLogDataSet])
     }
 
@@ -213,7 +229,8 @@ class AdminController {
      *
      * Shows the admin page for Locations. Locations are used for Typeahead suggestions.
      * If a param q is not supplied, then no locations load to the page
-     * If a
+     * If a param q is supplied and it contains a comma, it will run a search just like the searchbar would.
+     * If it does not contain a comma, it will search by city only
      *
      * @param q
      * @return
@@ -255,6 +272,9 @@ class AdminController {
 
     /** POST only
      *
+     * Adds a location to the location table.
+     * It will not add a duplicate location if the city, stateProvince, and country combination already exist
+     *
      * @param q
      * @param city
      * @param stateProvince
@@ -281,6 +301,8 @@ class AdminController {
     }
 
     /** POST only
+     *
+     * Deletes a location, preserves the search query so that the user can see the table after the deletion
      *
      * @param q
      * @param locationId

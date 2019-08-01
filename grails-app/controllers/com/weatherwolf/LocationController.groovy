@@ -27,7 +27,9 @@ class LocationController extends RestfulController<Location> {
         super(Location)
     }
 
-    /**
+    /** GET only
+     *
+     * Returns json for up to 1000 locations
      *
      * @param offset
      * @param max
@@ -42,7 +44,9 @@ class LocationController extends RestfulController<Location> {
         }
     }
 
-    /**
+    /** GET only
+     *
+     * Returns json for up to 20 locations while intelligently searching by city, region, and country
      *
      * @param q
      * @return
@@ -75,7 +79,9 @@ class LocationController extends RestfulController<Location> {
         }
     }
 
-    /**
+    /** GET only
+     *
+     * Searches only cities and returns a max of 20 cities
      *
      * @param q
      * @return
@@ -92,7 +98,9 @@ class LocationController extends RestfulController<Location> {
         }
     }
 
-    /**
+    /** GET only
+     *
+     * Searches only state/provinces and returns a max of 20 state/provinces
      *
      * @param q
      * @return
@@ -109,7 +117,9 @@ class LocationController extends RestfulController<Location> {
         }
     }
 
-    /**
+    /** GET only
+     *
+     * Searches only countries and returns a max of 20 countries
      *
      * @param q
      * @return
@@ -126,7 +136,10 @@ class LocationController extends RestfulController<Location> {
         }
     }
 
-    /**
+    /** GET only
+     *
+     * Takes an incomplete location object and fills in missing information using Geocoding service.
+     * Returns a full location object in JSON
      *
      * @param city
      * @param stateProvince
