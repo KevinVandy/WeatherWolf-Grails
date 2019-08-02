@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta name="layout" content="main"/>
-  <title>Weather Wolf</title>
+  <title>${message(code: 'msg.weatherwolf', default: 'Weather Wolf')}</title>
 </head>
 
 <body>
@@ -15,13 +15,13 @@
 
         <div class="grid-2-bl">
           <div>
-            <p>Your favorite location: <strong>${user.favoriteLocation}</strong></p>
+            <p>${message(code: 'msg.yourfavoritelocation', default: 'Your favorite location')}: <strong>${user.favoriteLocation}</strong></p>
           </div>
           <div>
             <sec:ifAnyGranted roles="ROLE_ADMIN">
-              <g:link controller="admin" action="index"><button class="btn-white p-1 m all-center">Admin Portal</button></g:link>
+              <g:link controller="admin" action="index"><button class="btn-white p-1 m all-center">${message(code: 'msg.adminportal', default: 'Admin Portal')}</button></g:link>
             </sec:ifAnyGranted>
-            <g:link controller="account" action="index"><button class="btn-white p-1 m all-center">Change Account Settings</button></g:link>
+            <g:link controller="account" action="index"><button class="btn-white p-1 m all-center">${message(code: 'msg.changeaccountsettings', default: 'Change Account Settings')}</button></g:link>
           </div>
         </div>
       </div>

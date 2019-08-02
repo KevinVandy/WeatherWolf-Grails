@@ -10,7 +10,7 @@
 <head>
   <meta>
   <meta name="layout" content="main"/>
-  <title></title>
+  <title>${message(code: 'msg.weatherwolf', default: 'Weather Wolf')}</title>
 </head>
 
 <body>

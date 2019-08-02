@@ -9,12 +9,18 @@ import com.weatherwolf.weather.Location
 import grails.plugin.springsecurity.annotation.Secured
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.security.core.context.SecurityContextHolder
 
 
 @Secured(['ROLE_ADMIN'])
 class AdminController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass())
+    private def currentUser = refreshCurrentUser()
+
+    private User refreshCurrentUser() {
+        currentUser = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
+    }
 
     static allowedMethods = [
             changeadminstatus: 'POST',
@@ -25,7 +31,6 @@ class AdminController {
             locations        : 'GET', //can use a search parameter from url
             addlocation      : 'POST',
             deletelocation   : 'POST'
-
     ]
 
     /**
@@ -47,7 +52,7 @@ class AdminController {
             logger.warn('Could load users')
             logger.error(e.toString())
         }
-        render(view: '/admin/users', model: [userDataSet: userDataSet])
+        render(view: '/admin/users', model: [user: currentUser, userDataSet: userDataSet])
     }
 
     /** POST only
@@ -197,7 +202,7 @@ class AdminController {
      * @render /admin/searchlogs
      */
     def searchlogs() {
-        Set<SearchLog> searchLogDataSet
+        Set<SearchLog> searchLogDataSet = null
         try {
             searchLogDataSet = SearchLog.findAll(max: 1000)
         } catch (Exception e) {
@@ -205,7 +210,7 @@ class AdminController {
             logger.warn("Failed to load search logs")
             logger.error(e.toString())
         }
-        render(view: '/admin/searchlogs', model: [searchLogDataSet: searchLogDataSet])
+        render(view: '/admin/searchlogs', model: [user: currentUser, searchLogDataSet: searchLogDataSet])
     }
 
     /**
@@ -214,7 +219,7 @@ class AdminController {
      * @return
      */
     def emaillogs() {
-        Set<EmailLog> emailLogDataSet
+        Set<EmailLog> emailLogDataSet = null
         try {
             emailLogDataSet = EmailLog.findAll(max: 1000)
         } catch (Exception e) {
@@ -222,7 +227,7 @@ class AdminController {
             logger.warn("Failed to load email logs")
             logger.error(e.toString())
         }
-        render(view: '/admin/emaillogs', model: [emailLogDataSet: emailLogDataSet])
+        render(view: '/admin/emaillogs', model: [user: currentUser, emailLogDataSet: emailLogDataSet])
     }
 
     /** //GET optional
@@ -267,7 +272,7 @@ class AdminController {
             }
             locationDataSet = query.list(max: 6000)
         }
-        render(view: '/admin/locations', model: [locationDataSet: locationDataSet, locationCount: Location.count(), pages: ('A'..'Z')])
+        render(view: '/admin/locations', model: [user: currentUser, locationDataSet: locationDataSet, locationCount: Location.count(), pages: ('A'..'Z')])
     }
 
     /** POST only

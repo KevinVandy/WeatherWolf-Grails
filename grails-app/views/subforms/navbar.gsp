@@ -3,10 +3,22 @@
   <asset:image src="logo.png" class="logo"/>
   <ul>
     <li>
-      <select onChange="window.location.href = this.value">
-        <option value="" disabled selected><g:message code="language" default="Language"/></option>
-        <navbar:localeDropdownListItems uri="${request.forwardURI}" params="${params}"/>
-      </select>
+      <sec:ifNotLoggedIn>
+        <select onChange="window.location.href = this.value">
+          <option value="" disabled selected><g:message code="language" default="Language"/></option>
+          <navbar:localeDropdownListItems uri="${request.forwardURI}" params="${params}"/>
+        </select>
+      </sec:ifNotLoggedIn>
+      <sec:ifLoggedIn>
+        <form id="changelang" action="/account/changelang" method="get">
+          <select name="lang" onchange="document.getElementById('changelang').submit()">
+            <option value="" disabled selected><g:message code="language" default="Language"/></option>
+            <option value="en"><g:message code="language.en" default="English"/></option>
+            <option value="es"><g:message code="language.es" default="Spanish"/></option>
+            <option value="fr"><g:message code="language.fr" default="French"/></option>
+          </select>
+        </form>
+      </sec:ifLoggedIn>
     </li>
     <li>
       <a href="/home"><g:message code="msg.home" default="Home"/></a>

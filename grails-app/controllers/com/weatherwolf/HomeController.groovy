@@ -37,6 +37,7 @@ class HomeController {
                 logger.warn("Could not wipe forgot password token")
             }
         }
+        LocaleContextHolder.setLocale(new Locale(currentUser.lang))
         redirect(url: "/home?lang=${currentUser.lang}&units=${currentUser.units}")
     }
 

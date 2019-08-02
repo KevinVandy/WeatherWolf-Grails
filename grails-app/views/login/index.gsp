@@ -3,7 +3,7 @@
   <html>
   <head>
     <meta name="layout" content="main"/>
-    <title>Welcome to Grails</title>
+    <title>${message(code: 'msg.weatherwolf', default: 'Weather Wolf')}</title>
   </head>
 
   <body>

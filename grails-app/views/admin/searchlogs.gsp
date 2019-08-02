@@ -9,7 +9,7 @@
 <html>
 <head>
   <meta name="layout" content="main"/>
-  <title></title>
+  <title>${message(code: 'msg.weatherwolf', default: 'Weather Wolf')}</title>
 </head>
 
 <body>
@@ -46,7 +46,18 @@
               dom: 'Blfrtip',
               buttons: [
                   'copyHtml5', 'excelHtml5', 'pdfHtml5', 'csvHtml5'
-              ]
+              ],
+              language: {
+                  <g:if test="${user.lang == 'en'}">
+                  "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/English.json"
+                  </g:if>
+                  <g:if test="${user.lang == 'es'}">
+                  "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+                  </g:if>
+                  <g:if test="${user.lang == 'fr'}">
+                  "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                  </g:if>
+              }
           });
           $("select[name='searchlog-table_length']").addClass('inline');
           $(".dt-button").addClass('btn-white p m')

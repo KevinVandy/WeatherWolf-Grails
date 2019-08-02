@@ -48,7 +48,6 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
      *
      * @return
      */
-    //override the default spring security login form
     @Override
     def auth() {
         if (isLoggedIn()) {
@@ -70,15 +69,15 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
         def exception = session[WebAttributes.AUTHENTICATION_EXCEPTION]
         if (exception) {
             if (exception instanceof AccountExpiredException) {
-                flash.error = messageSource.getMessage('springSecurity.errors.login.expired', null, "Account Expired", request.locale)
+                flash.error = message(code: 'springSecurity.errors.login.expired', default: "Account Expired") as String
             } else if (exception instanceof CredentialsExpiredException) {
-                flash.error = messageSource.getMessage('springSecurity.errors.login.passwordExpired', null, "Password Expired", request.locale)
+                flash.error = message(code: 'springSecurity.errors.login.passwordExpired', default: "Password Expired") as String
             } else if (exception instanceof DisabledException) {
-                flash.error = messageSource.getMessage('springSecurity.errors.login.disabled', null, "Account Disabled", request.locale)
+                flash.error = message(code: 'springSecurity.errors.login.disabled', default: "Account Disabled") as String
             } else if (exception instanceof LockedException) {
-                flash.error = messageSource.getMessage('springSecurity.errors.login.locked', null, "Account Locked", request.locale)
+                flash.error = message(code: 'springSecurity.errors.login.locked', default: "Account Locked") as String
             } else {
-                flash.error = messageSource.getMessage('springSecurity.errors.login.fail', null, "Authentication Failure", request.locale)
+                flash.error = message(code: 'springSecurity.errors.login.fail', default: "Authentication Failure") as String
             }
         }
         render(view: '/login/index')
@@ -108,7 +107,7 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
     def sendpasswordresetemail(String username, String email) {
         logger.info("username: ${username} and email: ${email} attempting to reset password")
         if (!User.findByUsernameAndEmail(username, email)) {
-            flash.error = message(code: 'msg.couldnotfindusernameemail', default: 'Could not find Username, or username and email do not match')
+            flash.error = message(code: 'msg.couldnotfindusernameemail', default: 'Could not find Username, or username and email do not match') as String
             redirect(url: '/login/forgotpassword') //user error
         } else { //should be valid
             try {
@@ -130,7 +129,7 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
             } catch (Exception ex) {
                 logger.warn("Could not send email")
                 logger.error(ex.toString())
-                flash.error = message(code: 'msg.emailfail', default: 'Email failed to send for unknown reason. Try again later')
+                flash.error = message(code: 'msg.emailfail', default: 'Email failed to send for unknown reason. Try again later') as String
                 redirect(url: '/login/forgotpassword') //unknown failure
             }
         }
@@ -153,15 +152,15 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
      *
      * @return
      */
-    def resetpassword() { //show reset password page
+    def resetpassword() {
         logger.info("User ${params.username} visited account/resetpassword")
         boolean validToken = false
         if (!(params.username && params.forgotPasswordToken)) {
-            flash.error = message(code: 'msg.invalidlink', default: 'Invalid Link') //user error
+            flash.error = message(code: 'msg.invalidlink', default: 'Invalid Link')  as String //user error
         } else {
             user = User.findByUsername(params.username)
             if (!(user && user.forgotPasswordToken && user.forgotPasswordToken.equalsIgnoreCase(params.forgotPasswordToken))) {
-                flash.error = message(code: 'msg.invalidtoken', default: 'Invalid Token') //user error
+                flash.error = message(code: 'msg.invalidtoken', default: 'Invalid Token')  as String //user error
             } else {
                 validToken = true
             }
@@ -184,7 +183,7 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
     def updatepassword(String username, String forgotPasswordToken, String newpassword, String newpasswordconfirm) {
         user = User.findByUsername(username)
         if (!user || !(user.username == username) || !(user.forgotPasswordToken == forgotPasswordToken)) {
-            flash.error = message(code: 'msg.invalidtoken', default: 'Invalid Token')
+            flash.error = message(code: 'msg.invalidtoken', default: 'Invalid Token') as String
             redirect(url: '/login/index') //user error
         } else {
             flash.error = Validators.valPassword(newpassword, newpasswordconfirm)
@@ -196,9 +195,9 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
                 try {
                     user.save(flush: true, failOnError: true)
                     flash.success = "${user.username}, your password was successfully reset. Try logging in with your new password"
-                    redirect(username: "/login/index?username=${user.username}") //success
+                    redirect(url: "/login/index?username=${user.username}") //success
                 } catch (Exception e) {
-                    flash.error = message(code: 'msg.errorsavingpnewpassword', default: 'Error saving new password. Try again.')
+                    flash.error = message(code: 'msg.errorsavingpnewpassword', default: 'Error saving new password. Try again.') as String
                     logger.error(e.toString())
                     redirect(url: '/login/index') //unknown error
                 }

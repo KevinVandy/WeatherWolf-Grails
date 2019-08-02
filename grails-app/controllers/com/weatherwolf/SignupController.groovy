@@ -56,10 +56,10 @@ class SignupController {
                 r = Role.findByAuthority('ROLE_CLIENT')
                 UserRole.create(u, r, true)
                 logger.info("User Role saved")
-                flash.success = "${u.username}" + message(code: 'msg.youraccountcreated', default: ", Your Account has been Created")
+                flash.success = "${u.username}" + (message(code: 'msg.youraccountcreated', default: ", Your Account has been Created") as String)
                 redirect(url: "/login/index?username=${username}") //success
             } catch (Exception e) {
-                flash.error = message(code: 'msg.invalidsignup', default: 'Signup not valid.')
+                flash.error = message(code: 'msg.invalidsignup', default: 'Signup not valid.') as String
                 logger.warn("Could not create user: ${username}")
                 logger.error(e.toString())
                 redirect(url: "/signup/index?username=${username}&email=${email}&favoritelocation=${favoritelocation}") //unknown error

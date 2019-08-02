@@ -1,8 +1,8 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="org.springframework.context.i18n.LocaleContextHolder; org.springframework.web.servlet.support.RequestContextUtils" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
   <meta name="layout" content="main"/>
-  <title></title>
+  <title>${message(code: 'msg.weatherwolf', default: 'Weather Wolf')}</title>
 </head>
 
 <body>
@@ -100,15 +100,15 @@
             <table class="all-center">
               <tr>
                 <td colspan="2">
-                  <p class="alert-warning p m all-center" style="min-width: 400px;">Are you sure you want to delete your account?</p>
+                  <p class="alert-warning p m all-center" style="min-width: 400px;">${message(code: 'msg.areyousuredeleteaccount', default: 'Are you sure you want to delete your account?')}</p>
                 </td>
               </tr>
               <tr>
                 <td>
-                  <button id="canceldeleteform" class="btn-white p-1 all-center">Cancel</button>
+                  <button id="canceldeleteform" class="btn-white p-1 all-center">${message(code: 'msg.cancel', default: 'Cancel')}</button>
                 </td>
                 <td>
-                  <input type="submit" value="Yes, Delete My Account" class="btn-danger all-center p-1">
+                  <input type="submit" value="${message(code: 'msg.yesdeleteaccount', default: 'Yes, Delete My Account')}" class="btn-danger all-center p-1">
                 </td>
               </tr>
 
@@ -169,8 +169,8 @@
         <table id="searchhistorytable">
           <thead>
             <tr>
-              <th>Date</th>
-              <th>Search</th>
+              <th><g:message code="msg.date" default="Date"/></th>
+              <th><g:message code="msg.search" default="Search"/></th>
             </tr>
           </thead>
           <tbody>
@@ -187,30 +187,42 @@
             </g:each>
           </tbody>
         </table>
-      <table>
-        <g:if test="${user.searchLog}">
-          <tr>
-            <td colspan="2">
-              <g:form controller="account" action="deletesearchhistory" method="POST" onsubmit="return confirm('Are you sure you want to delete your search history?');">
-                <input type="submit" value="Delete Search History" class="btn-white p all-center">
-              </g:form>
-            </td>
-          </tr>
-        </g:if>
-      </table>
+        <table>
+          <g:if test="${user.searchLog}">
+            <tr>
+              <td colspan="2">
+                <g:form controller="account" action="deletesearchhistory" method="POST"
+                        onsubmit="return confirm('${message(code: 'msg.areyousuredeletehistory', default: 'Are you sure you want to delete your search history?')}');">
+                  <input type="submit" value="<g:message code="msg.deletesearchhistory" default="Delete Search History"/>"
+                         class="btn-white p all-center">
+                </g:form>
+              </td>
+            </tr>
+          </g:if>
+        </table>
       </div>
     </div>
   </g:if>
   <g:else>
     Could not find user object
   </g:else>
-
   <script>
 
       $(document).ready(function () {
           $('#searchhistorytable').DataTable({
               dom: 'tip',
-              ordering: true
+              ordering: true,
+              language: {
+                  <g:if test="${user.lang == 'en'}">
+                  "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/English.json"
+                  </g:if>
+                  <g:if test="${user.lang == 'es'}">
+                  "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+                  </g:if>
+                  <g:if test="${user.lang == 'fr'}">
+                  "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                  </g:if>
+              }
           });
       });
 

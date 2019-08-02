@@ -142,3 +142,12 @@
   min-width: 300px;
   font-size: 1.2em;
 }
+
+table.dataTable tbody th,
+table.dataTable tbody td {
+  white-space: nowrap;
+}
+
+thead{
+  margin: auto;
+}

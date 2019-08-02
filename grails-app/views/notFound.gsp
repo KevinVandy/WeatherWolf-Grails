@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
     <head>
-        <title>Page Not Found</title>
+        <title>${message(code: 'msg.weatherwolf', default: 'Weather Wolf')} - Page not Found</title>
         <meta name="layout" content="main">
         <g:if env="development"><asset:stylesheet src="errors.css"/></g:if>
     </head>

@@ -10,7 +10,7 @@
             <label for="username"><g:message code="msg.username" default="Username"/>:</label>
           </td>
           <td>
-            <input type="text" name="username" id="username" value="${params.username}"/>
+            <input type="text" name="username" id="username" value="${params.username}" required minlength="3" maxlength="50"/>
           </td>
         </tr>
         <tr>
@@ -18,7 +18,7 @@
             <label for="password"><g:message code="msg.password" default="Password"/>:</label>
           </td>
           <td>
-            <input type="password" name="password" id="password"/>
+            <input type="password" name="password" id="password" required minlength="6" maxlength="100"/>
             <a href="/login/forgotpassword">Forgot your password?</a>
           </td>
         </tr>

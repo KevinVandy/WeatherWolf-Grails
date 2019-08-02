@@ -9,12 +9,12 @@
 <html>
 <head>
   <meta name="layout" content="main"/>
-  <title>Weather Wolf - Admin</title>
+  <title>${message(code: 'msg.weatherwolf', default: 'Weather Wolf')}</title>
 </head>
 
 <body>
   <g:include view="subforms/navadmin.gsp"/>
-  <div class="grid-3 m-2">
+  <div class="grid-2 m-2">
     <g:link controller="admin" action="users">
       <div class="card all-center m">
         <h1>Manage Users</h1>

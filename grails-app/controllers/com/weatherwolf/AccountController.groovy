@@ -6,6 +6,7 @@ import com.weatherwolf.security.UserRole
 import grails.plugin.springsecurity.annotation.Secured
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.security.core.context.SecurityContextHolder
 
 
@@ -78,18 +79,18 @@ class AccountController {
     def updateemail(String email) {
         refreshCurrentUser()
         if (email && email == currentUser.email) {
-            flash.warning = 'Email not changed because that is your same email'
+            flash.warning = message(code: 'msg.emailnotchangedsame', default: 'Email not changed because that is your same email') as String
         } else {
             flash.error = Validators.valEmail(email)
-            if (!flash.error) { //not user error
+            if (!flash.error) { //if no user error
                 try {
                     currentUser.email = email
                     currentUser.save(flush: true, failOnError: true)
-                    flash.success = message(code: 'msg.emailupdated', default: 'Email Updated') //success
+                    flash.success = message(code: 'msg.emailupdated', default: 'Email Updated') as String //success
                 } catch (Exception e) {
                     logger.warn("Could not save settings")
                     logger.error(e.toString())
-                    flash.error = message(code: 'msg.emailnotupdated', default: 'Email could not be Updated') //unknown error
+                    flash.error = message(code: 'msg.emailnotupdated', default: 'Email could not be Updated') as String //unknown error
                 }
             }
         }
@@ -109,34 +110,56 @@ class AccountController {
     def savesettings(String lang, Character units, String location) {
         refreshCurrentUser()
         if (currentUser.lang == lang && currentUser.units == units && currentUser.favoriteLocation == location) {
-            flash.warning = message(code: 'msg.nosettingschanged', default: 'No settings were changed')
+            flash.warning = message(code: 'msg.nosettingschanged', default: 'No settings were changed') as String
         } else {
             if (!lang) {
-                flash.error = message(code: 'msg.allfieldsrequired', default: 'All fields are required')
+                flash.error = message(code: 'msg.allfieldsrequired', default: 'All fields are required') as String
             } else {
                 currentUser.lang = lang
             }
             if (!units) {
-                flash.error = message(code: 'msg.allfieldsrequired', default: 'All fields are required')
+                flash.error = message(code: 'msg.allfieldsrequired', default: 'All fields are required') as String
             } else {
                 currentUser.units = units
             }
             if (!location) {
-                flash.error = message(code: 'msg.allfieldsrequired', default: 'All fields are required')
+                flash.error = message(code: 'msg.allfieldsrequired', default: 'All fields are required') as String
             } else {
                 currentUser.favoriteLocation = location
             }
             try {
                 currentUser.save(flush: true, failOnError: true)
-                flash.success = message(code: 'msg.settingssaved', default: 'Settings Saved') //success
+                flash.success = message(code: 'msg.settingssaved', default: 'Settings Saved') as String //success
             } catch (Exception e) {
-                currentUser = User.findByUsername(currentUsername) //refresh from db
+                refreshCurrentUser()
                 logger.warn("Could not save settings")
                 logger.error(e.toString())
-                flash.error = message(code: 'msg.settingsnotsaved', default: 'Settings could not be saved') //unkown error
+                flash.error = message(code: 'msg.settingsnotsaved', default: 'Settings could not be saved') as String //unkown error
             }
         }
         redirect(url: '/account/index')
+    }
+
+    def changelang(String lang) {
+        refreshCurrentUser()
+        if (!lang) {
+            flash.error = message(code: 'msg.couldnotchangelanguage', default: 'Could not change language') as String
+        } else if (lang == currentUser.lang) {
+            flash.warning = message(code: 'msg.samelanguage', default: 'Language stayed the same') as String
+        } else {
+            currentUser.lang = lang
+            try {
+                currentUser.save(flush: true, failOnError: true)
+                flash.success = message(code: 'msg.languagechanged', default: 'Language Changed') as String //success
+            } catch (Exception e) {
+                refreshCurrentUser()
+                logger.warn("Could not change language")
+                logger.error(e.toString())
+                flash.error = message(code: 'msg.couldnotchangelanguage', default: 'Language could not be changed') as String //unkown error
+            }
+        }
+        LocaleContextHolder.setLocale(new Locale(currentUser.lang)) //load language from user's settings
+        redirect(url: "/account/index?lang=${lang}")
     }
 
     /** POST only
@@ -151,11 +174,11 @@ class AccountController {
         try {
             currentUser.favoriteLocation = favoritelocation
             currentUser.save(flush: true, failOnError: true)
-            flash.success = message(code: 'msg.settingssaved', default: 'Settings Saved') //success
+            flash.success = message(code: 'msg.settingssaved', default: 'Settings Saved') as String //success
         } catch (Exception e) {
             logger.warn("Could not save new Location")
             logger.error(e.toString())
-            flash.error = message(code: 'msg.settingsnotsaved', default: 'Location could not be saved') //unkown error
+            flash.error = message(code: 'msg.settingsnotsaved', default: 'Location could not be saved') as String //unknown error
         }
         redirect(url: '/account/index')
     }
@@ -173,9 +196,9 @@ class AccountController {
             SearchLog.where {
                 user == currentUser
             }.deleteAll(flush: true, failOnError: true)
-            flash.success = message(code: 'msg.searchhistorydeleted', default: 'Search History Deleted')
+            flash.success = message(code: 'msg.searchhistorydeleted', default: 'Search History Deleted') as String
         } catch (Exception e) {
-            flash.error = message(code: 'msg.couldnotdeletesearchhistory', default: 'Could not delete search history')
+            flash.error = message(code: 'msg.couldnotdeletesearchhistory', default: 'Could not delete search history') as String
             logger.warn("Could not delete search history for ${currentUser.username}")
             logger.error(e.toString())
         }
@@ -190,21 +213,21 @@ class AccountController {
      *
      * @redirect /logout on success, /account/index on fail
      */
-    def deleteaccount() {
+    def deleteaccount(/*no params*/) {
         try {
             refreshCurrentUser()
             if (UserRole.where {
                 user == currentUser
-            }.deleteAll()){
+            }.deleteAll()) {
                 currentUser.delete(flush: true, failOnError: true) //the main delete
             } else {
                 logger.warn('Could not delete user roles')
             }
-            flash.success = message(code: 'msg.accountdeleted', default: 'Account Deleted')
+            flash.success = message(code: 'msg.accountdeleted', default: 'Account Deleted') as String
             session.invalidate()
             redirect(url: '/home')
         } catch (Exception e) {
-            flash.error = message(code: 'msg.couldnotdeleteaccount', default: 'Could not delete your account')
+            flash.error = message(code: 'msg.couldnotdeleteaccount', default: 'Could not delete your account') as String
             logger.warn("Could not delete search account for ${currentUser.username}")
             logger.error(e.toString())
             redirect(url: '/account/index')

@@ -4,7 +4,7 @@
 
   <div class="grid-5" id="fiveday">
     <g:each in="${searchResult.dayForecasts}" var="dayForecast">
-      <div class="card m p-1">
+      <div class="card m p">
         <div class="all-center" style="font-size: 2em;">
           <g:formatDate date="${dayForecast.date}" format="E"/>
         </div>
@@ -22,7 +22,7 @@
         <div class="all-center">${(dayForecast.precipitation).round(1)} in precipitation</div>
         <hr/>
 
-        <p class="text-center p">${dayForecast.windSpeed.round()} mph winds</p>
+        <p class="text-center p">${dayForecast.windSpeed.round()} mph ${message(code: 'msg.winds', default: 'winds')}</p>
 
         <div class="grid-3 all-center">
           <div style="color: blue; font-size: 2em;">${dayForecast.minTemp.round()}&deg;${params.units}</div>

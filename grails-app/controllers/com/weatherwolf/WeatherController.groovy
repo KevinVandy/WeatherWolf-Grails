@@ -9,6 +9,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.security.core.context.SecurityContextHolder
 
+
 @Secured("permitAll")
 class WeatherController {
 
@@ -25,6 +26,7 @@ class WeatherController {
 
     /** GET only
      *
+     * Performs a search for weather using the weather service
      * Shows the current weather and forecast for a search result.
      * Logs a search log if the user is logged in
      *
@@ -54,7 +56,7 @@ class WeatherController {
             try {
                 SearchLog sl = new SearchLog(searchString: params.location, date: new Date(), user: currentUser)
                 sl.save(flush: true, failOnError: true)
-            } catch(Exception e){
+            } catch (Exception e) {
                 logger.error(e.toString())
             }
             render(view: '/weather/index', model: [searchResult: searchResult, user: currentUser])
