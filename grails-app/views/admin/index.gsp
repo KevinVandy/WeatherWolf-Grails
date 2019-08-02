@@ -17,22 +17,22 @@
   <div class="grid-2 m-2">
     <g:link controller="admin" action="users">
       <div class="card all-center m">
-        <h1>Manage Users</h1>
+        <h1>${message(code: 'msg.manageusers', default: 'Manage Users')}</h1>
       </div>
     </g:link>
     <g:link controller="admin" action="searchlogs">
       <div class="card all-center m">
-        <h1>Search Logs</h1>
+        <h1>${message(code: 'msg.searchlogs', default: 'Search Logs')}</h1>
       </div>
     </g:link>
     <g:link controller="admin" action="emaillogs">
       <div class="card all-center m">
-        <h1>Email Logs</h1>
+        <h1>${message(code: 'msg.emaillogs', default: 'Email Logs')}</h1>
       </div>
     </g:link>
     <g:link controller="admin" action="locations">
       <div class="card all-center m">
-        <h1>Manage Location Suggestions</h1>
+        <h1>${message(code: 'msg.managelocationsuggestions', default: 'Manage Location Suggestions')}</h1>
       </div>
     </g:link>
   </div>
