@@ -25,11 +25,11 @@
         <p class="text-center p">${dayForecast.windSpeed.round()} mph ${message(code: 'msg.winds', default: 'winds')}</p>
 
         <div class="grid-3 all-center">
-          <div style="color: blue; font-size: 2em;">${dayForecast.minTemp.round()}&deg;${params.units}</div>
+          <div style="color: blue; font-size: 2em;">${dayForecast.minTemp.round()}&deg;<sup>${params.units}</sup></div>
 
           <div></div>
 
-          <div style="color: red; font-size: 2em;">${dayForecast.maxTemp.round()}&deg;${params.units}</div>
+          <div style="color: red; font-size: 2em;">${dayForecast.maxTemp.round()}&deg;<sup>${params.units}</sup></div>
         </div>
       </div>
     </g:each>

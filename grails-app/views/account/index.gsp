@@ -180,6 +180,7 @@
                 <td>
                   <g:form controller="weather" action="index" method="GET">
                     <input type="hidden" name="location" value="${sl.searchString}">
+                    <input type="hidden" name="units" value="${user.units}">
                     <input type="submit" value="${sl.searchString}" class="btn-white p" style="width: 100%;">
                   </g:form>
                 </td>

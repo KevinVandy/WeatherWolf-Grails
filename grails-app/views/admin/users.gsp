@@ -22,6 +22,7 @@
           <th>ID</th>
           <th>${message(code: 'msg.username', default: 'Username')}</th>
           <th>${message(code: 'msg.email', default: 'Email')}</th>
+          <th>${message(code: 'msg.datecreated', default: 'Date Created')}</th>
           <th>${message(code: 'msg.favoritelocation', default: 'Favorite Location')}</th>
           <th>${message(code: 'language', default: 'Language')}</th>
           <th>${message(code: 'msg.units', default: 'Units')}</th>
@@ -37,6 +38,7 @@
             <td>${userData.id}</td>
             <td>${userData.username}</td>
             <td><a href="mailto:${userData.email}?subject=Weather%20Wolf">${userData.email}</a></td>
+            <td><g:formatDate date="${userData.dateCreated}" type="datetime" dateStyle="SHORT" timeStyle="SHORT" /></td>
             <td>${userData.favoriteLocation}</td>
             <td>${userData.lang}</td>
             <td>${userData.units}</td>
