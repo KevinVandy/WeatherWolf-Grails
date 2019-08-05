@@ -1,5 +1,5 @@
 <nav class="navbar nav-fixed bg-primary" role="navigation" style="font-size: 15pt; !important;">
-  <a href="/home"><h1 style="display: inline"><g:message code="msg.weatherwolf" default="Weather Wolf"/></h1></a>
+  <a href="/home<sec:ifLoggedIn>?units=${user.units}</sec:ifLoggedIn>"><h1 style="display: inline"><g:message code="msg.weatherwolf" default="Weather Wolf"/></h1></a>
   <asset:image src="logo.png" class="logo"/>
   <ul>
     <li>
@@ -21,7 +21,7 @@
       </sec:ifLoggedIn>
     </li>
     <li>
-      <a href="/home"><g:message code="msg.home" default="Home"/></a>
+      <a href="/home<sec:ifLoggedIn>?units=${user.units}</sec:ifLoggedIn>"><g:message code="msg.home" default="Home"/></a>
     </li>
     <sec:ifAnyGranted roles="ROLE_ADMIN">
       <li>

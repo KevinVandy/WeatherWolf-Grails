@@ -22,7 +22,8 @@ let locations = new Bloodhound({
 $('.typeahead').typeahead(
     {
         minLength: 2,
-        hint: true
+        hint: false,
+        highlight: true
     }, {
         name: 'location',
         display: Handlebars.compile('{{city}}, {{stateProvince}}, {{country}}'),
@@ -48,7 +49,7 @@ let cities = new Bloodhound({
 $('.typeaheadCity').typeahead(
     {
         minLength: 4,
-        hint: true
+        hint: false
     }, {
         name: 'city',
         source: cities,
@@ -72,7 +73,7 @@ let stateProvinces = new Bloodhound({
 $('.typeaheadStateProvince').typeahead(
     {
         minLength: 3,
-        hint: true
+        hint: false
     }, {
         name: 'stateProvince',
         source: stateProvinces,
@@ -96,7 +97,7 @@ let countries = new Bloodhound({
 $('.typeaheadCountry').typeahead(
     {
         minLength: 2,
-        hint: true
+        hint: false
     }, {
         name: 'country',
         source: countries,

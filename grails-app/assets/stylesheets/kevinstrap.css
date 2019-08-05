@@ -192,6 +192,8 @@ table {
   padding: 3em;
   margin: 3em auto;
   overflow: hidden;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
 .backcard table {
@@ -572,7 +574,8 @@ table th {
 }
 
 .navbar a:hover {
-  color: var(--light-color);
+  color: #fff;
+  font-weight: bold;
 }
 
 .navbar .welcome span {

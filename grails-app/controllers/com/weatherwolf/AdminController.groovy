@@ -36,7 +36,9 @@ class AdminController {
     /**
      * Show the home admin page
      */
-    def index() {}
+    def index() {
+        render(view: '/admin/index', model: [user: currentUser])
+    }
 
     /**
      * Show the users page

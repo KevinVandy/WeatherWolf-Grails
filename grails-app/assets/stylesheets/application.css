@@ -55,7 +55,7 @@
   width: 300px;
 }
 
-#login .inner input[type="checkbox"]{
+#login .inner input[type="checkbox"] {
   height: 20px;
   width: 20px;
   padding: 8px;
@@ -116,7 +116,9 @@
   z-index: 6;
 }
 
-.tt-menu
+.tt-menu:hover {
+  opacity: 1;
+}
 
 .tt-suggestion {
   background-color: #fff;
@@ -148,6 +150,6 @@ table.dataTable tbody td {
   white-space: nowrap;
 }
 
-thead{
+thead {
   margin: auto;
 }

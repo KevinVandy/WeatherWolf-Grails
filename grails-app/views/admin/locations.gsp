@@ -101,6 +101,7 @@
     <table id="location-table" class="display" style="display: none">
       <thead>
         <tr>
+          <td>ID</td>
           <th>City</th>
           <th>State / Province</th>
           <th>Country</th>
@@ -111,6 +112,7 @@
       <g:if test="${locationDataSet}">
         <g:each in="${locationDataSet}" var="location">
           <tr>
+            <td>${location.id}</td>
             <td>${location.city}</td>
             <td>${location.stateProvince}</td>
             <td>${location.country}</td>
@@ -128,6 +130,7 @@
         <g:if test="${locationDataSet.size() > 10}">
           <tfoot>
             <tr>
+              <th>ID</th>
               <th>City</th>
               <th>State / Province / Region</th>
               <th>Country</th>

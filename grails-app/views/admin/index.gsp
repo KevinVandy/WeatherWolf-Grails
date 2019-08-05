@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: kvancott
-  Date: 7/25/2019
-  Time: 4:25 PM
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
