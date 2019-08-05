@@ -20,15 +20,15 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>Username</th>
-          <th>Email</th>
-          <th>Favorite Location</th>
-          <th>Language</th>
-          <th>Units</th>
-          <th># Searches</th>
-          <th>Roles</th>
-          <th>Enabled</th>
-          <th>Ban</th>
+          <th>${message(code: 'msg.username', default: 'Username')}</th>
+          <th>${message(code: 'msg.email', default: 'Email')}</th>
+          <th>${message(code: 'msg.favoritelocation', default: 'Favorite Location')}</th>
+          <th>${message(code: 'language', default: 'Language')}</th>
+          <th>${message(code: 'msg.units', default: 'Units')}</th>
+          <th># ${message(code: 'msg.searches', default: 'Searches')}</th>
+          <th>${message(code: 'msg.roles', default: 'Roles')}</th>
+          <th>${message(code: 'msg.enable', default: 'Enable')}</th>
+          <th>${message(code: 'msg.ban', default: 'Ban')}</th>
         </tr>
       </thead>
       <tbody>
@@ -42,41 +42,41 @@
             <td>${userData.units}</td>
             <td>${userData.searchLog.size()}</td>
             <td>
-              <form action="/admin/changeadminstatus" method="post" id="${userData.username}adminstatusform">
-                <input type="hidden" name="userId" value="${userData.id}">
-                <input type="checkbox" name="adminstatus" value="1"
-                       onchange="document.getElementById('${userData.username}adminstatusform').submit()"
-                       <g:if test="${userData.getAuthorities().contains(new Role("ROLE_ADMIN"))}">checked</g:if>>
-                <label>Admin</label>
-              </form>
-
               <form action="/admin/changeuserstatus" method="post" id="${userData.username}userstatusform">
                 <input type="hidden" name="userId" value="${userData.id}">
                 <input type="checkbox" name="userstatus" value="1"
                        onchange="document.getElementById('${userData.username}userstatusform').submit()"
                        <g:if test="${userData.getAuthorities().contains(new Role("ROLE_CLIENT"))}">checked disabled</g:if>>
-                <label>User</label>
+                <label>${message(code: 'msg.user', default: 'User')}</label>
+              </form>
+
+              <form action="/admin/changeadminstatus" method="post" id="${userData.username}adminstatusform">
+                <input type="hidden" name="userId" value="${userData.id}">
+                <input type="checkbox" name="adminstatus" value="1"
+                       onchange="document.getElementById('${userData.username}adminstatusform').submit()"
+                       <g:if test="${userData.getAuthorities().contains(new Role("ROLE_ADMIN"))}">checked</g:if>>
+                <label>${message(code: 'msg.admin', default: 'Admin')}</label>
               </form>
             </td>
             <td>
               <g:if test="${userData.enabled}">
                 <g:form controller="admin" action="disableuser" method="post">
                   <input type="hidden" name="userId" value="${userData.id}">
-                  <input type="submit" value="Disable" class="btn-danger p">
+                  <input type="submit" value="${message(code: 'msg.disable', default: 'Disable')}" class="btn-danger p">
                 </g:form>
               </g:if>
               <g:else>
                 <g:form controller="admin" action="enableuser" method="post">
                   <input type="hidden" name="userId" value="${userData.id}">
-                  <input type="submit" value="Enable" class="btn-primary p">
+                  <input type="submit" value="${message(code: 'msg.enable', default: 'Enable')}" class="btn-primary p">
                 </g:form>
               </g:else>
             </td>
             <td>
               <g:form controller="admin" action="deleteuser" method="post"
-                      onsubmit="return confirm('Are you sure you want to delete this account?');">
+                      onsubmit="return confirm('${message(code: 'msg.areyousuredeletethisaccount', default: 'Are you sure you want to delete this account?')}');">
                 <input type="hidden" name="userId" value="${userData.id}">
-                <input type="submit" value="Ban" class="btn-danger p">
+                <input type="submit" value="${message(code: 'msg.ban', default: 'Ban')}" class="btn-danger p">
               </g:form>
             </td>
           </tr>

@@ -19,7 +19,7 @@
             ${dayForecast.condition}
           </div>
         </div>
-        <div class="all-center">${(dayForecast.precipitation).round(1)} in precipitation</div>
+        <div class="all-center">${(dayForecast.precipitation).round(1)} in ${message(code: 'msg.precipitation', default: 'precipitation')}</div>
         <hr/>
 
         <p class="text-center p">${dayForecast.windSpeed.round()} mph ${message(code: 'msg.winds', default: 'winds')}</p>

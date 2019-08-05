@@ -1,5 +1,5 @@
 <div id="login">
-  <div class="inner p-2" style="width: 500px;">
+  <div class="inner p-2">
     <g:include view="subforms/msg.gsp"/>
     <div class="fheader"><g:message code="msg.login.why" default="Login to see Personalized Weather"/></div>
 
@@ -19,7 +19,7 @@
           </td>
           <td>
             <input type="password" name="password" id="password" required minlength="6" maxlength="100"/>
-            <a href="/login/forgotpassword">Forgot your password?</a>
+            <a href="/login/forgotpassword">${message(code: 'msg.forgotyourpassword', default: 'Forgot Your Password?')}</a>
           </td>
         </tr>
         <tr>

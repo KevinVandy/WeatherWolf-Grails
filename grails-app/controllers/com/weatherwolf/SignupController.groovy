@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory
 class SignupController {
 
     static allowedMethods = [
+            index: 'GET',
             register: 'POST'
     ]
 
@@ -60,7 +61,7 @@ class SignupController {
                 logger.info("User Role saved")
                 flash.success = "${u.username}" + (message(code: 'msg.youraccountcreated', default: ", Your Account has been Created") as String)
                 redirect(url: "/login/index?username=${username}") //success
-                try{
+                try {
                     //send welcome email
                     def e = new EmailLog(toAddress: u.email, subject: 'Welcome to Weather Wolf', body: "Welcome to Weather Wolf, ${u.username}")
                     mailService.sendMail {
@@ -71,7 +72,7 @@ class SignupController {
                     e.timeSent = new Date()
                     e.save(flush: true, failOnError: true)
                     logger.info("Email sent to ${email}")
-                } catch(Exception e){
+                } catch (Exception e) {
                     logger.warn("Could not send welcome email to ${u.email}")
                     logger.error(e.toString())
                 }

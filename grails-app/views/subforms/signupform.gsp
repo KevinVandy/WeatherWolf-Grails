@@ -42,7 +42,7 @@
         <tr>
           <td></td>
           <td>
-            <g:checkBox name="togglePassword" id="togglePassword" />Show Password
+            <g:checkBox name="togglePassword" id="togglePassword" /><label>${message(code: 'msg.showpassword', default: 'Show Password')}</label>
           </td>
         </tr>
         <tr>

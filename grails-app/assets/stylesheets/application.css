@@ -16,10 +16,11 @@
   margin: 15px 0px;
   padding: 0px;
   text-align: center;
+  width: auto;
 }
 
 #login .inner {
-  width: 400px;
+  width: 600px;
   padding-bottom: 6px;
   margin: 60px auto;
   text-align: left;
@@ -52,7 +53,7 @@
 #login .inner input[type="text"],
 #login .inner input[type="email"],
 #login .inner input[type="password"] {
-  width: 300px;
+  width: 280px;
 }
 
 #login .inner input[type="checkbox"] {

@@ -9,21 +9,21 @@
   <g:include view="subforms/navadmin.gsp"/>
   <div class="backcard">
     <g:include view="subforms/msg.gsp"/>
-    <p>Total locations: <strong>${NumberFormat.getNumberInstance(new Locale(user.lang)).format(locationCount)}</strong></p>
+    <p>${message(code: 'msg.totallocations', default: 'Total Locations')}: <strong>${NumberFormat.getNumberInstance(new Locale(user.lang)).format(locationCount)}</strong></p>
     <g:form controller="admin" action="locations" method="GET">
       <table>
         <tr>
           <td>
-            <label class="all-right">Test Search Bar</label>
+            <label class="all-right">${message(code: 'msg.testsearchbar', default: 'Test Search Bar')}</label>
           </td>
           <td>
-            <input type="text" name="q" style=" width: 400px; font-size: 1.5em;" placeholder="<g:message code='msg.search.placeholder'/>"
+            <input type="text" name="q" style=" width: 400px; font-size: 1.5em;" placeholder="${message(code: 'msg.search.placeholder', default: 'City, [State / Province], [Country]')}"
                    class="typeahead" value="${(params.q && params.q.length() > 1) ? params.q : ''}"/>
-            <input type="submit" value="Search All" class="btn-white p m">
+            <input type="submit" value="${message(code: 'msg.searchall', default: 'Search All')}" class="btn-white p m">
         </tr>
         <tr>
           <td colspan="2">
-            <p class="all-center">Or filter by first letter</p>
+            <p class="all-center">${message(code: 'msg.orfilterbyfirstletter', default: 'Or filter by first letter')}</p>
           </td>
         </tr>
         <tr>
@@ -35,28 +35,28 @@
         </tr>
       </table>
     </g:form>
-    <h2>Add New Location <span id="toggle-add-location" class="p toggle-5day"><g:if test="${flash}">-</g:if> <g:else>+</g:else></span></h2>
+    <h2>${message(code: 'msg.addnewlocation', default: 'Add New Location')} <span id="toggle-add-location" class="p toggle-5day"><g:if test="${flash}">-</g:if> <g:else>+</g:else></span></h2>
     <g:form controller="admin" action="addlocation" method="post">
       <input type="hidden" name="q" value="${params.q}">
 
       <fieldset id="add-location-form" class="m-2" <g:if test="${flash}">style="display: block"</g:if> <g:else>style="display: none"</g:else>>
-        <legend class="p">Add New Location</legend>
+        <legend class="p">${message(code: 'msg.addnewlocation', default: 'Add New Location')}</legend>
         <table>
           <tr>
             <td>
-              <label for="city" class="all-right">City</label>
+              <label for="city" class="all-right">${message(code: 'msg.city', default: 'City')}</label>
             </td>
             <td colspan="2">
               <input type="text" name="city" id="city" class="text-left typeaheadCity">
             </td>
             <td rowspan="5">
-              <button id="intelligentfill" class="btn-primary p m all-center">Intelligent Auto Fill</button>
-              <button id="clearform" class="btn-white p m all-center">Clear Form</button>
+              <button id="intelligentfill" class="btn-primary p m all-center">${message(code: 'msg.intelligentautofill', default: 'Intelligent Auto Fill')}</button>
+              <button id="clearform" class="btn-white p m all-center">${message(code: 'msg.clearform', default: 'Clear Form')}</button>
             </td>
           </tr>
           <tr>
             <td>
-              <label for="stateProvince" class="all-right">State / Province</label>
+              <label for="stateProvince" class="all-right">${message(code: 'msg.stateProvince', default: 'State / Province')}</label>
             </td>
             <td colspan="2">
               <input type="text" name="stateProvince" id="stateProvince" class="text-left typeaheadStateProvince">
@@ -64,7 +64,7 @@
           </tr>
           <tr>
             <td>
-              <label for="country" class="all-right">Country</label>
+              <label for="country" class="all-right">${message(code: 'msg.country', default: 'Country')}</label>
             </td>
             <td colspan="2">
               <input type="text" name="country" id="country" class="text-left typeaheadCountry">
@@ -72,20 +72,20 @@
           </tr>
           <tr>
             <td>
-              <label class="all-right">Lattitude</label>
+              <label class="all-right">${message(code: 'msg.latitude', default: 'Latitude')}</label>
             </td>
             <td><g:field type="number" step="any" name="lat" id="lat" style="max-width: 150px;"/></td>
 
           </tr>
           <tr>
             <td>
-              <label class="all-right">Longitude</label>
+              <label class="all-right">${message(code: 'msg.longitude', default: 'Longitude')}</label>
             </td>
             <td><g:field type="number" step="any" name="lng" id="lng" style="max-width: 150px;"/></td>
           </tr>
           <tr>
             <td colspan="4">
-              <input type="submit" value="Add New Location" class="btn-white p all-center">
+              <input type="submit" value="${message(code: 'msg.addnewlocation', default: 'Add New Location')}" class="btn-white p all-center">
             </td>
           </tr>
         </table>
@@ -95,12 +95,12 @@
     <table id="location-table" class="display" style="display: none">
       <thead>
         <tr>
-          <td>ID</td>
-          <th>City</th>
-          <th>State / Province</th>
-          <th>Country</th>
-          <th>Coordinates</th>
-          <th>Delete</th>
+          <th>ID</th>
+          <th>${message(code: 'msg.city', default: 'City')}</th>
+          <th>${message(code: 'msg.stateProvince', default: 'State / Province')}</th>
+          <th>${message(code: 'msg.country', default: 'Country')}</th>
+          <th>${message(code: 'msg.coordinates', default: 'Coordinates')}</th>
+          <th>${message(code: 'msg.delete', default: 'Delete')}</th>
         </tr>
       </thead>
       <g:if test="${locationDataSet}">
@@ -121,18 +121,6 @@
             </td>
           </tr>
         </g:each>
-        <g:if test="${locationDataSet.size() > 10}">
-          <tfoot>
-            <tr>
-              <th>ID</th>
-              <th>City</th>
-              <th>State / Province / Region</th>
-              <th>Country</th>
-              <th>Coordinates</th>
-              <th>Delete</th>
-            </tr>
-          </tfoot>
-        </g:if>
       </g:if>
     </table>
     <br/>

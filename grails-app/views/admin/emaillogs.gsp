@@ -20,10 +20,13 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>Time Sent</th>
-          <th>Recipient</th>
-          <th>Subject</th>
-          <th>Body<button id="toggle-content" class="btn-white m p text-center">Show Content</button></th>
+          <th>${message(code: 'msg.timesent', default: 'Time Sent')}</th>
+          <th>${message(code: 'msg.recipient', default: 'Recipient')}</th>
+          <th>${message(code: 'msg.subject', default: 'Subject')}</th>
+          <th>
+            ${message(code: 'msg.body', default: 'Body')}
+            <button id="toggle-content" class="btn-white m p text-center">${message(code: 'msg.showcontent', default: 'Show Content')}</button>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -69,10 +72,10 @@
 
       $("#toggle-content").click(function () {
           $(".emailbody").fadeToggle(500);
-          if ($("#toggle-content").html() === "Hide Content") {
-              $("#toggle-content").html("Show Content");
+          if ($("#toggle-content").html() === "${message(code: 'msg.hidecontent', default: 'Hide Content')}") {
+              $("#toggle-content").html("${message(code: 'msg.showcontent', default: 'Show Content')}");
           } else {
-              $("#toggle-content").html("Hide Content");
+              $("#toggle-content").html("${message(code: 'msg.hidecontent', default: 'Hide Content')}");
           }
       });
   </script>

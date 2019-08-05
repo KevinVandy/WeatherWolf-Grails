@@ -20,9 +20,9 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>Date Time</th>
-          <th>Search</th>
-          <th>User</th>
+          <th>${message(code: 'msg.datetime', default: 'Date Time')}</th>
+          <th>${message(code: 'msg.search', default: 'Search')}</th>
+          <th>${message(code: 'msg.username', default: 'Username')}</th>
         </tr>
       </thead>
       <tbody>
