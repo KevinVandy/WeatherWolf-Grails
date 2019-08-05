@@ -1,5 +1,6 @@
 package com.weatherwolf
 
+import com.weatherwolf.security.EmailLog
 import com.weatherwolf.security.Role
 import com.weatherwolf.security.User
 import com.weatherwolf.security.UserRole
@@ -16,6 +17,7 @@ class SignupController {
     ]
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass())
+    def mailService
 
     /**
      * Shows the signup page.
@@ -58,6 +60,21 @@ class SignupController {
                 logger.info("User Role saved")
                 flash.success = "${u.username}" + (message(code: 'msg.youraccountcreated', default: ", Your Account has been Created") as String)
                 redirect(url: "/login/index?username=${username}") //success
+                try{
+                    //send welcome email
+                    def e = new EmailLog(toAddress: u.email, subject: 'Welcome to Weather Wolf', body: "Welcome to Weather Wolf, ${u.username}")
+                    mailService.sendMail {
+                        to e.toAddress
+                        subject e.subject
+                        html e.body
+                    }
+                    e.timeSent = new Date()
+                    e.save(flush: true, failOnError: true)
+                    logger.info("Email sent to ${email}")
+                } catch(Exception e){
+                    logger.warn("Could not send welcome email to ${u.email}")
+                    logger.error(e.toString())
+                }
             } catch (Exception e) {
                 flash.error = message(code: 'msg.invalidsignup', default: 'Signup not valid.') as String
                 logger.warn("Could not create user: ${username}")

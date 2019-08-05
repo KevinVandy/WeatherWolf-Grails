@@ -1,11 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: kvancott
-  Date: 7/26/2019
-  Time: 10:49 AM
---%>
-
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="java.text.NumberFormat" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
   <meta name="layout" content="main"/>
@@ -16,6 +9,7 @@
   <g:include view="subforms/navadmin.gsp"/>
   <div class="backcard">
     <g:include view="subforms/msg.gsp"/>
+    <p>Total locations: <strong>${NumberFormat.getNumberInstance(new Locale(user.lang)).format(locationCount)}</strong></p>
     <g:form controller="admin" action="locations" method="GET">
       <table>
         <tr>
@@ -24,7 +18,7 @@
           </td>
           <td>
             <input type="text" name="q" style=" width: 400px; font-size: 1.5em;" placeholder="<g:message code='msg.search.placeholder'/>"
-                   class="typeahead" value="${(params.q && params.q.length() > 1) ? params.q : ''}" />
+                   class="typeahead" value="${(params.q && params.q.length() > 1) ? params.q : ''}"/>
             <input type="submit" value="Search All" class="btn-white p m">
         </tr>
         <tr>

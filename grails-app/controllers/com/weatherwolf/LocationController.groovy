@@ -53,7 +53,7 @@ class LocationController extends RestfulController<Location> {
      */
     def search(String q) {
         def query
-        if (!q) {
+        if (!q || q.length() < 2) {
             respond([])
         } else {
             def l = new Location()

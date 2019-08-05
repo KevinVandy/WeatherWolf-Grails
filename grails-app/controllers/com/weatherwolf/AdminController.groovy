@@ -46,6 +46,7 @@ class AdminController {
      * @render /admin/users
      */
     def users() {
+        refreshCurrentUser()
         Set<User> userDataSet = null
         try {
             userDataSet = User.findAll(sort: 'username', max: 1000)
@@ -243,6 +244,7 @@ class AdminController {
      * @return
      */
     def locations(String q) {
+        refreshCurrentUser()
         def query
         Set<Location> locationDataSet
         if (!q) {
@@ -286,6 +288,8 @@ class AdminController {
      * @param city
      * @param stateProvince
      * @param country
+     * @param lat
+     * @param lng
      * @return
      */
     def addlocation(String q, String city, String stateProvince, String country, Float lat, Float lng) {
@@ -325,6 +329,7 @@ class AdminController {
                 flash.success = "Deleted ${l.city}, ${l.stateProvince}, ${l.country}"
             } catch (Exception e) {
                 flash.error = 'Failed to delete Location'
+                logger.warn("Could not delete location")
                 logger.error(e.toString())
             }
         }
