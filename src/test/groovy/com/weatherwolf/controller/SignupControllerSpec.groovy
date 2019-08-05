@@ -20,12 +20,20 @@ class SignupControllerSpec extends Specification implements DataTest, Controller
         return [User, Role, UserRole, SearchLog, EmailLog, CurrentWeather, DayForecast, Location, SearchResult] as Class[]
     }
 
+//    boolean loadExternalBeans() {
+//        true
+//    }
+//
+//    Set<String> getIncludePlugins() {
+//        ["springSecurityCore"].toSet()
+//    }
+
     void "show signup page"() {
         when:
         controller.index()
 
         then:
-        render().contains("Sign up")
+        response.text.contains("Sign up")
     }
 
     void "test valid signup"() {
@@ -33,10 +41,18 @@ class SignupControllerSpec extends Specification implements DataTest, Controller
         controller.register('kevinvandy', 'kvancott@talentplus.com', 'hellothere', 'hellothere', 'lincoln,ne')
 
         then:
-        render().contains('already exists')
+        flash.error == null
     }
 
     void "test too short username"() {
+        setup:
+        controller.metaClass.error = {args -> "mockMessage"}
+
+        when:
+        controller.register('ke', 'kvancott@talentplus.com', 'hellothere', 'hellothere', 'lincoln,ne')
+
+        then:
+        controller.request.error == 'Username must be between 3 and 30 characters long'
 
     }
 
