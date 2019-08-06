@@ -34,6 +34,7 @@ class SignupController {
      *
      * Attempts to register a new user.
      * Must pass validation for username, email, password, and favoriteLocation
+     * If registration is successful, a welcome email is sent
      *
      * @param username
      * @param email
@@ -46,10 +47,10 @@ class SignupController {
         def u, r
         logger.info("New user, ${username} attempting to register")
         flash.error = Validators.validateSignup(username, email, password, passwordconfirm)
-        logger.info("message: " + flash.error)
-        if (flash.error) {
+        logger.debug("message: " + flash.error)
+        if (flash.error) { //if validation error
             redirect(url: "/signup/index?username=${username}&email=${email}&favoritelocation=${favoritelocation}") //user error
-        } else { //should be valid
+        } else { // else should be valid
             logger.info("Creating user: ${username}")
             u = new User(username: username, email: email, password: password, favoriteLocation: favoritelocation, dateCreated: new Date())
             try {
@@ -61,8 +62,9 @@ class SignupController {
                 logger.info("User Role saved")
                 flash.success = "${u.username}" + (message(code: 'msg.youraccountcreated', default: ", Your Account has been Created") as String)
                 redirect(url: "/login/index?username=${username}") //success
+
+                //send welcome email after successful registration - TODO - could cause unintended rollback error?
                 try {
-                    //send welcome email
                     def e = new EmailLog(toAddress: u.email, subject: 'Welcome to Weather Wolf', body: "Welcome to Weather Wolf, ${u.username}")
                     mailService.sendMail {
                         to e.toAddress

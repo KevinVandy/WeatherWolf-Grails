@@ -7,6 +7,20 @@ import spock.lang.Specification
 
 class UserSpec extends Specification implements DomainUnitTest<User> {
 
+    void "test count users"(){
+        expect: 'test gorm is set up'
+        User.count() == 0
+    }
+
+    void "test save user"(){
+        when:
+        def u = new User(username: 'newuser', email: 'newuser@gmail.com', password: 'password', favoriteLocation: 'lincoln', dateCreated: new Date())
+        u.save(flush: true)
+
+        then:
+        User.count() == 1
+    }
+
     void "test new unique valid user"(){
         when:
         def u = new User(username: 'newuser', email: 'newuser@gmail.com', password: 'password', favoriteLocation: 'lincoln', dateCreated: new Date())

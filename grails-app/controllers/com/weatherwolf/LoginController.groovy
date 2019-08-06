@@ -148,7 +148,7 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
      *
      * After a user clicks the link from a password reset email, this page will show.
      * The reset password form will only show to the user if they have a valid username and token.
-     * A valid token will also be needed submitting the new password.
+     * A valid token (in hidden input) will also be needed when submitting the new password.
      *
      * @return
      */
@@ -185,7 +185,7 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
         if (!user || !(user.username == username) || !(user.forgotPasswordToken == forgotPasswordToken)) {
             flash.error = message(code: 'msg.invalidtoken', default: 'Invalid Token') as String
             redirect(url: '/login/index') //user error
-        } else {
+        } else { //should be valid
             flash.error = Validators.valPassword(newpassword, newpasswordconfirm)
             if (flash.error) {
                 redirect(url: "/login/resetpassword?username=${user.username}&forgotPasswordToken=${user.forgotPasswordToken}") //user error

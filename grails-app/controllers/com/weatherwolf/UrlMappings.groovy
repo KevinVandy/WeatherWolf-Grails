@@ -14,6 +14,7 @@ class UrlMappings {
         "404"(view: '/notFound')
         "405"(view: '/hackerman')
 
+        //Restful API for locations mappings
         "/location"(resources: 'location') {
             collection {
                 '/index'(controller: 'location', action: 'index')

@@ -52,15 +52,15 @@ class AccountController {
      */
     def changepassword(String oldpassword, String newpassword, String newpasswordconfirm) {
         flash.error = Validators.valPassword(newpassword, newpasswordconfirm)
-        if (oldpassword && !flash.error) {
+        if (oldpassword && !flash.error) { //TODO - verify old password if possible
             try {
                 refreshCurrentUser()
                 currentUser.password = newpassword
                 currentUser.passwordExpired = false
                 currentUser.save(flush: true, failOnError: true)
-                flash.success = message(code: 'msg.passwordchanged', default: 'Password was changed') //success
+                flash.success = message(code: 'msg.passwordchanged', default: 'Password was changed') as String //success
             } catch (Exception e) {
-                flash.error = message(code: 'msg.errorsavingpnewpassword', default: 'Error saving new password. Try again.') //unknown error
+                flash.error = message(code: 'msg.errorsavingpnewpassword', default: 'Error saving new password. Try again.') as String //unknown error
                 logger.warn('Could not change password')
                 logger.error(e.toString())
             }

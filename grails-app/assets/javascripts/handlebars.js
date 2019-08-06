@@ -384,7 +384,7 @@ var Handlebars = (function () {
             }
         }
 
-        __exports__.checkRevision = checkRevision;// TODO: Remove this line and break up compilePartial
+        __exports__.checkRevision = checkRevision;
 
         function template(templateSpec, env) {
             if (!env) {

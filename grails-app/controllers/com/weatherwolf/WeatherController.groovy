@@ -26,9 +26,9 @@ class WeatherController {
 
     /** GET only
      *
-     * Performs a search for weather using the weather service
+     * Performs a search for weather using the weather service.
      * Shows the current weather and forecast for a search result.
-     * Logs a search log if the user is logged in
+     * Logs a search log if the user is logged in. Log!
      *
      * @return
      */

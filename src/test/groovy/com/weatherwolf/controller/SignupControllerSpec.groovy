@@ -33,15 +33,20 @@ class SignupControllerSpec extends Specification implements DataTest, Controller
         controller.index()
 
         then:
-        response.text.contains("Sign up")
+        view == '/signup/index'
     }
 
     void "test valid signup"() {
         when:
-        controller.register('kevinvandy', 'kvancott@talentplus.com', 'hellothere', 'hellothere', 'lincoln,ne')
+        params.username = 'kevinvandy'
+        params.email = 'kvancott@talentplus.com'
+        params.password = 'hellothere'
+        params.passwordconfirm = 'hellothere'
+        params.favoritelocation = 'lincoln,ne'
+        controller.register()
 
         then:
-        flash.error == null
+        response.redirectedUrl == '/login/index'
     }
 
     void "test too short username"() {

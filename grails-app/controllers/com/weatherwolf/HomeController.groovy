@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 class HomeController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass())
+    def weatherService
     User currentUser
 
     private User refreshCurrentUser() {
@@ -24,7 +25,7 @@ class HomeController {
      * If there is a forgotPasswordToken for the user, then it gets deleted here to prevent security risk
      * Set's the logged in user's language from their settings into the current session.
      *
-     * @redirect /home?lang
+     * @redirect /home?lang&units
      */
     @Secured(['ROLE_CLIENT', 'ROLE_ADMIN'])
     def success() {
@@ -51,7 +52,6 @@ class HomeController {
      */
     @Secured("permitAll")
     def index() {
-        def weatherService = new WeatherService()
         def searchResult = new SearchResult()
         searchResult.location = new Location()
         if (!isLoggedIn()) {

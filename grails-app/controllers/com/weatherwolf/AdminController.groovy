@@ -15,13 +15,6 @@ import org.springframework.security.core.context.SecurityContextHolder
 @Secured(['ROLE_ADMIN'])
 class AdminController {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass())
-    private def currentUser = refreshCurrentUser()
-
-    private User refreshCurrentUser() {
-        currentUser = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
-    }
-
     static allowedMethods = [
             changeadminstatus: 'POST',
             changeuserstatus : 'POST',
@@ -32,6 +25,13 @@ class AdminController {
             addlocation      : 'POST',
             deletelocation   : 'POST'
     ]
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass())
+    private def currentUser = refreshCurrentUser()
+
+    private User refreshCurrentUser() {
+        currentUser = User.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
+    }
 
     /**
      * Show the home admin page
@@ -335,5 +335,4 @@ class AdminController {
         }
         redirect(url: "/admin/locations?q=${q ?: 'A'}")
     }
-
 }

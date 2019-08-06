@@ -16,7 +16,7 @@ class Location {
     }
 
     static constraints = {
-        city blank: false
+        city blank: true
         stateProvince blank: true
         country blank: true
         latitude nullable: true, min: -90F, max: 90F

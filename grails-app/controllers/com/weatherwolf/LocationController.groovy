@@ -6,14 +6,11 @@ import grails.rest.RestfulController
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-
+/**
+ * Restful API that serves json from the location table
+ */
 @Secured("permitAll")
 class LocationController extends RestfulController<Location> {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass())
-    def geocodeService
-
-    static responseFormats = ['json']
 
     static allowedMethods = [
             index  : ['GET'],
@@ -22,6 +19,11 @@ class LocationController extends RestfulController<Location> {
             searchstateprovince: ['GET'],
             searchcountry: ['GET']
     ]
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass())
+    def geocodeService
+
+    static responseFormats = ['json']
 
     LocationController() {
         super(Location)
