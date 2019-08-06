@@ -24,7 +24,7 @@ class Validators {
             logger.debug("username: ${username} already used")
             ms.getMessage('msg.usernametaken', null, 'That username is already taken', LCH.getLocale())
         } else {
-            ''
+            '' //valid
         }
     }
 
@@ -41,7 +41,7 @@ class Validators {
             logger.debug("email: ${email} already used")
             ms.getMessage('msg.emailtaken', null, 'Another account already uses this email', LCH.getLocale())
         } else {
-            ''
+            '' //valid
         }
     }
 
@@ -54,16 +54,16 @@ class Validators {
             logger.debug("invalid password length")
             ms.getMessage('msg.passwordlength', null, 'Password must be between 6 and 100 characters', LCH.getLocale())
         } else {
-            ''
+            '' //valid
         }
     }
 
     static String validateSignup(String username, String email, String password, String passwordconfirm) {
         logger.debug("Validating Signup")
-        String errmsg = ''
-        if (!errmsg) errmsg = valUsername(username)
-        if (!errmsg) errmsg = valEmail(email)
-        if (!errmsg) errmsg = valPassword(password, passwordconfirm)
-        errmsg
+        String msg = ''
+        if (!msg) msg = valUsername(username)
+        if (!msg) msg = valEmail(email)
+        if (!msg) msg = valPassword(password, passwordconfirm)
+        msg
     }
 }

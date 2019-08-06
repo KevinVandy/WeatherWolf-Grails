@@ -20,14 +20,6 @@ class SignupControllerSpec extends Specification implements DataTest, Controller
         return [User, Role, UserRole, SearchLog, EmailLog, CurrentWeather, DayForecast, Location, SearchResult] as Class[]
     }
 
-//    boolean loadExternalBeans() {
-//        true
-//    }
-//
-//    Set<String> getIncludePlugins() {
-//        ["springSecurityCore"].toSet()
-//    }
-
     void "show signup page"() {
         when:
         controller.index()
@@ -61,15 +53,4 @@ class SignupControllerSpec extends Specification implements DataTest, Controller
 
     }
 
-    void "test invalid email"() {
-
-    }
-
-    void "test duplicate email"() {
-
-    }
-
-    void "test too short password"() {
-
-    }
 }
