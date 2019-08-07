@@ -26,6 +26,8 @@ class BootStrap {
 //            def ur = new UserRole(user: u, role: Role.findByAuthority('ROLE_ADMIN'))
 //            ur.save(flush: true, failonerror: true)
 //        }
+
+
     }
     def destroy = {
     }

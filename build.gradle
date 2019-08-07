@@ -49,6 +49,7 @@ dependencies {
     compile "org.grails.plugins:spring-security-core:3.2.0.M1"
     compile "org.grails.plugins:mail:2.0.0.RC6"
     compile "com.auth0:mvc-auth-commons:1.+"
+    compile "org.logback-extensions:logback-ext-loggly:0.1.2"
     console "org.grails:grails-console"
     profile "org.grails.profiles:web"
     runtime "org.glassfish.web:el-impl:2.1.2-b03"

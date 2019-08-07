@@ -10,7 +10,7 @@
 //= require_self
 
 //city, stateprovince, country
-let locations = new Bloodhound({
+var locations = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: {
@@ -36,7 +36,7 @@ $('.typeahead').typeahead(
     });
 
 //cities only
-let cities = new Bloodhound({
+var cities = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: {
@@ -60,7 +60,7 @@ $('.typeaheadCity').typeahead(
     });
 
 // states / provinces only
-let stateProvinces = new Bloodhound({
+var stateProvinces = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: {
@@ -84,7 +84,7 @@ $('.typeaheadStateProvince').typeahead(
     });
 
 //countries only
-let countries = new Bloodhound({
+var countries = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: {
