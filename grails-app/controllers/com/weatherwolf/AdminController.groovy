@@ -50,6 +50,7 @@ class AdminController {
         Set<User> userDataSet = null
         try {
             userDataSet = User.findAll(sort: 'username', max: 1000)
+            logger.info("Admin [${currentUser.username}] viewed users table")
         } catch (Exception e) {
             flash.error = 'Could load users'
             logger.warn('Could load users')
@@ -79,6 +80,7 @@ class AdminController {
                 ur.remove(u, r)
                 flash.success = "${u.username} is no longer an admin"
             }
+            logger.info("Admin [${currentUser.username}] changed ${u.username}'s admin status")
         } catch (Exception e) {
             flash.error = 'Could not change role'
             logger.warn('Could not change role')
@@ -109,6 +111,7 @@ class AdminController {
                 logger.warn("A user role of ROLE_CLIENT was removed for user ${u.username}")
                 flash.warning = "${u.username} is no longer a user. This is not recommended"
             }
+            logger.info("Admin [${currentUser.username}] changed ${u.username}'s user status")
         } catch (Exception e) {
             flash.error = 'Could not change role'
             logger.warn('Could not change role')
@@ -133,6 +136,7 @@ class AdminController {
                 u.enabled = false
                 u.save(flush: true, failOnError: true)
                 flash.success = "Disabled ${u.username}"
+                logger.info("Admin [${currentUser.username}] disabled ${u.username}")
             } catch (Exception e) {
                 flash.error = "Could not disable user"
             }
@@ -156,6 +160,7 @@ class AdminController {
                 u.enabled = true
                 u.save(flush: true, failOnError: true)
                 flash.success = "Enabled ${u.username}"
+                logger.info("Admin [${currentUser.username}] enabled ${u.username}")
             } catch (Exception e) {
                 flash.error = "Could not disable user"
             }
@@ -190,6 +195,7 @@ class AdminController {
                     }
                 }
                 flash.success = "Deleted ${u.username}"
+                logger.info("Admin [${currentUser.username}] deleted ${u.username}")
             } catch (Exception e) {
                 flash.warn = "Failed to delete user"
                 logger.warn("Failed to delete user")
@@ -208,6 +214,7 @@ class AdminController {
         Set<SearchLog> searchLogDataSet = null
         try {
             searchLogDataSet = SearchLog.findAll(max: 1000)
+            logger.info("Admin [${currentUser.username}] viewed search logs table")
         } catch (Exception e) {
             flash.warn = "Failed to load search logs"
             logger.warn("Failed to load search logs")
@@ -225,6 +232,7 @@ class AdminController {
         Set<EmailLog> emailLogDataSet = null
         try {
             emailLogDataSet = EmailLog.findAll(max: 1000)
+            logger.info("Admin [${currentUser.username}] viewed email logs table")
         } catch (Exception e) {
             flash.warn = "Failed to load email logs"
             logger.warn("Failed to load email logs")
@@ -247,34 +255,41 @@ class AdminController {
         refreshCurrentUser()
         def query
         Set<Location> locationDataSet
-        if (!q) {
-            locationDataSet = null
-        } else if (q && q.contains(',')) {
-            def l = new Location()
-            l = WeatherUtils.assignCityStateProvinceCountry(q, l)
-            if (l.city && !l.country && !l.stateProvince) {
-                query = Location.where {
-                    (city ==~ "%${q}%")
+        try{
+            if (!q) {
+                locationDataSet = null
+            } else if (q && q.contains(',')) {
+                def l = new Location()
+                l = WeatherUtils.assignCityStateProvinceCountry(q, l)
+                if (l.city && !l.country && !l.stateProvince) {
+                    query = Location.where {
+                        (city ==~ "%${q}%")
+                    }
+                } else if (l.city && l.country && !l.stateProvince) {
+                    query = Location.where {
+                        (city ==~ "%${l.city}%") && ((country ==~ "%${l.country}%") || (stateProvince ==~ "%${l.country}%"))
+                    }
+                } else if (l.city && l.country && l.stateProvince) {
+                    query = Location.where {
+                        (city ==~ "%${l.city}%") && (country ==~ "%${l.country}%") && (stateProvince ==~ "%${l.stateProvince}%")
+                    }
+                } else {
+                    query = Location.where {
+                        (city ==~ "%${q}%")
+                    }
                 }
-            } else if (l.city && l.country && !l.stateProvince) {
-                query = Location.where {
-                    (city ==~ "%${l.city}%") && ((country ==~ "%${l.country}%") || (stateProvince ==~ "%${l.country}%"))
-                }
-            } else if (l.city && l.country && l.stateProvince) {
-                query = Location.where {
-                    (city ==~ "%${l.city}%") && (country ==~ "%${l.country}%") && (stateProvince ==~ "%${l.stateProvince}%")
-                }
+                locationDataSet = query.list(max: 6000)
             } else {
                 query = Location.where {
-                    (city ==~ "%${q}%")
+                    city =~ "${q ?: 'A'}%"
                 }
+                locationDataSet = query.list(max: 6000)
             }
-            locationDataSet = query.list(max: 6000)
-        } else {
-            query = Location.where {
-                city =~ "${q ?: 'A'}%"
-            }
-            locationDataSet = query.list(max: 6000)
+            logger.info("Admin [${currentUser.username}] viewed location table")
+        } catch(Exception e){
+            flash.warn = "Failed to load email logs"
+            logger.warn("Failed to load locations with query [${q ?: ''}]")
+            logger.error(e.toString())
         }
         render(view: '/admin/locations', model: [user: currentUser, locationDataSet: locationDataSet, locationCount: Location.count(), pages: ('A'..'Z')])
     }
@@ -303,6 +318,7 @@ class AdminController {
                 def l = new Location(city: city, stateProvince: stateProvince, country: country, latitude: lat ?: 0.0F, longitude: lng ?: 0.0F)
                 l.save(flush: true, failOnError: true)
                 flash.success = "${city}, ${stateProvince}, ${country} was added"
+                logger.info("Admin [${currentUser.username}] added location [${l.toString()}]")
             } catch (Exception e) {
                 flash.error = "Could not add ${city}, ${stateProvince}, ${country}"
                 logger.error(e.toString())
@@ -327,6 +343,7 @@ class AdminController {
                 def l = Location.findById(locationId)
                 l.delete(flush: true, failOnError: true)
                 flash.success = "Deleted ${l.city}, ${l.stateProvince}, ${l.country}"
+                logger.info("Admin [${currentUser.username}] deleted location [${l.toString()}]")
             } catch (Exception e) {
                 flash.error = 'Failed to delete Location'
                 logger.warn("Could not delete location")

@@ -123,7 +123,7 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
                 }
                 e.timeSent = new Date()
                 e.save(flush: true, failOnError: true)
-                logger.info("Email sent to ${email}")
+                logger.info("Passord Reset Email sent to ${email}")
                 flash.success = "An email to reset your password has been sent to ${email}"
                 redirect(url: '/login/waitforemail') //success
             } catch (Exception ex) {
@@ -161,8 +161,10 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
             user = User.findByUsername(params.username)
             if (!(user && user.forgotPasswordToken && user.forgotPasswordToken.equalsIgnoreCase(params.forgotPasswordToken))) {
                 flash.error = message(code: 'msg.invalidtoken', default: 'Invalid Token')  as String //user error
+                logger.warn("Invalid Password Reset Token for ${params.username} detected")
             } else {
                 validToken = true
+                logger.info("Valid Password Reset Token for ${params.username}")
             }
         }
         render(view: '/login/resetpassword', model: [validToken: validToken])
@@ -195,9 +197,11 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
                 try {
                     user.save(flush: true, failOnError: true)
                     flash.success = "${user.username}, your password was successfully reset. Try logging in with your new password"
+                    logger.info("Forgotten password reset for ${username}")
                     redirect(url: "/login/index?username=${user.username}") //success
                 } catch (Exception e) {
                     flash.error = message(code: 'msg.errorsavingpnewpassword', default: 'Error saving new password. Try again.') as String
+                    logger.warn("Could not change forgotten password for ${username} with attempted token ${forgotPasswordToken}")
                     logger.error(e.toString())
                     redirect(url: '/login/index') //unknown error
                 }

@@ -54,7 +54,7 @@ class WeatherController {
         } else {
             refreshCurrentUser()
             try {
-                SearchLog sl = new SearchLog(searchString: params.location, date: new Date(), user: currentUser)
+                SearchLog sl = new SearchLog(searchString: params.location.trim(), date: new Date(), user: currentUser)
                 sl.save(flush: true, failOnError: true)
             } catch (Exception e) {
                 logger.error(e.toString())

@@ -59,6 +59,7 @@ class AccountController {
                 currentUser.passwordExpired = false
                 currentUser.save(flush: true, failOnError: true)
                 flash.success = message(code: 'msg.passwordchanged', default: 'Password was changed') as String //success
+                logger.info("User [${currentUser.username}] changed their password")
             } catch (Exception e) {
                 flash.error = message(code: 'msg.errorsavingpnewpassword', default: 'Error saving new password. Try again.') as String //unknown error
                 logger.warn('Could not change password')
@@ -84,9 +85,10 @@ class AccountController {
             flash.error = Validators.valEmail(email)
             if (!flash.error) { //if no user error
                 try {
-                    currentUser.email = email
+                    currentUser.email = email.trim()
                     currentUser.save(flush: true, failOnError: true)
                     flash.success = message(code: 'msg.emailupdated', default: 'Email Updated') as String //success
+                    logger.info("User [${currentUser.username}] changed their email address")
                 } catch (Exception e) {
                     logger.warn("Could not save settings")
                     logger.error(e.toString())
@@ -125,11 +127,12 @@ class AccountController {
             if (!location) {
                 flash.error = message(code: 'msg.allfieldsrequired', default: 'All fields are required') as String
             } else {
-                currentUser.favoriteLocation = location
+                currentUser.favoriteLocation = location.trim()
             }
             try {
                 currentUser.save(flush: true, failOnError: true)
                 flash.success = message(code: 'msg.settingssaved', default: 'Settings Saved') as String //success
+                logger.info("User [${currentUser.username}] changed their settings")
             } catch (Exception e) {
                 refreshCurrentUser()
                 logger.warn("Could not save settings")
@@ -151,6 +154,7 @@ class AccountController {
             try {
                 currentUser.save(flush: true, failOnError: true)
                 flash.success = message(code: 'msg.languagechanged', default: 'Language Changed') as String //success
+                logger.info("User [${currentUser.username}] changed Locale to ${lang}")
             } catch (Exception e) {
                 refreshCurrentUser()
                 logger.warn("Could not change language")
@@ -172,9 +176,10 @@ class AccountController {
     def updatelocation(String favoritelocation) {
         refreshCurrentUser()
         try {
-            currentUser.favoriteLocation = favoritelocation
+            currentUser.favoriteLocation = favoritelocation.trim()
             currentUser.save(flush: true, failOnError: true)
             flash.success = message(code: 'msg.settingssaved', default: 'Settings Saved') as String //success
+            logger.info("User [${currentUser.username}] changed their favorite location to ${favoritelocation}")
         } catch (Exception e) {
             logger.warn("Could not save new Location")
             logger.error(e.toString())
@@ -191,12 +196,14 @@ class AccountController {
      * @redirect /account/index
      */
     def deletesearchhistory() {
+        refreshCurrentUser()
         try {
             refreshCurrentUser()
             SearchLog.where {
                 user == currentUser
-            }.deleteAll(flush: true, failOnError: true)
+            }.deleteAll()
             flash.success = message(code: 'msg.searchhistorydeleted', default: 'Search History Deleted') as String
+            logger.info("User [${currentUser.username}] deleted all of their search history")
         } catch (Exception e) {
             flash.error = message(code: 'msg.couldnotdeletesearchhistory', default: 'Could not delete search history') as String
             logger.warn("Could not delete search history for ${currentUser.username}")
@@ -224,6 +231,7 @@ class AccountController {
                 logger.warn('Could not delete user roles')
             }
             flash.success = message(code: 'msg.accountdeleted', default: 'Account Deleted') as String
+            logger.info("User [${currentUser.username}] deleted their account")
             session.invalidate()
             redirect(url: '/home')
         } catch (Exception e) {

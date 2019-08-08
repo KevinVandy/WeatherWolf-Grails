@@ -34,6 +34,7 @@ class HomeController {
             try {
                 currentUser.forgotPasswordToken = null
                 currentUser.save(flush: true, failOnError: true)
+                logger.info("User [${currentUser.username}] logged in")
             } catch (Exception e) {
                 logger.warn("Could not wipe forgot password token")
             }
